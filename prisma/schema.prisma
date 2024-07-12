@@ -1,0 +1,127 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id             Int       @id @default(autoincrement())
+    username       String    @unique
+    email          String    @unique
+    password       String
+    createdAt      DateTime  @default(now())
+    updatedAt      DateTime  @updatedAt
+    firstName      String?
+    lastName       String?
+    phoneNumber    String
+    address        String?
+    city           String?
+    state          String?
+    zipCode        String?
+    country        String?
+    role           String    @default("customer")
+    isVerified     Boolean   @default(false)
+    lastLogin      DateTime?
+    profilePicture String?
+    dateOfBirth    DateTime?
+    isActive       Boolean   @default(true)
+
+    orders    Order[] // Relation to orders
+    favorites Favorite[] // Relation to users who favorited this product
+    cartItems CartItem[] // Relation to cart items
+}
+
+model Order {
+    id          Int      @id @default(autoincrement())
+    userId      Int
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    totalAmount Float
+    status      String
+
+    user       User        @relation(fields: [userId], references: [id]) // Foreign key to User
+    orderItems OrderItem[] // Relation to order items
+}
+
+model Category {
+    id        Int       @id @default(autoincrement())
+    name      String    @unique
+    slug      String    @unique
+    url       String?    
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    products  Product[] // Relation to products
+}
+
+model Product {
+    id            Int      @id @default(autoincrement())
+    name          String
+    description   String
+    price         Float
+    isDiscount    Boolean  @default(false)
+    discountPrice Float?
+    currency      String?
+    SKU           String   @unique
+    inventory     Int
+    categoryId    Int
+    category      Category @relation(fields: [categoryId], references: [id])
+    tags          String[]
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    images        String[]
+    isFeatured    Boolean?  @default(false)
+    rating        Float?    @default(4.9)
+    brand         String?
+    weight        Float?
+    dimensions    String?
+    slug          String   @unique
+    score         Float?    @default(0.7)
+    freebieProductIDs  Int[]
+    relatedProductIDs  Int[]
+
+
+    orderItems OrderItem[] // Relation to order items
+    favorites  Favorite[] // Relation to users who favorited this product
+    cartItems  CartItem[] // Relation to cart items
+}
+
+model OrderItem {
+    id        Int    @id @default(autoincrement())
+    orderId   Int
+    productId Int
+    quantity  Int    @default(0)
+    price     Float // Price at the time of order
+    slug      String // Product slug
+
+    order   Order   @relation(fields: [orderId], references: [id]) // Foreign key to Order
+    product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
+
+    @@unique([orderId, productId]) // Ensure unique combination of orderId and productId
+}
+
+model Favorite {
+    id        Int @id @default(autoincrement())
+    userId    Int
+    productId Int
+
+    user    User    @relation(fields: [userId], references: [id])
+    product Product @relation(fields: [productId], references: [id])
+
+    @@unique([userId, productId]) // Ensure each user can favorite a product only once
+}
+
+model CartItem {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    productId Int
+    quantity  Int      @default(1)
+    addedAt   DateTime @default(now())
+
+    user    User    @relation(fields: [userId], references: [id]) // Foreign key to User
+    product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
+
+    @@unique([userId, productId]) // Ensure unique combination of userId and productId
+}
