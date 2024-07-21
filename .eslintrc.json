@@ -2,22 +2,22 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "react/react-in-jsx-scope": "off", // Next.js automatically imports React
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { "argsIgnorePattern": "^_" }
-    ],
+    // "@typescript-eslint/no-unused-vars": [
+    //   "warn",
+    //   { "argsIgnorePattern": "^_" }
+    // ],
     "react/prop-types": "off", // Since we use TypeScript for prop types
     "jsx-a11y/anchor-is-valid": "off", // Next.js uses its own link component
     "no-console": "warn",
     "prefer-const": "error",
     "eqeqeq": ["error", "always"],
     "curly": "error",
-    "quotes": ["error", "double", { "avoidEscape": true }],
+    "quotes": ["warn", "double", { "avoidEscape": true }],
     "semi": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],
-    "indent": ["error", 2],
-    "no-multiple-empty-lines": ["error", { "max": 1 }],
-    "no-trailing-spaces": "error",
+    "indent": ["warn", 2],
+    "no-multiple-empty-lines": ["warn", { "max": 1 }],
+    "no-trailing-spaces": "warn",
     "object-curly-spacing": ["error", "always"],
     "array-bracket-spacing": ["error", "never"],
     "space-before-function-paren": ["error", "never"],

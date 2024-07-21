@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 import Loader from "../Loader";
 
-export default function UserProfileMenu({ setOpenModal }) {
+export default function UserProfileMenu({ setOpenModal, isLogedin }) {
   const { user, userLoading, logout } = useAuthUser();
 
   const items = [
@@ -55,7 +55,7 @@ export default function UserProfileMenu({ setOpenModal }) {
             setOpenModal(true);
           }}
         >
-          Signup
+          {isLogedin ? "Login" : "Signup"}
         </button>
       )}
     </>

@@ -1,0 +1,19 @@
+.Items_scroll_bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.Items_scroll_bar::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #007a3b;
+}
+
+::-webkit-scrollbar-track {
+  background: #6a6a6a;
+}

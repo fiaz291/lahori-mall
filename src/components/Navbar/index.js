@@ -25,7 +25,7 @@ export default function Navbar() {
             </button>
           ))}
         </div>
-       <UserProfileMenu setOpenModal={setOpenModal} />
+        <UserProfileMenu setOpenModal={setOpenModal} isLogedin={isLogin} />
       </div>
       <div className="flex justify-between items-center w-full max-w-[1200px]">
         <button
