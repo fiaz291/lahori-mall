@@ -2,7 +2,7 @@ const dummy_products = [
   {
     id: "1",
     name: "Product A",
-    price: "Rs. 499",
+    price: 499,
     availability: true,
     quantity: 10,
     image: "https://picsum.photos/150?random=1",
@@ -11,16 +11,16 @@ const dummy_products = [
   {
     id: "2",
     name: "Product B",
-    price: "Rs. 799",
+    price: 799,
     availability: false,
-    quantity: 0,
+    quantity: 3,
     image: "https://picsum.photos/150?random=2",
     category: "Home Appliances",
   },
   {
     id: "3",
     name: "Product C",
-    price: "Rs. 299",
+    price: 299,
     availability: true,
     quantity: 20,
     image: "https://picsum.photos/150?random=3",
@@ -29,7 +29,7 @@ const dummy_products = [
   {
     id: "4",
     name: "Product D",
-    price: "Rs. 1299",
+    price: 1299,
     availability: true,
     quantity: 5,
     image: "https://picsum.photos/150?random=4",
@@ -38,7 +38,7 @@ const dummy_products = [
   {
     id: "5",
     name: "Product E",
-    price: "Rs. 999",
+    price: 999,
     availability: true,
     quantity: 15,
     image: "https://picsum.photos/150?random=5",
@@ -47,7 +47,7 @@ const dummy_products = [
   {
     id: "6",
     name: "Product F",
-    price: "Rs. 1499",
+    price: 1499,
     availability: true,
     quantity: 7,
     image: "https://picsum.photos/150?random=6",
@@ -56,9 +56,9 @@ const dummy_products = [
   {
     id: "7",
     name: "Product G",
-    price: "Rs. 349",
+    price: 349,
     availability: false,
-    quantity: 0,
+    quantity: 1,
     image: "https://picsum.photos/150?random=7",
     category: "Stationery",
   },

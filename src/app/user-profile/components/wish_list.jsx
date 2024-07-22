@@ -5,6 +5,10 @@ export default function Wish_List(props) {
   const tableHeader = ["Product", "Quantity", "Rate", "Total", "Availability"];
   const products = [...Dummy_Products, ...props.wishlist];
 
+  const to_int = (value) => {
+    return parseInt(value.replace(/[^\d]/g, ""), 10);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <h3>Wish List</h3>
@@ -31,8 +35,8 @@ export default function Wish_List(props) {
               <div>{product.name}</div>
             </div>
             <div>{product.quantity}</div>
-            <div>{product.price}</div>
-            <div>-</div>
+            <div>Rs. {product.price}</div>
+            <div>Rs. {product.quantity * product.price}</div>
 
             <div
               className={`${
