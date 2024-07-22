@@ -24,6 +24,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  user-select: none;
 }
 
 @layer utilities {
@@ -48,4 +49,25 @@ aside {
 
 .ant-menu-item {
   background-color: #fff !important;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #007a3b;
+}
+
+::-webkit-scrollbar-track {
+  background: #6a6a6a;
+}
+
+.hidden_scroll_bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hidden_scroll_bar::-webkit-scrollbar {
+  display: none;
 }

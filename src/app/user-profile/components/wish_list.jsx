@@ -1,5 +1,5 @@
 import React from "react";
-import Dummy_Products from "./dummy_products";
+import Dummy_Products from "../../dummy_products";
 
 export default function Wish_List(props) {
   const tableHeader = ["Product", "Quantity", "Rate", "Total", "Availability"];

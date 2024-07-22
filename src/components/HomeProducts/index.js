@@ -1,60 +1,69 @@
-import { HeartFilled, HeartOutlined } from "@ant-design/icons";
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import ProductCard from "../ProductCard";
+import Products from "../../app/dummy_products";
 
-const products = [
-  {
-    title: "product 1",
-    price: "160",
-    isFavorite: false,
-  },
-  {
-    title: "product 2",
-    price: "100",
-    isFavorite: false,
-  },
-  {
-    title: "product 3",
-    price: "900",
-    isFavorite: true,
-  },
-  {
-    title: "product 4",
-    price: "50",
-    isFavorite: true,
-  },
-  {
-    title: "product 5",
-    price: "1900",
-    isFavorite: false,
-  },
-];
+const newProducts = [...Products];
+const bestSeller = [...Products];
+const saleProducts = [...Products];
 
 export default function HomeProducts() {
+  const btns = ["New Products", "|", "Best Seller", "|", "Sale"];
+  const [products, setProducts] = useState(newProducts);
+  const [activeBtn, setActiveBtn] = useState("New Products");
+
+  function getProductsList(btn) {
+    switch (btn) {
+      case "New Products":
+        setProducts(newProducts);
+        setActiveBtn("New Products");
+        break;
+      case "Best Seller":
+        setProducts(bestSeller);
+        setActiveBtn("Best Seller");
+        break;
+      case "Sale":
+        setProducts(saleProducts);
+        setActiveBtn("Sale");
+        break;
+      default:
+        setProducts([]);
+        setActiveBtn("");
+        break;
+    }
+  }
+
   return (
-    <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
-      <div className="mt-[40px] flex flex-col  w-full max-w-[1200px] p-[16px]">
+    <div className="flex flex-col justify-center items-center px-[12px]">
+      <div className="mt-[10px] flex flex-col w-full max-w-[1200px] p-[16px]">
         <h2 className="text-[36px] mb-[20px]">Our Products</h2>
-        <div className="flex items-center">
-          <div className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)]">
-            New Product
-          </div>
-          <div className="mr-[10px]">|</div>
-          <div className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)]">
-            Best Seller
-          </div>
-          <div className="mr-[10px]">|</div>
-          <div className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)]">
-            Sale
-          </div>
-        </div>
-        <div className="grid gap-4 grid-cols-4 mt-[20px]">
-          {products.map((prod, index) => (
-            <ProductCard
+        <div className="flex gap-4 items-center">
+          {btns.map((btn, index) => (
+            <div
               key={index}
-              title={prod.title}
+              onClick={() => btn !== "|" && getProductsList(btn)}
+              className={`text-[20px] ${
+                btn === "|" ? "cursor-default" : "cursor-pointer"
+              } mr-[10px] ${
+                btn !== "|"
+                  ? activeBtn === btn
+                    ? "text-[#00803e]"
+                    : "hover:text-[#82f6ba] text-[#d6d6d6]"
+                  : ""
+              }`}
+            >
+              {btn}
+            </div>
+          ))}
+        </div>
+        <div className="flex gap-4 justify-between mt-[20px] mb-[30px] overflow-x-auto hidden_scroll_bar">
+          {products.map((prod) => (
+            <ProductCard
+              key={prod.id}
+              title={prod.name}
               price={prod.price}
               isFavorite={prod.isFavorite}
+              img_url={prod.image}
             />
           ))}
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import Dummy_Orders from "./dummy_orders";
+import Dummy_Orders from "../../dummy_orders";
 
 export default function RecentOrders(props) {
   const tableHeader = ["Order #", "Placed On", "Items", "Total", "Status"];
@@ -23,7 +23,7 @@ export default function RecentOrders(props) {
           >
             <div>{order.id}</div>
             <div>{order.date}</div>
-            <div className="flex items-center gap-2 overflow-x-scroll Items_scroll_bar ">
+            <div className="flex items-center gap-2 overflow-x-scroll hidden_scroll_bar ">
               {order.items.map((item, index) => (
                 <img
                   className="w-12 h-12 cursor-pointer"

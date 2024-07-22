@@ -7,6 +7,7 @@ const dummy_products = [
     quantity: 10,
     image: "https://picsum.photos/150?random=1",
     category: "Electronics",
+    isFavorite: false,
   },
   {
     id: "2",
@@ -16,6 +17,7 @@ const dummy_products = [
     quantity: 3,
     image: "https://picsum.photos/150?random=2",
     category: "Home Appliances",
+    isFavorite: false,
   },
   {
     id: "3",
@@ -24,6 +26,7 @@ const dummy_products = [
     availability: true,
     quantity: 20,
     image: "https://picsum.photos/150?random=3",
+    isFavorite: true,
     category: "Books",
   },
   {
@@ -33,6 +36,7 @@ const dummy_products = [
     availability: true,
     quantity: 5,
     image: "https://picsum.photos/150?random=4",
+    isFavorite: false,
     category: "Clothing",
   },
   {
@@ -42,6 +46,7 @@ const dummy_products = [
     availability: true,
     quantity: 15,
     image: "https://picsum.photos/150?random=5",
+    isFavorite: true,
     category: "Sports",
   },
   {
@@ -51,6 +56,7 @@ const dummy_products = [
     availability: true,
     quantity: 7,
     image: "https://picsum.photos/150?random=6",
+    isFavorite: false,
     category: "Toys",
   },
   {
@@ -60,6 +66,7 @@ const dummy_products = [
     availability: false,
     quantity: 1,
     image: "https://picsum.photos/150?random=7",
+    isFavorite: true,
     category: "Stationery",
   },
 ];

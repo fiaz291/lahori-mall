@@ -15,7 +15,7 @@
     "quotes": ["warn", "double", { "avoidEscape": true }],
     "semi": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],
-    "indent": ["warn", 2],
+    // "indent": ["warn", 2],
     "no-multiple-empty-lines": ["warn", { "max": 1 }],
     "no-trailing-spaces": "warn",
     "object-curly-spacing": ["error", "always"],

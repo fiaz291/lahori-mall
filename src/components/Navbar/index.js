@@ -15,9 +15,9 @@ export default function Navbar() {
   const [openModal, setOpenModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   return (
-    <div className="flex flex-col justify-center items-center px-4 gap-4 pt-8">
-      <div className="flex justify-between pl-[30px]  items-center w-full max-w-[1200px]">
-        <img src="/logo.png" className="w-[80px] h-[80px]" />
+    <div className="flex flex-col justify-center items-center px-4 gap-4 pt-12">
+      <div className="flex justify-between pl-[20px]  items-center w-full max-w-[1200px]">
+        <img src="/logo.png" className="w-[100px] h-[100px]" />
         <div className="flex gap-8">
           {navButtons.map((button) => (
             <button key={button} className="font-[13px] text-[17px]">
