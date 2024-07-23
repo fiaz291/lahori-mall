@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import ProductCard from "../ProductCard";
 import Products from "../../app/dummy_products";
 
-const newProducts = [...Products];
-const bestSeller = [...Products];
-const saleProducts = [...Products];
+const newProducts = [...Products.slice(0, 9)];
+const bestSeller = [...Products.slice(9, 19)];
+const saleProducts = Products.filter((product) => product.onSale);
 
 export default function HomeProducts() {
   const btns = ["New Products", "|", "Best Seller", "|", "Sale"];
@@ -56,15 +56,9 @@ export default function HomeProducts() {
             </div>
           ))}
         </div>
-        <div className="flex gap-4 justify-between mt-[20px] mb-[30px] overflow-x-auto hidden_scroll_bar">
+        <div className="flex gap-4 justify-start mt-[20px] mb-[30px] overflow-x-auto hidden_scroll_bar p-[2px] pb-2">
           {products.map((prod) => (
-            <ProductCard
-              key={prod.id}
-              title={prod.name}
-              price={prod.price}
-              isFavorite={prod.isFavorite}
-              img_url={prod.image}
-            />
+            <ProductCard key={prod.id} product={prod} />
           ))}
         </div>
       </div>

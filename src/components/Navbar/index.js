@@ -49,7 +49,7 @@ export default function Navbar() {
             <div style={{ color: COLORS.red }} className={"font-semibold"}>
               Your Cart
             </div>
-            <div style={{ color: COLORS.gray }}>2000 RS</div>
+            <div style={{ color: COLORS.gray }}>Rs. 2000</div>
           </div>
         </div>
       </div>

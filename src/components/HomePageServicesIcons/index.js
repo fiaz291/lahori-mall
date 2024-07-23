@@ -27,19 +27,21 @@ const details = [
 export default function HomePageServicesIcons() {
   return (
     <div className="flex justify-center px-[12px] ">
-      <div className="flex w-full justify-between max-w-[1200px] border-[#58595b] border rounded-md mx-[20px] p-[24px] pl-[50px]">
+      <div className="flex w-full justify-between max-w-[1200px] border-[#58595b] border rounded-md mx-[20px] py-[24px] px-[50px]">
         {details.map((i, index) => (
-          <div className="flex  items-center text-center gap-8" key={i.title}>
-            <div className=" text-[60px] text-[#009944]"> {i.icon}</div>
-            <div>
-              <div className="text-[#58595b] font-semibold">{i.title}</div>
-              <div className="text-[#58595b]">{i.subTitle}</div>
+          <div className="flex gap-10" key={i.title}>
+            <div className="flex items-center gap-4 text-center">
+              <div className=" text-[60px] text-[#009944]"> {i.icon}</div>
+              <div>
+                <div className="text-[#7d7d7d] font-semibold">{i.title}</div>
+                <div className="text-[#7d7d7d]">{i.subTitle}</div>
+              </div>
             </div>
-            <div className="pr-8">
-              {index < details.length - 1 && (
-                <div className=" h-[60px] border-r border-[#58595b]"></div>
-              )}
-            </div>
+            {index < details.length - 1 && (
+              <div className="pl-4 pr-10">
+                <div className=" h-full border-r border-[#58595b]"></div>
+              </div>
+            )}
           </div>
         ))}
       </div>

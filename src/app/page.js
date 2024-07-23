@@ -4,6 +4,7 @@ import HomePageSlider from "@/components/HomePageSlider";
 import HomeProducts from "@/components/HomeProducts";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TopCategoriesCatalog from "@/components/TopCategoriesCatalog";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <HomePageServicesIcons />
         <HomeProducts />
         <AppBanner />
+        <TopCategoriesCatalog />
         <Footer />
       </div>
     </main>
