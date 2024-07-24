@@ -10,6 +10,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=1",
     category: "Electronics",
     isFavorite: true,
+    rating: 8,
   },
   {
     id: "2",
@@ -22,6 +23,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=2",
     category: "Home Appliances",
     isFavorite: true,
+    rating: 5,
   },
   {
     id: "3",
@@ -34,6 +36,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=3",
     isFavorite: false,
     category: "Books",
+    rating: 7,
   },
   {
     id: "4",
@@ -46,6 +49,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=4",
     isFavorite: false,
     category: "Clothing",
+    rating: 10,
   },
   {
     id: "5",
@@ -58,6 +62,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=5",
     isFavorite: false,
     category: "Sports",
+    rating: 9,
   },
   {
     id: "6",
@@ -70,6 +75,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=6",
     isFavorite: true,
     category: "Toys",
+    rating: 8,
   },
   {
     id: "7",
@@ -82,6 +88,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=7",
     isFavorite: true,
     category: "Stationery",
+    rating: 0,
   },
   {
     id: "8",
@@ -94,6 +101,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=8",
     isFavorite: false,
     category: "Accessories",
+    rating: 1,
   },
   {
     id: "9",
@@ -106,6 +114,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=9",
     isFavorite: true,
     category: "Beauty",
+    rating: 3,
   },
   {
     id: "10",
@@ -118,6 +127,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=10",
     isFavorite: false,
     category: "Electronics",
+    rating: 2,
   },
   {
     id: "11",
@@ -130,6 +140,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=11",
     isFavorite: true,
     category: "Clothing",
+    rating: 6,
   },
   {
     id: "12",
@@ -142,6 +153,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=12",
     isFavorite: false,
     category: "Sports",
+    rating: 7,
   },
   {
     id: "13",
@@ -154,6 +166,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=13",
     isFavorite: true,
     category: "Home Appliances",
+    rating: 7,
   },
   {
     id: "14",
@@ -166,6 +179,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=14",
     isFavorite: false,
     category: "Toys",
+    rating: 10,
   },
   {
     id: "15",
@@ -178,6 +192,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=15",
     isFavorite: true,
     category: "Books",
+    rating: 9,
   },
   {
     id: "17",
@@ -190,6 +205,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=17",
     isFavorite: true,
     category: "Gardening",
+    rating: 8,
   },
   {
     id: "18",
@@ -202,6 +218,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=18",
     isFavorite: false,
     category: "Kitchen",
+    rating: 6,
   },
   {
     id: "19",
@@ -214,6 +231,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=19",
     isFavorite: true,
     category: "Toys",
+    rating: 3,
   },
   {
     id: "20",
@@ -226,6 +244,7 @@ const dummy_products = [
     image: "https://picsum.photos/150?random=20",
     isFavorite: false,
     category: "Sports",
+    rating: 5,
   },
 ];
 

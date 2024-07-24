@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import ProductCard from "../ProductCard";
 import Products from "../../app/dummy_products";
 
-const newProducts = [...Products.slice(0, 9)];
-const bestSeller = [...Products.slice(9, 19)];
+const newProducts = Products;
+const bestSeller = Products.filter((product) => product.rating >= 7);
 const saleProducts = Products.filter((product) => product.onSale);
 
 export default function HomeProducts() {
