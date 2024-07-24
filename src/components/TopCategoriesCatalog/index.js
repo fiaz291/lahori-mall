@@ -48,7 +48,7 @@ export default function CategoriesCatalog() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center px-[12px]">
+    <div className="flex flex-col justify-center items-center px-[12px] my-[40px]">
       <div className="flex w-full max-w-[1200px] p-[16px] justify-between gap-8">
         <div className="flex flex-col flex-[1] justify-between">
           <div className="">

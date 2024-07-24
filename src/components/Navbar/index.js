@@ -43,8 +43,8 @@ export default function Navbar() {
           onSearch={() => {}}
         />
         <div className="flex flex-row justify-between gap-6 items-center w-[450px]">
-          <div className="text-gray-500 text-[20px]">❤ 2</div>
-          <div className="text-gray-500 text-[20px]">🛒 3</div>
+          <div className="text-gray-500 text-[20px] cursor-pointer">❤ 2</div>
+          <div className="text-gray-500 text-[20px] cursor-pointer">🛒 3</div>
           <div className="flex flex-col gap-[4px] items-center">
             <div style={{ color: COLORS.red }} className={"font-semibold"}>
               Your Cart
