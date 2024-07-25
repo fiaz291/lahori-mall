@@ -1,3 +1,5 @@
+import useWindowSize from "@/app/hooks/windowSize";
+import { COLORS } from "@/constants";
 import React from "react";
 import { FaTruck, FaHeadset, FaShieldAlt, FaTags } from "react-icons/fa"; // Import icons from react-icons
 
@@ -25,26 +27,33 @@ const details = [
 ];
 
 export default function HomePageServicesIcons() {
+  const { isMobile } = useWindowSize();
   return (
-    <div className="flex justify-center px-[12px] ">
-      <div className="flex w-full justify-between max-w-[1200px] border-[#58595b] border rounded-md mx-[20px] py-[24px] px-[50px]">
-        {details.map((i, index) => (
-          <div className="flex gap-10" key={i.title}>
-            <div className="flex items-center gap-4 text-center">
-              <div className=" text-[60px] text-[#009944]"> {i.icon}</div>
-              <div>
-                <div className="text-[#7d7d7d] font-semibold">{i.title}</div>
-                <div className="text-[#7d7d7d]">{i.subTitle}</div>
-              </div>
+    <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
+      {!isMobile && (
+        <div className="flex justify-between items-center w-full max-w-[1200px] border-[#58595b] border rounded-md p-[16px]">
+          {details.map((i) => (
+            <div className="flex flex-col" key={i.title}>
+              <div>{i.title}</div>
+              <div>{i.subTitle}</div>
             </div>
-            {index < details.length - 1 && (
-              <div className="pl-4 pr-10">
-                <div className=" h-full border-r border-[#58595b]"></div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+      {isMobile && (
+        <div className="flex flex-col justify-between items-center w-full max-w-[1200px] border-[#58595b] border p-[16px] gap-[10px]">
+          {details.map((i) => (
+            <div
+              className="flex flex-col w-full p-1 hover:opacity-80"
+              key={i.title}
+              style={{ background: COLORS.green }}
+            >
+              <div className="text-center text-white">{i.title}</div>
+              <div className="text-center text-white">{i.subTitle}</div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

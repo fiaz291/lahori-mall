@@ -50,24 +50,19 @@ aside {
 .ant-menu-item {
   background-color: #fff !important;
 }
-
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+.ql-editor {
+  min-height: 200px;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #007a3b;
+.ql-image {
+  display: none !important;
 }
-
-::-webkit-scrollbar-track {
-  background: #6a6a6a;
+.ql-link {
+  display: none !important;
 }
-
-.hidden_scroll_bar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.ql-video {
+  display: none !important;
 }
-.hidden_scroll_bar::-webkit-scrollbar {
-  display: none;
+.ql-clean {
+  display: none !important;
 }
