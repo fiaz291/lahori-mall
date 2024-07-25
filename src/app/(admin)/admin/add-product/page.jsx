@@ -15,14 +15,25 @@ import React, { useEffect, useState } from "react";
 import { storage } from "@/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { UploadOutlined } from "@ant-design/icons";
+import { useQuill } from "react-quilljs";
+import "quill/dist/quill.snow.css"; // Add css for snow theme
+import {
+  cookingMethodTags,
+  generalKitchenTags,
+  materialTags,
+  occasionTags,
+  priceQualityTags,
+} from "@/app/utils";
 
 export default function AddProduct() {
   const [err, seErr] = useState(null);
   const [msg, setMsg] = useState(null);
   const [categories, setCatgories] = useState([]);
   const [uploadProgress, setUploadProgress] = useState([]);
+  const { quill, quillRef } = useQuill();
   const [files, setFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -76,6 +87,12 @@ export default function AddProduct() {
   };
   const onFinish = async (values) => {
     const data = { ...values };
+    const description = quill.root.innerHTML; // Get innerHTML using quill
+    data.description = description;
+    data.tags = selectedTags;
+    data.price = parseFloat(data.price);
+    data.discountPrice = parseFloat(data.discountPrice);
+    data.inventory = parseInt(data.inventory, 10);
     seErr(null);
     setMsg(null);
 
@@ -87,6 +104,8 @@ export default function AddProduct() {
       } else {
         message.success("Product created successfully!");
         form.resetFields();
+        setSelectedTags([]);
+        setFiles([]);
       }
     } catch (error) {
       if (error.response && error.response.data) {
@@ -97,8 +116,19 @@ export default function AddProduct() {
     }
   };
 
+  React.useEffect(() => {
+    if (quill) {
+      quill.on("text-change", (delta, oldDelta, source) => {
+        console.log("Text change!");
+        console.log(quill.getText()); // Get text only
+        console.log(quill.getContents()); // Get delta contents
+        console.log(quill.root.innerHTML); // Get innerHTML using quill
+        console.log(quillRef.current.firstChild.innerHTML); // Get innerHTML using quillRef
+      });
+    }
+  }, [quill]);
+
   const onFinishFailed = (errorInfo) => {};
-  const abc = "";
   const handleUpload = (file) => {
     const storageRef = ref(storage, `uploads/${file.name}`);
     const token = "admin";
@@ -157,6 +187,16 @@ export default function AddProduct() {
     onSuccess("ok");
   };
 
+  const handleTags = (tag) => {
+    const copiedTags = [...selectedTags];
+    if (copiedTags.includes(tag)) {
+      copiedTags.splice(copiedTags.indexOf(tag), 1);
+      setSelectedTags(copiedTags);
+      return;
+    }
+    copiedTags.push(tag);
+    setSelectedTags(copiedTags);
+  };
   if (loading) {
     return null;
   }
@@ -186,6 +226,13 @@ export default function AddProduct() {
         <Input
           className="form-control bg-white"
           placeholder="Enter Product Name"
+          onBlur={() => {
+            const name = form.getFieldValue("name");
+            if (name) {
+              const slug = name.toLowerCase().replaceAll(" ", "-");
+              form.setFieldValue("slug", slug);
+            }
+          }}
         />
       </Form.Item>
 
@@ -310,6 +357,127 @@ export default function AddProduct() {
           className="form-control bg-white"
           placeholder="Inventory"
         />
+      </Form.Item>
+      <Form.Item
+        className="mb-0"
+        name="description"
+        label={<span className="">Description</span>}
+      >
+        <div ref={quillRef} />
+      </Form.Item>
+
+      <Form.Item
+        className="mb-0"
+        name="description"
+        label={<span className="">Tags</span>}
+      >
+        <div className="mb-[10px]">
+          <div className="font-bold">General Kitchen Tags</div>
+          <div className="flex flex-wrap gap-2">
+            {generalKitchenTags.map((tag, index) => (
+              <div
+                key={index}
+                style={
+                  selectedTags.includes(tag)
+                    ? {
+                        borderColor: "red",
+                      }
+                    : {}
+                }
+                onClick={() => {
+                  handleTags(tag);
+                }}
+                className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
+              >
+                {tag}
+              </div>
+            ))}
+          </div>
+          <div className="mt-[10px] font-bold">Material Kitchen Tags</div>
+          <div className="flex flex-wrap gap-2">
+            {materialTags.map((tag, index) => (
+              <div
+                key={index}
+                style={
+                  selectedTags.includes(tag)
+                    ? {
+                        borderColor: "red",
+                      }
+                    : {}
+                }
+                onClick={() => {
+                  handleTags(tag);
+                }}
+                className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
+              >
+                {tag}
+              </div>
+            ))}
+          </div>
+          <div className="mt-[10px] font-bold">Cooking Method Kitchen Tags</div>
+          <div className="flex flex-wrap gap-2">
+            {cookingMethodTags.map((tag, index) => (
+              <div
+                key={index}
+                style={
+                  selectedTags.includes(tag)
+                    ? {
+                        borderColor: "red",
+                      }
+                    : {}
+                }
+                onClick={() => {
+                  handleTags(tag);
+                }}
+                className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
+              >
+                {tag}
+              </div>
+            ))}
+          </div>
+          <div className="mt-[10px] font-bold">Occasion Kitchen Tags</div>
+          <div className="flex flex-wrap gap-2">
+            {occasionTags.map((tag, index) => (
+              <div
+                key={index}
+                style={
+                  selectedTags.includes(tag)
+                    ? {
+                        borderColor: "red",
+                      }
+                    : {}
+                }
+                onClick={() => {
+                  handleTags(tag);
+                }}
+                className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
+              >
+                {tag}
+              </div>
+            ))}
+          </div>
+          <div className="mt-[10px] font-bold">Price Tags</div>
+          <div className="flex flex-wrap gap-2">
+            {priceQualityTags.map((tag, index) => (
+              <div
+                key={index}
+                style={
+                  selectedTags.includes(tag)
+                    ? {
+                        borderColor: "red",
+                      }
+                    : {}
+                }
+                onClick={() => {
+                  handleTags(tag);
+                }}
+                className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
+              >
+                {tag}
+              </div>
+            ))}
+          </div>
+        </div>
       </Form.Item>
 
       <Flex justify="flex-end" gap={10} className="mt-[10px]">

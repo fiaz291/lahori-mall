@@ -49,3 +49,21 @@ aside {
 .ant-menu-item {
   background-color: #fff !important;
 }
+
+
+.ql-editor {
+  min-height: 200px;
+}
+
+.ql-image {
+  display: none !important;
+}
+.ql-link {
+  display: none !important;
+}
+.ql-video {
+  display: none !important;
+}
+.ql-clean {
+  display: none !important;
+}

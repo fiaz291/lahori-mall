@@ -5,8 +5,7 @@ import Link from "next/link";
 import React from "react";
 import Loader from "../Loader";
 
-export default function UserProfileMenu({ setOpenModal, isLogedin }) {
-  const { user, userLoading, logout } = useAuthUser();
+export default function UserProfileMenu({ setOpenModal, isLogedin, user, userLoading, logout }) {
 
   const items = [
     {

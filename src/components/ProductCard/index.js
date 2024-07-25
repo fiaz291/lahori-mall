@@ -4,7 +4,7 @@ import React from "react";
 
 export default function ProductCard({ title, isFavorite, price }) {
   return (
-    <div className="w-[280px] flex flex-col border rounded border-[#a6a7ab] overflow-hidden">
+    <div className="w-[280px] flex flex-col overflow-hidden rounded bg-[rgba(0,0,0,0.1)]">
       <div className="w-full h-[200px] bg-[#fff000] mb-[10px]"></div>
       <div className="flex justify-between p-[6px]">
         <div>{title}</div>
