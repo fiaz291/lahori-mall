@@ -10,10 +10,10 @@ export default function Wish_List(props) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h3>Wish List</h3>
+      <h3 className="text-[15px]">Wish List</h3>
       <div className="grid items-center grid-cols-[4fr_1fr_1fr_2fr_1.5fr] gap-6 bg-[#007a3b] p-2">
         {tableHeader.map((heading) => (
-          <div key={heading} className="font-bold text-left">
+          <div key={heading} className="font-bold text-left text-[12px]">
             {heading}
           </div>
         ))}
@@ -23,7 +23,7 @@ export default function Wish_List(props) {
           product.isFavorite ? (
             <div
               key={product.id}
-              className="grid items-center grid-cols-[4fr_1fr_1fr_2fr_1.5fr] gap-6 border-b border-[#4a4a4a] p-2 pb-4"
+              className="grid items-center grid-cols-[4fr_1fr_1fr_2fr_1.5fr] gap-6 border-b border-[#4a4a4a] p-2 pb-4 text-[12px]"
             >
               <div className="flex flex-row gap-4 items-center cursor-pointer">
                 <img
@@ -36,7 +36,6 @@ export default function Wish_List(props) {
               <div>{product.quantity}</div>
               <div>Rs. {product.price}</div>
               <div>Rs. {product.quantity * product.price}</div>
-
               <div
                 className={`${
                   product.availability ? "text-green-600" : "text-orange-600"

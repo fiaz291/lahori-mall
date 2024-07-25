@@ -35,16 +35,16 @@ export default function HomeProducts() {
 
   return (
     <div className="flex flex-col justify-center items-center px-[12px]">
-      <div className="mt-[10px] flex flex-col w-full max-w-[1200px] p-[16px]">
-        <h2 className="text-[36px] mb-[20px]">Our Products</h2>
+      <div className="mt-[10px] flex flex-col w-full max-w-[1200px] p-[12px]">
+        <h2 className="text-[30px] mb-[16px]">Our Products</h2>
         <div className="flex gap-4 items-center">
           {btns.map((btn, index) => (
             <div
               key={index}
               onClick={() => btn !== "|" && getProductsList(btn)}
-              className={`text-[20px] ${
+              className={`text-[16px] ${
                 btn === "|" ? "cursor-default" : "cursor-pointer"
-              } mr-[10px] ${
+              } mr-[8px] ${
                 btn !== "|"
                   ? activeBtn === btn
                     ? "text-[#00803e]"
@@ -56,7 +56,7 @@ export default function HomeProducts() {
             </div>
           ))}
         </div>
-        <div className="flex gap-4 justify-start mt-[20px] mb-[30px] overflow-x-auto hidden_scroll_bar p-[2px] pb-2">
+        <div className="flex gap-4 justify-start mt-[16px] mb-[24px] overflow-x-auto hidden_scroll_bar p-[2px] pb-2">
           {products.map((prod) => (
             <ProductCard key={prod.id} product={prod} />
           ))}

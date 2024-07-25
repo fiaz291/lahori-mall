@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function CategoriesCatalog() {
   const topCategories = [
@@ -48,43 +49,43 @@ export default function CategoriesCatalog() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center px-[12px] my-[40px]">
-      <div className="flex w-full max-w-[1200px] p-[16px] justify-between gap-8">
-        <div className="flex flex-col flex-[1] justify-between">
-          <div className="">
-            <h3 className="text-[30px]">Top Categories</h3>
-            <h3 className="text-[25px]">This Week</h3>
+    <div className="flex justify-center items-center px-[12px] my-[30px]">
+      <div className="flex w-full max-w-[1200px] p-3 px-8 justify-between gap-4">
+        <div className="flex flex-col justify-between pl-2">
+          <div>
+            <h3 className="text-[28px]">Top Categories</h3>
+            <h3 className="text-[22px]">This Week</h3>
           </div>
-          <div className="flex gap-8 ml-2">
+          <div className="flex gap-6 ml-2">
             <button
-              className="rounded-full h-[50px] w-[50px]  bg-[#bcbcbc] text-[#3f3f3f] text-[30px]"
+              className="rounded-full h-[40px] w-[40px] px-[6px] bg-[#bcbcbc] text-[#3f3f3f] text-[24px]"
               onClick={handlePrevious}
               disabled={visibleCategories[0] === 0}
             >
-              {"<"}
+              <FaChevronLeft />
             </button>
             <button
-              className="rounded-full h-[50px] w-[50px]  bg-[#bcbcbc] text-[#3f3f3f] text-[30px]"
+              className="rounded-full h-[40px] w-[40px] px-[8px] bg-[#bcbcbc] text-[#3f3f3f] text-[24px]"
               onClick={handleNext}
               disabled={visibleCategories[1] >= topCategories.length - 1}
             >
-              {">"}
+              <FaChevronRight />
             </button>
           </div>
           <div>
-            <button className="text-[22px] text-[#00803e]">FULL CATALOG</button>
+            <button className="text-[20px] text-[#00803e]">FULL CATALOG</button>
           </div>
         </div>
-        <div className="flex flex-row justify-start flex-[2.3] gap-6">
+        <div className="flex flex-row justify-start w-[704px]  gap-6">
           {topCategories
             .slice(visibleCategories[0], visibleCategories[1] + 1)
             .map((categ) => (
               <div
-                className="h-[420px] w-[380px] border rounded-md border-[#525252] overflow-hidden cursor-pointer hover:shadow-md hover:shadow-[#ffffffd0] flex flex-col justify-end items-center bg-cover bg-center"
+                className="h-[380px] w-[340px] border rounded-md border-[#525252] overflow-hidden cursor-pointer hover:shadow-md hover:shadow-[#ffffffd0] flex flex-col justify-end items-center bg-cover bg-center"
                 key={categ.name}
                 style={{ backgroundImage: `url(${categ.image})` }}
               >
-                <h4 className="relative text-[20px] text-[#fff] w-full text-center bg-[#0000005d] py-2 px-4">
+                <h4 className="relative text-[18px] text-[#fff] w-full text-center bg-[#0000005d] py-2 px-4">
                   {categ.name}
                 </h4>
               </div>
