@@ -1,25 +1,31 @@
 import useWindowSize from "@/app/hooks/windowSize";
 import { COLORS } from "@/constants";
 import React from "react";
+import { FaTruck, FaHeadset, FaShieldAlt, FaTags } from "react-icons/fa"; // Import icons from react-icons
 
 const details = [
   {
     title: "Free Shipping",
     subTitle: "Countrywide",
+    icon: <FaTruck />,
   },
   {
     title: "24 Hours",
     subTitle: "Helping Center",
+    icon: <FaHeadset />,
   },
   {
     title: "Payment",
     subTitle: "Secure System",
+    icon: <FaShieldAlt />,
   },
   {
     title: "Special",
     subTitle: "Discount Products",
+    icon: <FaTags />,
   },
 ];
+
 export default function HomePageServicesIcons() {
   const { isMobile } = useWindowSize();
   return (

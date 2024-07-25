@@ -1,5 +1,4 @@
 import React from "react";
-import "./styles.css";
 
 export default function ManageAccComponent(props) {
   var name = "Abdul Saboor";
@@ -12,10 +11,10 @@ export default function ManageAccComponent(props) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-[18px]">Manage My Account</h1>
+      <h1 className="text-[15px]">Manage My Account</h1>
       <div className="grid gap-4 max-h-[500px] overflow-hidden lg:grid-cols-[1fr_2fr] grid-cols-0">
         <div className="flex flex-col gap-4 bg-[#080808] p-4 border border-[#3a3a3a] hover:bg-[#0e0e0ed6] cursor-pointer">
-          <h3 className=" text-[17px]">Personal Profile</h3>
+          <h3 className=" text-[14px]">Personal Profile</h3>
           <div className="flex flex-col gap-1">
             <p className="text-[#dadada]">{name}</p>
             <p className="text-[#dadada]">{email}</p>
@@ -25,13 +24,13 @@ export default function ManageAccComponent(props) {
         <div className="flex gap-8 justify-between bg-[#080808]  p-4 border border-[#3a3a3a] hover:bg-[#0e0e0ed6] cursor-pointer ">
           <div className="flex flex-col gap-4">
             <div className="flex gap-2">
-              <h3 className=" text-[17px]">Address Book</h3>
+              <h3 className=" text-[14px]">Address Book</h3>
               <div className="w-[1px] bg-[#3a3a3a] h-[70%] self-center "></div>
-              <button className="border-0 text-[14px] pt-1 text-blue-500 ">
+              <button className="border-0 text-[12px] pt-1 text-blue-500 ">
                 Edit
               </button>
             </div>
-            <p className="text-[#bbbbbb] text-[11px] font-light">
+            <p className="text-[#bbbbbb] text-[9px] font-light">
               DEFAULT SHIPPING ADDRESS
             </p>
             <div className="flex flex-col gap-[3px]">
@@ -43,8 +42,8 @@ export default function ManageAccComponent(props) {
           </div>
           <div className="w-[2px] bg-[#3a3a3a]  "></div>
           <div className="flex flex-col gap-4 ">
-            <h3 className=" text-[17px]">{"\u00A0"}</h3>
-            <p className="text-[#bbbbbb] text-[11px] font-light">
+            <h3 className=" text-[14px]">{"\u00A0"}</h3>
+            <p className="text-[#bbbbbb] text-[9px] font-light">
               DEFAULT SHIPPING ADDRESS
             </p>
             <div className="flex flex-col gap-[3px]">

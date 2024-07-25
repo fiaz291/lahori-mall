@@ -3,8 +3,9 @@ import Navbar from "@/components/Navbar";
 import AccountManage from "./components/AccountManage";
 import RecentOrders from "./components/recent-orders";
 import WishList from "./components/wish_list";
-import Dummy_Orders from "./components/dummy_orders";
-import Dummy_products from "./components/dummy_products";
+import Dummy_Orders from "../dummy_orders";
+import Dummy_products from "../dummy_products";
+import Footer from "@/components/Footer";
 
 export default function UserProfile() {
   const Orders = Dummy_Orders;
@@ -20,6 +21,7 @@ export default function UserProfile() {
           <WishList wishlist={Dummy_products} />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

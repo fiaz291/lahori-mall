@@ -1,18 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Search from "antd/es/input/Search";
 import { COLORS } from "@/constants";
 import Modal from "antd/es/modal/Modal";
 import SignupForm from "../SignupForm";
 import LoginForm from "../LoginForm";
-import { getJwtToken, getUser } from "@/app/utils";
-import { getCookie } from "cookies-next";
-import useAuthUser from "@/app/hooks/authUser";
 import UserProfileMenu from "../UserProfileMenu";
 import useWindowSize from "@/app/hooks/windowSize";
 import { MenuOutlined } from "@ant-design/icons";
+import useAuthUser from "@/app/hooks/authUser";
 
 const navButtons = ["HOME", "ABOUT US", "SHOP", "BLOG", "CONTACT"];
+
 export default function Navbar() {
   const [openModal, setOpenModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
@@ -67,7 +66,7 @@ export default function Navbar() {
           </button>
         )}
         <Search
-          className=" "
+          className="text-[14px]"
           placeholder="input search text"
           allowClear
           enterButton="Search"

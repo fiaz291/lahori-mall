@@ -1,37 +1,12 @@
 "use client";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
-import React from "react";
+import React, { useState } from "react";
 import ProductCard from "../ProductCard";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import dummy_products from "@/app/dummy_products";
 
-const products = [
-  {
-    title: "product 1",
-    price: "160",
-    isFavorite: false,
-  },
-  {
-    title: "product 2",
-    price: "100",
-    isFavorite: false,
-  },
-  {
-    title: "product 3",
-    price: "900",
-    isFavorite: true,
-  },
-  {
-    title: "product 4",
-    price: "50",
-    isFavorite: true,
-  },
-  {
-    title: "product 5",
-    price: "1900",
-    isFavorite: false,
-  },
-];
+const newProducts = dummy_products;
 
 const responsive = {
   superLargeDesktop: {
@@ -54,6 +29,8 @@ const responsive = {
 };
 
 export default function HomeProducts() {
+  const [products, setProducts] = useState(newProducts);
+
   return (
     <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
       <div className="mt-[40px] flex flex-col  w-full max-w-[1200px] p-[16px]">
@@ -75,6 +52,7 @@ export default function HomeProducts() {
             />
           ))}
         </Carousel>
+
         <div
           className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mt-[20px] mb-[20px]"
           style={{ textDecoration: "underline", fontWeight: 600 }}

@@ -24,6 +24,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  user-select: none;
 }
 
 @layer utilities {
@@ -49,8 +50,6 @@ aside {
 .ant-menu-item {
   background-color: #fff !important;
 }
-
-
 .ql-editor {
   min-height: 200px;
 }

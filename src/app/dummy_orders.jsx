@@ -14,7 +14,7 @@ const dummy_orders = [
         image: "https://picsum.photos/150?random=20",
       },
     ],
-    total: "Rs. 52342",
+    total: 52342,
     status: "Delivered",
   },
   {
@@ -50,7 +50,7 @@ const dummy_orders = [
         image: "https://picsum.photos/150?random=654",
       },
     ],
-    total: "Rs. 22423",
+    total: 22423,
     status: "Processing",
   },
 ];
