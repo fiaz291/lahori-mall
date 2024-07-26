@@ -24,6 +24,8 @@ import {
   occasionTags,
   priceQualityTags,
 } from "@/app/utils";
+import Loader from "@/components/Loader";
+import slugify from "slugify";
 
 export default function AddProduct() {
   const [err, seErr] = useState(null);
@@ -87,12 +89,16 @@ export default function AddProduct() {
   };
   const onFinish = async (values) => {
     const data = { ...values };
+    const images = files.map((file) => {
+      if (file.url) return file.url;
+    });
     const description = quill.root.innerHTML; // Get innerHTML using quill
     data.description = description;
     data.tags = selectedTags;
     data.price = parseFloat(data.price);
     data.discountPrice = parseFloat(data.discountPrice);
     data.inventory = parseInt(data.inventory, 10);
+    data.images = images;
     seErr(null);
     setMsg(null);
 
@@ -198,7 +204,7 @@ export default function AddProduct() {
     setSelectedTags(copiedTags);
   };
   if (loading) {
-    return null;
+    return <Loader width={200} height={200} />;
   }
   return (
     <Form
@@ -229,7 +235,13 @@ export default function AddProduct() {
           onBlur={() => {
             const name = form.getFieldValue("name");
             if (name) {
-              const slug = name.toLowerCase().replaceAll(" ", "-");
+              // const slug = name.toLowerCase(); // Convert to lowercase
+              // const cleanSlug = encodeURI(slug);
+              const slug = slugify(name, {
+                replacement: "-", // replace spaces and special characters with -
+                lower: true, // convert to lowercase
+                strict: true, // remove characters that are not alphanumeric, dashes or underscores
+              });
               form.setFieldValue("slug", slug);
             }
           }}

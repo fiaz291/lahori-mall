@@ -7,36 +7,142 @@ import SignupForm from "../SignupForm";
 import LoginForm from "../LoginForm";
 import UserProfileMenu from "../UserProfileMenu";
 import useWindowSize from "@/app/hooks/windowSize";
-import { MenuOutlined } from "@ant-design/icons";
+import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import useAuthUser from "@/app/hooks/authUser";
+import { Badge, Drawer } from "antd";
+import Link from "next/link";
 
 const navButtons = ["HOME", "ABOUT US", "SHOP", "BLOG", "CONTACT"];
+const loggedInButtons = ["PROFILE", "ORDERS"];
 
 export default function Navbar() {
   const [openModal, setOpenModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const { user, userLoading, logout } = useAuthUser();
+  const [isOpen, setIsOpen] = useState(false);
 
   const { width, height } = useWindowSize();
   const isCollapsed = width < 900;
 
   return (
-    <div className="flex flex-col justify-center items-center px-4 gap-4 pt-8">
-      <div className="flex justify-between pl-[30px]  items-center w-full max-w-[1200px]">
-        <img src="/logo.png" className="w-[80px] h-[80px]" />
-        <div className="flex gap-[8px] items-center">
-          {user && (
-            <div
-              style={{ color: COLORS.gray }}
-              className={`pl-[6px] pr-[6px] pt-[2px] pb-[2px] w-[124px] h-[40px] rounded flex justify-center items-center`}
-            >
-              {user?.firstName}
-            </div>
-          )}
-          <div className="cursor:pointer text-[22px]">
-            <MenuOutlined />
+    <div
+      className={`flex flex-col justify-center items-center ${
+        isCollapsed ? "gap-1" : "gap-4"
+      }`}
+    >
+      {!isCollapsed && (
+        <div
+          className={`flex w-full p-1 bg-black pl-3 pr-3  ${
+            isCollapsed
+              ? "fixed justify-center top-[0px] z-10"
+              : "justify-between"
+          }`}
+        >
+          <p className="text-white">
+            🌟 Discover unbeatable deals on your favorite products—shop now and
+            save big at our store!
+          </p>
+          <div className={`flex flex-row gap-2 items-center text-white`}>
+            <ShoppingCartOutlined />
+            <div className="text-white">2000 RS</div>
           </div>
         </div>
+      )}
+      <div
+        className={`flex ${"justify-between"} pl-[30px] px-4 items-center w-full max-w-[1200px] ${
+          !isCollapsed ? "pt-8" : "pt-2"
+        }`}
+      >
+        <img src="/logo.png" className="w-[80px] h-[80px]" />
+        {isCollapsed && (
+          <div className="flex gap-[16px] items-center">
+            {user && (
+              <div className="flex items-center gap-[16px]">
+                <Badge count={5}>
+                  <div className="text-[30px]" style={{ color: COLORS.red }}>
+                    <ShoppingCartOutlined />
+                  </div>
+                </Badge>
+                <div
+                  style={{ color: COLORS.gray }}
+                  className={`pl-[6px] pr-[6px] pt-[2px] pb-[2px] w-full h-[40px] rounded flex justify-center items-center`}
+                >
+                  {user?.firstName}
+                </div>
+              </div>
+            )}
+            <div
+              className="cursor:pointer text-[22px]"
+              onClick={() => setIsOpen(true)}
+            >
+              <MenuOutlined />
+            </div>
+          </div>
+        )}
+        <Drawer
+          width="90%"
+          title=""
+          onClose={() => {
+            setIsOpen(false);
+          }}
+          open={isOpen}
+          closable={false}
+        >
+          <div className="flex justify-center">
+            <img src="/logo.png" className="w-[40px] h-[40px]" />
+          </div>
+          {navButtons.map((btn, index) => (
+            <Link href="/" key={index}>
+              <p
+                className="p-[10px] mt-[10px] text-white text-center"
+                style={{ background: COLORS.green }}
+              >
+                {btn}
+              </p>
+            </Link>
+          ))}
+          {user &&
+            loggedInButtons.map((btn, index) => (
+              <Link href="/" key={index}>
+                <p
+                  className="p-[10px] mt-[10px] text-white text-center"
+                  style={{ background: COLORS.gray }}
+                >
+                  {btn}
+                </p>
+              </Link>
+            ))}
+          {user ? (
+            <p
+              onClick={() => {
+                logout();
+              }}
+              className="p-[10px] mt-[10px] text-white text-center"
+              style={{ background: COLORS.gray }}
+            >
+              LOGOUT
+            </p>
+          ) : (
+            <p
+              className="p-[10px] mt-[10px] text-white text-center"
+              style={{ background: COLORS.gray }}
+              onClick={() => {
+                setOpenModal(true);
+              }}
+            >
+              LOGIN
+            </p>
+          )}
+          <p
+            className="p-[10px] mt-[10px] text-white text-center"
+            style={{ background: COLORS.red }}
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            CLOSE
+          </p>
+        </Drawer>
         {!isCollapsed && (
           <>
             <div className="flex gap-8">
@@ -73,18 +179,6 @@ export default function Navbar() {
           size="large"
           onSearch={() => {}}
         />
-        {!isCollapsed && (
-          <div className="flex flex-row justify-between gap-6 items-center w-[450px]">
-            {/* <div className="text-gray-500 text-[20px]">❤ 2</div> */}
-            <div className="text-gray-500 text-[20px]">🛒 3</div>
-            <div className="flex flex-col gap-[4px] items-center">
-              <div style={{ color: COLORS.red }} className={"font-semibold"}>
-                Your Cart
-              </div>
-              <div style={{ color: COLORS.gray }}>2000 RS</div>
-            </div>
-          </div>
-        )}
       </div>
       <Modal
         open={openModal}

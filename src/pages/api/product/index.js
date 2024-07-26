@@ -1,5 +1,6 @@
 // import { prisma } from "../../prisma";
 
+import { ENUMS } from "@/app/utils";
 import prisma from "@/pages/prisma";
 
 export default async function handler(req, res) {
@@ -202,12 +203,109 @@ const PATCH = async (req, res) => {
   }
 };
 
-const GET = async (req, res) => {
+export const GET = async (req, res) => {
   try {
-    const products = await prisma.product.findMany();
+    const { value } = req.query;
+    let products;
+    if (value) {
+      products = await innerHandlerForProducts(value);
+    } else {
+      products = await prisma.product.findMany();
+    }
+
     const data = { products, status: 200 };
     res.status(200).json(data);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
+};
+
+const innerHandlerForProducts = async (value) => {
+  switch (value) {
+    case ENUMS.latest:
+      return getLatestProducts();
+    case ENUMS.onSale:
+      return getLatestDiscountedProducts();
+    case ENUMS.topWeek:
+      return getTopSellingProductsLast30Days();
+    default:
+      return [];
+  }
+};
+
+const getLatestProducts = async () => {
+  const products = await prisma.product.findMany({
+    isActive: true,
+    inventory: {
+      gt: 0,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 20,
+  });
+  return products;
+};
+
+const getLatestDiscountedProducts = async () => {
+  const products = await prisma.product.findMany({
+    where: {
+      isActive: true,
+      inventory: {
+        gt: 0,
+      },
+      isDiscount: true,
+      discountPrice: {
+        not: null,
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 20,
+  });
+  return products;
+};
+
+const getTopSellingProductsLast30Days = async () => {
+  const date30DaysAgo = new Date();
+  date30DaysAgo.setDate(date30DaysAgo.getDate() - 30);
+
+  const products = await prisma.product.findMany({
+    where: {
+      isActive: true,
+      inventory: {
+        gt: 1,
+      },
+      orderItems: {
+        some: {
+          order: {
+            createdAt: {
+              gte: date30DaysAgo,
+            },
+          },
+        },
+      },
+    },
+    include: {
+      orderItems: {
+        select: {
+          quantity: true,
+        },
+      },
+    },
+  });
+
+  const productSales = products.map((product) => ({
+    ...product,
+    totalSales: product.orderItems.reduce(
+      (acc, item) => acc + item.quantity,
+      0
+    ),
+  }));
+
+  productSales.sort((a, b) => b.totalSales - a.totalSales);
+
+  return productSales.slice(0, 20);
 };
