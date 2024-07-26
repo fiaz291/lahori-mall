@@ -24,7 +24,7 @@ export default function Footer() {
             </button>
           </div>
         </div>
-        <div className="grid items-start gap-10 md:gap-20 mt-10 mb-10 grid-cols-1 md:grid-cols-[2fr_5fr] text-sm font-light">
+        <div className="grid items-start gap-10 md:gap-20 mt-10 mb-10 grid-cols-1 md:grid-cols-[220px_1fr] text-sm font-light">
           <div className="flex flex-col gap-6 items-center md:items-start">
             <div className="flex flex-col gap-4 justify-center items-center w-full md:w-auto">
               <img
@@ -80,7 +80,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="h-1 border-0 bg-[#494949] w-full my-5" />
-        <div className="flex flex-col md:flex-row w-full justify-between text-sm md:text-base mb-10 font-extralight">
+        <div className="flex flex-col md:flex-row w-full justify-between text-sm md:text-base font-extralight mb-5">
           <div className="flex gap-4 md:gap-12 justify-center md:justify-start mb-4 md:mb-0">
             <p>Status</p>
             <p>Contact Us</p>
