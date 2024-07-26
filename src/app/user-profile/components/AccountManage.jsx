@@ -13,15 +13,15 @@ export default function ManageAccComponent(props) {
     <div className="flex flex-col gap-4 p-4">
       <h1 className="text-lg sm:text-xl md:text-2xl">Manage My Account</h1>
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex flex-col gap-4 bg-[#080808] p-4 border border-[#3a3a3a] hover:bg-[#0e0e0ed6] cursor-pointer flex-1">
+        <div className="flex flex-col gap-4  p-4 border border-[#3a3a3a] cursor-pointer flex-1">
           <h3 className="text-sm sm:text-base">Personal Profile</h3>
           <div className="flex flex-col gap-1">
-            <p className="text-[#dadada]">{name}</p>
-            <p className="text-[#dadada]">{email}</p>
+            <p>{name}</p>
+            <p>{email}</p>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 bg-[#080808] p-4 border border-[#3a3a3a] hover:bg-[#0e0e0ed6] cursor-pointer flex-1">
+        <div className="flex flex-col md:flex-row gap-4  p-4 border border-[#3a3a3a]  cursor-pointer flex-1">
           <div className="flex flex-col gap-4 md:flex-1">
             <div className="flex items-center gap-2">
               <h3 className="text-sm sm:text-base">Address Book</h3>
@@ -30,7 +30,7 @@ export default function ManageAccComponent(props) {
                 Edit
               </button>
             </div>
-            <p className="text-[#bbbbbb] text-xs font-light">
+            <p className="text-[#919191] text-xs font-light">
               DEFAULT SHIPPING ADDRESS
             </p>
             <div className="flex flex-col gap-1">

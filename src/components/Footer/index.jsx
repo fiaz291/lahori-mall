@@ -19,7 +19,7 @@ export default function Footer() {
             <p className="text-sm md:text-base lg:text-lg">
               Download our new app today! Don&apos;t miss our mobile-only offers
             </p>
-            <button className="p-2 md:p-3 px-4 md:px-7 rounded-md text-sm md:text-base bg-[#00803e]">
+            <button className="p-2 md:p-3 px-4 md:px-7 rounded-md text-sm md:text-base bg-[#00803e]  text-white">
               Shop Now
             </button>
           </div>
