@@ -9,12 +9,12 @@ export default function ProductCard({ title, isFavorite, price }) {
       <div className="flex justify-between p-[6px]">
         <div>{title}</div>
         {isFavorite ? (
-          <div style={{color: COLORS.red}}>
+          <div style={{ color: COLORS.red }}>
             {" "}
             <HeartFilled />
           </div>
         ) : (
-          <div style={{color: COLORS.red}}>
+          <div style={{ color: COLORS.red }}>
             {" "}
             <HeartOutlined />
           </div>

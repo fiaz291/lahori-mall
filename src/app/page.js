@@ -24,7 +24,7 @@ export default function Home() {
         <HomePageServicesIcons />
         <HomeProducts />
         <AppBanner />
-        {/* <TopCategoriesCatalog /> */}
+        <TopCategoriesCatalog />
         <DiscounntBanners />
         <NewTrending />
         <Footer />

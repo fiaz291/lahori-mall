@@ -25,7 +25,6 @@ export default function HomePageSlider() {
           Shop Now
         </button>
       </div>
-     
     </div>
   );
 }

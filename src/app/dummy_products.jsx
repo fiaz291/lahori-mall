@@ -14,7 +14,7 @@ const dummy_products = [
   },
   {
     id: "2",
-    name: "Product Bnksndknf jj uyhvjn yuughvj diwjbs weqjbm ihqwkbs iuwebmd iwb sm",
+    name: "Product B",
     price: 799,
     oldPrice: 899,
     onSale: false,

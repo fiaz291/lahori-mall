@@ -46,7 +46,7 @@ export default function HomeProducts() {
           {products.map((prod, index) => (
             <ProductCard
               key={index}
-              title={prod.title}
+              title={prod.name}
               price={prod.price}
               isFavorite={prod.isFavorite}
             />
@@ -64,7 +64,7 @@ export default function HomeProducts() {
           {products.map((prod, index) => (
             <ProductCard
               key={index}
-              title={prod.title}
+              title={prod.name}
               price={prod.price}
               isFavorite={prod.isFavorite}
             />
@@ -81,7 +81,7 @@ export default function HomeProducts() {
           {products.map((prod, index) => (
             <ProductCard
               key={index}
-              title={prod.title}
+              title={prod.name}
               price={prod.price}
               isFavorite={prod.isFavorite}
             />
