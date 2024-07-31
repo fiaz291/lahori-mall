@@ -11,7 +11,7 @@ export default function Footer() {
   return (
     <div className="flex items-center justify-center flex-col px-4 gap-3">
       <div className="max-w-[1200px] w-full">
-        <div className="flex items-center flex-col justify-center gap-6 my-10 w-full bg-[#ffffff] p-10 md:p-20 text-center">
+        <div className="flex items-center flex-col justify-center gap-6 my-10 w-full p-10 md:p-20 text-center">
           <p className="text-xl md:text-2xl lg:text-3xl">
             Get very modern technology in the present
           </p>
