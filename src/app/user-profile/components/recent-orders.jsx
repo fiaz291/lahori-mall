@@ -7,7 +7,7 @@ export default function RecentOrders(props) {
   return (
     <div className="flex flex-col gap-4">
       <h3 className="text-[15px]">Recent Orders</h3>
-      <div className="grid items-center grid-cols-[1.7fr_1.2fr_3.5fr_1.5fr_1.5fr] gap-6 bg-[#007a3b] p-2">
+      <div className="grid items-center grid-cols-[1.7fr_1.2fr_3.5fr_1.5fr_1.5fr] gap-6 bg-[#007a3b] p-2 text-white">
         {tableHeader.map((heading) => (
           <div key={heading} className="font-bold text-left text-[12px]">
             {heading}

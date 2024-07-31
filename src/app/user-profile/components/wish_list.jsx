@@ -15,7 +15,7 @@ export default function Wish_List(props) {
         <HeartFilled />
         <h3 className="text-[15px]">Wish List</h3>
       </div>
-      <div className="grid items-center grid-cols-[4fr_1fr_1fr_2fr_1.5fr] gap-6 bg-[#007a3b] p-2">
+      <div className="grid items-center grid-cols-[4fr_1fr_1fr_2fr_1.5fr] gap-6 bg-[#007a3b] p-2  text-white">
         {tableHeader.map((heading) => (
           <div key={heading} className="font-bold text-left text-[12px]">
             {heading}

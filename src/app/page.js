@@ -5,9 +5,10 @@ import HomePageSlider from "@/components/HomePageSlider";
 import HomeProducts from "@/components/HomeProducts";
 import Navbar from "@/components/Navbar";
 import useWindowSize from "./hooks/windowSize";
+import NewTrending from "@/components/NewTrending";
+import Footer from "@/components/Footer";
 
 export default function Home() {
-  const { width, height } = useWindowSize();
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between pb-12`}
@@ -18,10 +19,10 @@ export default function Home() {
         <HomePageServicesIcons />
         <HomeProducts />
         <AppBanner />
-        {/* <TopCategoriesCatalog /> */}
-        {/* <DiscounntBanners />
+        {/* <TopCategoriesCatalog />
+        <DiscounntBanners /> */}
         <NewTrending />
-        <Footer /> */}
+        <Footer />
       </div>
     </main>
   );
