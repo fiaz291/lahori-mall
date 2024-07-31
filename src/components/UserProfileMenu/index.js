@@ -5,8 +5,13 @@ import Link from "next/link";
 import React from "react";
 import Loader from "../Loader";
 
-export default function UserProfileMenu({ setOpenModal, isLogedin, user, userLoading, logout }) {
-
+export default function UserProfileMenu({
+  setOpenModal,
+  isLogedin,
+  user,
+  userLoading,
+  logout,
+}) {
   const items = [
     {
       key: "1",
@@ -22,41 +27,40 @@ export default function UserProfileMenu({ setOpenModal, isLogedin, user, userLoa
       label: <div onClick={logout}>Logout</div>,
     },
   ];
-
   if (userLoading) {
     return <Loader width="20px" height="20px" />;
   }
-  return (
-    <>
-      {user ? (
-        <div className="flex items-center">
-          <div
-            style={{ color: COLORS.gray }}
-            className={`pl-[6px] pr-[6px] pt-[2px] pb-[2px] w-[124px] h-[40px] rounded flex justify-center items-center`}
-          >
-            {user.firstName}
-          </div>
-          <Dropdown
-            trigger="click"
-            menu={{
-              items,
-            }}
-            placement="bottomLeft"
-          >
-            <Button>Menu</Button>
-          </Dropdown>
-        </div>
-      ) : (
-        <button
-          style={{ background: COLORS.gray }}
-          className={`pl-[6px] pr-[6px] pt-[2px] pb-[2px] text-white w-[124px] h-[40px] rounded`}
-          onClick={() => {
-            setOpenModal(true);
-          }}
+  if (user) {
+    return (
+      <div className="flex items-center" key={user}>
+        <div
+          style={{ color: COLORS.gray }}
+          className={`pl-[6px] pr-[6px] pt-[2px] pb-[2px] w-[124px] h-[40px] rounded flex justify-center items-center`}
         >
-          {isLogedin ? "Login" : "Signup"}
-        </button>
-      )}
-    </>
+          {user.firstName}
+        </div>
+        <Dropdown
+          trigger="click"
+          menu={{
+            items,
+          }}
+          placement="bottomLeft"
+        >
+          <Button>Menu</Button>
+        </Dropdown>
+      </div>
+    );
+  }
+  return (
+    <button
+      key={user}
+      style={{ background: COLORS.gray }}
+      className={`pl-[6px] pr-[6px] pt-[2px] pb-[2px] text-white w-[124px] h-[40px] rounded`}
+      onClick={() => {
+        setOpenModal(true);
+      }}
+    >
+      {isLogedin ? "Login" : "Signup"}
+    </button>
   );
 }

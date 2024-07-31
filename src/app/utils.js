@@ -16,7 +16,6 @@ export function getUser() {
   return null;
 }
 
-
 export const generalKitchenTags = [
   "Kitchen",
   "Cooking",
@@ -32,7 +31,7 @@ export const generalKitchenTags = [
   "Storage",
   "Organization",
   "Essentials",
-  "Cleaning"
+  "Cleaning",
 ];
 
 export const specificProductTags = [
@@ -54,9 +53,8 @@ export const specificProductTags = [
   "Faucets",
   "Cabinets",
   "Countertops",
-  "Kitchen Islands"
+  "Kitchen Islands",
 ];
-
 
 export const materialTags = [
   "Stainless Steel",
@@ -67,7 +65,7 @@ export const materialTags = [
   "Plastic",
   "Wood",
   "Marble",
-  "Granite"
+  "Granite",
 ];
 
 export const cookingMethodTags = [
@@ -79,7 +77,7 @@ export const cookingMethodTags = [
   "Steaming",
   "Sautéing",
   "Simmering",
-  "Poaching"
+  "Poaching",
 ];
 
 export const occasionTags = [
@@ -88,12 +86,18 @@ export const occasionTags = [
   "Everyday Cooking",
   "Special Occasions",
   "BBQ Tools",
-  "Baking Supplies"
+  "Baking Supplies",
 ];
 
 export const priceQualityTags = [
   "Affordable Kitchen Tools",
   "Premium Kitchen Appliances",
   "Budget-Friendly Kitchenware",
-  "High-Quality Cookware"
+  "High-Quality Cookware",
 ];
+
+export const ENUMS = {
+  latest: "latest",
+  topWeek: "topWeek",
+  onSale: "onSale",
+};

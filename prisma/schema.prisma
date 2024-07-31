@@ -50,38 +50,39 @@ model Category {
     id        Int       @id @default(autoincrement())
     name      String    @unique
     slug      String    @unique
-    url       String?    
+    url       String?
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
     products  Product[] // Relation to products
 }
 
 model Product {
-    id            Int      @id @default(autoincrement())
-    name          String
-    description   String
-    price         Float
-    isDiscount    Boolean  @default(false)
-    discountPrice Float?
-    currency      String?
-    SKU           String   @unique
-    inventory     Int
-    categoryId    Int
-    category      Category @relation(fields: [categoryId], references: [id])
-    tags          String[]
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
-    images        String[]
-    isFeatured    Boolean?  @default(false)
-    rating        Float?    @default(4.9)
-    brand         String?
-    weight        Float?
-    dimensions    String?
-    slug          String   @unique
-    score         Float?    @default(0.7)
-    freebieProductIDs  Int[]
-    relatedProductIDs  Int[]
-
+    id                Int      @id @default(autoincrement())
+    isActive          Boolean  @default(true)
+    name              String
+    description       String
+    price             Float
+    isDiscount        Boolean  @default(false)
+    discountPrice     Float?
+    currency          String?
+    SKU               String   @unique
+    inventory         Int
+    categoryId        Int
+    category          Category @relation(fields: [categoryId], references: [id])
+    tags              String[]
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+    images            String[]
+    isFeatured        Boolean? @default(false)
+    rating            Float?   @default(4.9)
+    brand             String?
+    weight            Float?
+    dimensions        String?
+    slug              String   @unique
+    score             Float?   @default(0.7)
+    freebieProductIDs Int[]
+    relatedProductIDs Int[]
+    totalSold         Int      @default(0)
 
     orderItems OrderItem[] // Relation to order items
     favorites  Favorite[] // Relation to users who favorited this product

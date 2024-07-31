@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
 export async function middleware(request) {
-  console.log({ request }, "111111111111111111111111111111");
   const debugInfo = {
     method: request.method,
     url: request.url,

@@ -49,7 +49,6 @@ export default function SignupForm({ setOpenModal, setIsLogin }) {
       setOpenModal(false);
       router.refresh();
     } catch (error) {
-      console.log({ error });
       if (error.response && error.response.data) {
         message.error(error.response.data.error);
       } else {
