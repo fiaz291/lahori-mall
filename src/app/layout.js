@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ConfigProvider, theme } from "antd";
 import AntdStyledComponentsRegistry from "./AntdComponentRegistry";
 import { Provider } from "./QueryProvider";
 
@@ -19,9 +18,9 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className}>
         <Provider>
-          <AntdStyledComponentsRegistry>
-            {children}
-          </AntdStyledComponentsRegistry>
+            <AntdStyledComponentsRegistry>
+              {children}
+            </AntdStyledComponentsRegistry>
         </Provider>
       </body>
     </html>

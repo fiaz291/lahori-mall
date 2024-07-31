@@ -1,23 +1,25 @@
 import config from "@/app/config";
+import { store } from "@/app/store";
 import { Button, Flex, Form, Input, message } from "antd";
 import axios from "axios";
-import { deleteCookie, setCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { setCookie } from "cookies-next";
+import React from "react";
 
 export default function LoginForm({ setOpenModal, setIsLogin }) {
   const [form] = Form.useForm();
-  const router = useRouter();
   const onFinish = async (values) => {
     const data = { ...values };
     try {
       const response = await axios.post(config.url + "/api/user/login", data);
-      console.log({ response });
       setCookie("user", response.data.user);
       setCookie("token", response.data.token);
+      store.setState(() => {
+        return {
+          user: response.data.user,
+        };
+      });
       message.success(`Welcome`);
       setOpenModal(false);
-      location.reload();
     } catch (error) {
       if (error.response && error.response.data) {
         message.error(error.response.data.error);

@@ -4,7 +4,6 @@ import React from "react";
 import "./styles.css";
 
 export default function ProductCard({ title, isFavorite, price, image }) {
-  console.log({ image });
   return (
     <div className="product-card-width flex flex-col overflow-hidden rounded bg-[rgba(0,0,0,0.1)]">
       <div className="w-full product-card-image-height bg-[#fff000] mb-[10px]">

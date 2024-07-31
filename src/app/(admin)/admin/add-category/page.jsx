@@ -57,7 +57,6 @@ export default function AddCategory() {
 
     try {
       const response = await axios.post(config.url + "/api/category", data);
-      console.log({ response });
       if (response.status === 200 && response.data.error) {
         seErr(response.data.error);
         message.error(response.data.error);

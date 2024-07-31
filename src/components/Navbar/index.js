@@ -19,10 +19,12 @@ export default function Navbar() {
   const [openModal, setOpenModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const { user, userLoading, logout } = useAuthUser();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const { width, height } = useWindowSize();
   const isCollapsed = width < 900;
+
 
   return (
     <div
@@ -153,6 +155,7 @@ export default function Navbar() {
               ))}
             </div>
             <UserProfileMenu
+              key={user}
               setOpenModal={setOpenModal}
               isLogedin={isLogin}
               user={user}

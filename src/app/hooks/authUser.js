@@ -1,16 +1,25 @@
+"use client";
 import { deleteCookie, getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
+import { store } from "../store";
+import { useStore } from "@tanstack/react-store";
 
 export default function useAuthUser() {
-  const [user, setUser] = useState(null);
+  const loggedInUser = useStore(store, (state) => state.user);
+
   const [userLoading, setUserLoading] = useState(true);
+
   const router = useRouter();
-  console.log({ user });
+
   useEffect(() => {
     const userCookie = getCookie("user");
     if (userCookie) {
-      setUser(JSON.parse(userCookie));
+      store.setState(() => {
+        return {
+          user: JSON.parse(userCookie),
+        };
+      });
     }
     setUserLoading(false);
   }, []);
@@ -18,7 +27,12 @@ export default function useAuthUser() {
   const logout = useCallback(() => {
     deleteCookie("user");
     deleteCookie("token");
-    location.reload();
+    store.setState(() => {
+      return {
+        user: null,
+      };
+    });
   }, [router]);
-  return { user, userLoading, logout };
+
+  return { user: loggedInUser, userLoading, logout };
 }

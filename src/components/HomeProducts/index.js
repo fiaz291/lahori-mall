@@ -58,8 +58,6 @@ export default function HomeProducts() {
     return null;
   }
 
-  console.log({ data });
-
   return (
     <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
       <div className="mt-[40px] flex flex-col  w-full max-w-[1200px] p-[16px]">
