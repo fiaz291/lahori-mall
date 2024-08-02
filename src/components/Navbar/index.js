@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Search from "antd/es/input/Search";
 import { COLORS } from "@/constants";
 import Modal from "antd/es/modal/Modal";
@@ -11,6 +11,9 @@ import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import useAuthUser from "@/app/hooks/authUser";
 import { Badge, Drawer } from "antd";
 import Link from "next/link";
+import { useStore } from "@tanstack/react-store";
+import { store } from "@/app/store";
+import useCartItems from "@/app/hooks/cartItems";
 
 const navButtons = ["HOME", "ABOUT US", "SHOP", "BLOG", "CONTACT"];
 const loggedInButtons = ["PROFILE", "ORDERS"];
@@ -19,12 +22,22 @@ export default function Navbar() {
   const [openModal, setOpenModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const { user, userLoading, logout } = useAuthUser();
+  const { cartItems: ordersInCart, cartLoading } = useCartItems();
 
   const [isOpen, setIsOpen] = useState(false);
 
   const { width, height } = useWindowSize();
   const isCollapsed = width < 900;
 
+  const getCartCount = useCallback(() => {
+    let quantity = 0;
+    if (ordersInCart.length > 0) {
+      ordersInCart.forEach((cartProd) => {
+        quantity = cartProd.quantity + quantity;
+      });
+    }
+    return quantity;
+  }, [ordersInCart]);
 
   return (
     <div
@@ -44,10 +57,6 @@ export default function Navbar() {
             🌟 Discover unbeatable deals on your favorite products—shop now and
             save big at our store!
           </p>
-          <div className={`flex flex-row gap-2 items-center text-white`}>
-            <ShoppingCartOutlined />
-            <div className="text-white">2000 RS</div>
-          </div>
         </div>
       )}
       <div
@@ -60,7 +69,7 @@ export default function Navbar() {
           <div className="flex gap-[16px] items-center">
             {user && (
               <div className="flex items-center gap-[16px]">
-                <Badge count={5}>
+                <Badge count={cartLoading ? 0 : getCartCount()}>
                   <div className="text-[30px]" style={{ color: COLORS.red }}>
                     <ShoppingCartOutlined />
                   </div>
@@ -155,6 +164,8 @@ export default function Navbar() {
               ))}
             </div>
             <UserProfileMenu
+              cartLoading={cartLoading}
+              cartCount={getCartCount()}
               key={user}
               setOpenModal={setOpenModal}
               isLogedin={isLogin}

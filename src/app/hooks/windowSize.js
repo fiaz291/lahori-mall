@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 export default function useWindowSize() {
   const [width, setWidth] = useState(null);
   const [height, setHeight] = useState(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 500);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const updateDimensions = () => {

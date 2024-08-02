@@ -33,9 +33,9 @@ const POST = async (req, res) => {
     brand,
     weight,
     dimensions,
-    isDiscount,
     slug,
     score,
+    discountPrice
   } = req.body;
 
   // Required fields
@@ -96,8 +96,9 @@ const POST = async (req, res) => {
         weight,
         dimensions,
         slug,
-        isDiscount,
+        isDiscount: !!discountPrice,
         score,
+        discountPrice,
       },
     });
     const data = { product: newProduct, status: 201 };
@@ -127,6 +128,7 @@ const PATCH = async (req, res) => {
     isDiscount,
     slug,
     score,
+    discountPrice,
   } = req.body;
 
   // Ensure 'id' is provided
@@ -190,6 +192,7 @@ const PATCH = async (req, res) => {
     if (isDiscount !== undefined) dataToUpdate.isDiscount = isDiscount;
     if (slug !== undefined) dataToUpdate.slug = slug;
     if (score !== undefined) dataToUpdate.score = score;
+    if (discountPrice !== undefined) dataToUpdate.discountPrice = discountPrice;
 
     const updatedProduct = await prisma.product.update({
       where: { id },
@@ -210,7 +213,11 @@ export const GET = async (req, res) => {
     if (value) {
       products = await innerHandlerForProducts(value);
     } else {
-      products = await prisma.product.findMany();
+      products = await prisma.product.findMany({
+        orderBy: {
+          createdAt: 'desc', // Order by createdAt in descending order
+        },
+      });
     }
 
     const data = { products, status: 200 };

@@ -7,7 +7,7 @@ import { useStore } from "@tanstack/react-store";
 
 export default function useAuthUser() {
   const loggedInUser = useStore(store, (state) => state.user);
-
+  
   const [userLoading, setUserLoading] = useState(true);
 
   const router = useRouter();
@@ -15,8 +15,9 @@ export default function useAuthUser() {
   useEffect(() => {
     const userCookie = getCookie("user");
     if (userCookie) {
-      store.setState(() => {
+      store.setState((state) => {
         return {
+          ...state,
           user: JSON.parse(userCookie),
         };
       });

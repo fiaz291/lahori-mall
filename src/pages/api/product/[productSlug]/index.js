@@ -1,16 +1,49 @@
+import prisma from "@/pages/prisma";
 
 export default async function handler(req, res) {
-    switch (req.method) {
-      case "GET":
-        return GET(req, res);
-      case "PATCH":
-        return PATCH(req, res);
-      case "DELETE":
-        return DELETE(req, res);
-      case "PATCH":
-        return PATCH(req, res);
-      default:
-        res.setHeader("Allow", ["POST", "DELETE", "PATCH"]);
-        return res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
+  const { method } = req;
+  const { productSlug } = req.query;
+  switch (method) {
+    case "GET":
+      return handleGet(req, res, productSlug);
+    case "PATCH":
+      return PATCH(req, res, productSlug);
+    case "DELETE":
+      return DELETE(req, res, productSlug);
+    case "PATCH":
+      return PATCH(req, res, productSlug);
+    default:
+      res.setHeader("Allow", ["POST", "DELETE", "PATCH"]);
+      return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
+}
+
+async function handleGet(req, res, productSlug) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        slug: productSlug,
+        // isActive: true,
+        inventory: {
+          gt: 0,
+        },
+      },
+      include: {
+        category: {
+          select: {
+            slug: true, // Only select the slug from the category
+          },
+        },
+      },
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    return res.status(200).json(product);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}

@@ -44,7 +44,6 @@ const responsive = {
 };
 
 export default function HomeProducts() {
-  const [products, setProducts] = useState(newProducts);
   const { isPending, error, data } = useQuery({
     queryKey: ["repoData"],
     queryFn: () => fetch(config.url + "/api/product").then((res) => res.json()),
@@ -53,7 +52,7 @@ export default function HomeProducts() {
   if (isPending) {
     return <Loader width={40} height={40} />;
   }
-
+  console.log({ data });
   if (error) {
     return null;
   }
@@ -74,10 +73,8 @@ export default function HomeProducts() {
               {data?.products?.map((prod, index) => (
                 <ProductCard
                   key={index}
-                  title={prod.title}
-                  price={prod.price}
-                  isFavorite={prod.isFavorite}
                   image={prod.images[0] || null}
+                  product={prod}
                 />
               ))}
             </Carousel>
@@ -95,10 +92,8 @@ export default function HomeProducts() {
               {data?.products?.map((prod, index) => (
                 <ProductCard
                   key={index}
-                  title={prod.title}
-                  price={prod.price}
-                  isFavorite={prod.isFavorite}
                   image={prod.images[0] || null}
+                  product={prod}
                 />
               ))}
             </Carousel>
@@ -116,10 +111,8 @@ export default function HomeProducts() {
               {data?.products?.map((prod, index) => (
                 <ProductCard
                   key={index}
-                  title={prod.title}
-                  price={prod.price}
-                  isFavorite={prod.isFavorite}
                   image={prod.images[0] || null}
+                  product={prod}
                 />
               ))}
             </Carousel>

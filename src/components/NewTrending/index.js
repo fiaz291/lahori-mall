@@ -21,11 +21,11 @@ export default function NewTrending() {
           <div className="flex gap-4 justify-start mt-4 md:mt-6 lg:mt-8 mb-6 md:mb-8 lg:mb-10 overflow-x-auto  p-1 pb-2">
             {newSeasonTrends.map((prod) => (
               <div className="min-w-[280px]" key={prod.id}>
-                <ProductCard
+                {/* <ProductCard
                   title={prod.name}
                   isFavorite={prod.isFavorite}
                   price={prod.price}
-                />
+                /> */}
               </div>
             ))}
           </div>

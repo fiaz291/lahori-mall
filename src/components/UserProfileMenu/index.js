@@ -1,9 +1,9 @@
-import useAuthUser from "@/app/hooks/authUser";
 import { COLORS } from "@/constants";
-import { Button, Dropdown } from "antd";
+import { Badge, Button, Dropdown } from "antd";
 import Link from "next/link";
 import React from "react";
 import Loader from "../Loader";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 
 export default function UserProfileMenu({
   setOpenModal,
@@ -11,6 +11,8 @@ export default function UserProfileMenu({
   user,
   userLoading,
   logout,
+  cartCount,
+  cartLoading,
 }) {
   const items = [
     {
@@ -32,13 +34,12 @@ export default function UserProfileMenu({
   }
   if (user) {
     return (
-      <div className="flex items-center" key={user}>
-        <div
-          style={{ color: COLORS.gray }}
-          className={`pl-[6px] pr-[6px] pt-[2px] pb-[2px] w-[124px] h-[40px] rounded flex justify-center items-center`}
-        >
-          {user.firstName}
-        </div>
+      <div className="flex items-center gap-[26px]" key={user}>
+        <Badge count={cartLoading ? 0 : cartCount}>
+          <div className="text-[30px]" style={{ color: COLORS.red }}>
+            <ShoppingCartOutlined />
+          </div>
+        </Badge>
         <Dropdown
           trigger="click"
           menu={{
