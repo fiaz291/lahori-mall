@@ -14,8 +14,15 @@ First, run the development server:
     # Start Project
 
     npm run dev
+
+    1st time 
+    "buildCommand": "npm install && npm run build && npx prisma generate && npx prisma migrate dev"
+
+    2nd time  
+    "buildCommand": "npm install && npm run build && npx prisma generate && npx prisma migrate deploy"
     
 ```
+
 
 
 # start db 
