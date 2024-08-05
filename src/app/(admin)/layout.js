@@ -60,23 +60,23 @@ const AdminLayout = ({ children }) => {
     router.push(key);
   };
 
-  useEffect(() => {
-    async function checkAdmin() {
-      const token = getCookie("token");
-      if (!token) {
-        router.push("/login");
-        return;
-      }
-      const decodedUser = jwt.decode(token);
-      if (!decodedUser || decodedUser.role !== "admin") {
-        router.push("/");
-        return;
-      }
+  // useEffect(() => {
+  //   async function checkAdmin() {
+  //     const token = getCookie("token");
+  //     if (!token) {
+  //       router.push("/login");
+  //       return;
+  //     }
+  //     const decodedUser = jwt.decode(token);
+  //     if (!decodedUser || decodedUser.role !== "admin") {
+  //       router.push("/");
+  //       return;
+  //     }
 
-      setLoading(false);
-    }
-    checkAdmin();
-  }, []);
+  //     setLoading(false);
+  //   }
+  //   checkAdmin();
+  // }, []);
 
   if (loading) {
     return (
