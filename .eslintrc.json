@@ -9,23 +9,25 @@
     "react/prop-types": "off", // Since we use TypeScript for prop types
     "jsx-a11y/anchor-is-valid": "off", // Next.js uses its own link component
     "no-console": "warn",
-    "prefer-const": "error",
+    
+    "prefer-const": "warn",
     "eqeqeq": ["error", "always"],
-    "curly": "error",
+    "curly": "off",
     "quotes": ["warn", "double", { "avoidEscape": true }],
     "semi": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],
     // "indent": ["warn", 2],
     "no-multiple-empty-lines": ["warn", { "max": 1 }],
     "no-trailing-spaces": "warn",
-    "object-curly-spacing": ["error", "always"],
+    "object-curly-spacing": "off",
     "array-bracket-spacing": ["error", "never"],
-    "space-before-function-paren": ["error", "never"],
+    "space-before-function-paren": "off",
     "react/jsx-props-no-spreading": "off", // Allow prop spreading
     "react/jsx-filename-extension": [
       1,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
-    "react/jsx-key": "error"
+    "react/jsx-key": "error",
+    "react/no-unescaped-entities": "off"
   }
 }

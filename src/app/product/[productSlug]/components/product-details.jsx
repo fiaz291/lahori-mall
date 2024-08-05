@@ -8,9 +8,9 @@ import useAuthUser from "@/app/hooks/authUser";
 import axios from "axios";
 import { debounce } from "lodash";
 import config from "@/app/config";
-import { useStore } from "@tanstack/react-store";
 import { store } from "@/app/store";
 import useCartItems from "@/app/hooks/cartItems";
+import IncDecCounter from "@/components/IncrementDecrementCounter";
 
 const responsive = {
   superLargeDesktop: {
@@ -44,17 +44,20 @@ export default function Product_Details({ prod }) {
   const handleAddToCart = async () => {
     setLoading(true);
     try {
-      const data = {
-        userId: user.id,
-        productId: prod.id,
-        quantity: quantity,
-      };
-      const res = await axios.post(config.url + "/api/cart", data);
-
       const cartData = [...ordersInCart];
       const ifAlreadyExist = cartData.find(
         (cartProd) => cartProd.productId === prod.id
       );
+
+      const data = {
+        userId: user.id,
+        productId: prod.id,
+        quantity: ifAlreadyExist.quantity
+          ? ifAlreadyExist.quantity + Number(quantity)
+          : Number(quantity),
+      };
+      const res = await axios.post(config.url + "/api/cart", data);
+
       if (ifAlreadyExist) {
         cartData.splice(cartData.indexOf(ifAlreadyExist), 1, res.data);
       } else {
@@ -149,7 +152,14 @@ export default function Product_Details({ prod }) {
         </p> */}
         <div className="flex items-center gap-2 mb-3">
           <p className="text-base md:text-lg text-gray-700">Quantity</p>
-          <input
+          <IncDecCounter
+            value={quantity}
+            setValue={(e) => {
+              setQuantity(e);
+            }}
+            max={prod?.inventory || 1}
+          />
+          {/* <input
             value={quantity}
             onChange={(e) => {
               setQuantity(e.target.value);
@@ -158,7 +168,7 @@ export default function Product_Details({ prod }) {
             min="1"
             max={prod?.inventory || 1}
             className="w-16 p-1 border border-gray-300 text-gray-700 text-center bg-gray-100"
-          />
+          /> */}
         </div>
         <button
           className="bg-[#007f3e] mb-[-4px] text-white py-2 px-4 rounded-full w-full text-base md:text-lg"

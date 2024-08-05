@@ -14,6 +14,20 @@ export default function useCartItems() {
 
   const [cartLoading, setCartLoading] = useState(true);
 
+  const getCartPrice = useCallback(() => {
+    let price = 0;
+    if (cartItems && cartItems.length > 0) {
+      cartItems.forEach((cartProd) => {
+        if (!cartProd?.product?.isDiscount) {
+          price = cartProd.quantity * cartProd.product.price + price;
+        } else {
+          price = cartProd.quantity * cartProd.product.discountPrice + price;
+        }
+      });
+    }
+    return price;
+  }, [cartItems]);
+
   useEffect(() => {
     async function getCartItems() {
       const response = await axios.get(
@@ -34,5 +48,5 @@ export default function useCartItems() {
     }
   }, [user]);
 
-  return { cartItems, cartLoading };
+  return { cartItems, cartLoading, getCartPrice };
 }

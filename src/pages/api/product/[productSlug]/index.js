@@ -1,4 +1,4 @@
-import prisma from "@/pages/prisma";
+import prisma from "@/app/prisma";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -32,6 +32,7 @@ async function handleGet(req, res, productSlug) {
         category: {
           select: {
             slug: true, // Only select the slug from the category
+            name: true,
           },
         },
       },

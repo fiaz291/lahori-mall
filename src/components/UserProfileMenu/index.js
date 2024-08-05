@@ -13,6 +13,7 @@ export default function UserProfileMenu({
   logout,
   cartCount,
   cartLoading,
+  handleRedirect,
 }) {
   const items = [
     {
@@ -35,7 +36,13 @@ export default function UserProfileMenu({
   if (user) {
     return (
       <div className="flex items-center gap-[26px]" key={user}>
-        <Badge count={cartLoading ? 0 : cartCount}>
+        <Badge
+          count={cartLoading ? 0 : cartCount}
+          className="cursor-pointer"
+          onClick={() => {
+            handleRedirect("/cart");
+          }}
+        >
           <div className="text-[30px]" style={{ color: COLORS.red }}>
             <ShoppingCartOutlined />
           </div>

@@ -39,7 +39,7 @@ export default function AddProduct() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const getAllCategories = async () => {
+    const getAllCategories = async() => {
       setLoading(true);
       const response = await axios.get(config.url + "/api/category");
       if (
@@ -124,9 +124,7 @@ export default function AddProduct() {
 
   React.useEffect(() => {
     if (quill) {
-      quill.on("text-change", (delta, oldDelta, source) => {
-      
-      });
+      quill.on("text-change", (delta, oldDelta, source) => {});
     }
   }, [quill]);
 

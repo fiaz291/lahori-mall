@@ -1,6 +1,6 @@
 // import { prisma } from "../../prisma";
 
-import prisma from "@/pages/prisma";
+import prisma from "@/app/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 

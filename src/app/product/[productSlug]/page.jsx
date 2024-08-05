@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Dummy_products from "../../dummy_products";
@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loader from "@/components/Loader";
 import config from "@/app/config";
 
-export default function page({ params }) {
+export default function Page({ params }) {
   const { productSlug } = params;
   const Products = Dummy_products;
 
@@ -22,7 +22,11 @@ export default function page({ params }) {
       ),
   });
   if (isPending) {
-    return <Loader width={40} height={40} />;
+    return (
+      <div className="h-[100vh] w-[100vw] flex justify-center items-center">
+        <Loader width={200} height={200} />
+      </div>
+    );
   }
   if (error) {
     return null;
@@ -33,7 +37,7 @@ export default function page({ params }) {
       <Navbar />
       <div className="flex justify-center">
         <div className="flex flex-col w-full max-w-[1200px] mt-10 mx-4 px-4 gap-8">
-          <Product_Route prod={Products[0]} />
+          <Product_Route prod={data} />
           <Product_details prod={data} />
           {/* <Reviews /> */}
         </div>

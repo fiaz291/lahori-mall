@@ -1,6 +1,6 @@
 // import { prisma } from "../../prisma";
 
-import prisma from "@/pages/prisma";
+import prisma from "@/app/prisma";
 
 export default async function handler(req, res) {
   switch (req.method) {

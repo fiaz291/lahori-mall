@@ -1,12 +1,14 @@
-import prisma from "@/pages/prisma";
+import prisma from "@/app/prisma";
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     return handlePost(req, res);
   } else if (req.method === 'GET') {
     return handleGet(req, res);
+  } else if (req.method === 'DELETE') {
+    return handleDelete(req, res);
   } else {
-    res.setHeader('Allow', ['POST', 'GET']);
+    res.setHeader('Allow', ['POST', 'GET', 'DELETE']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
@@ -42,7 +44,10 @@ const handlePost = async (req, res) => {
           id: existingCartItem.id,
         },
         data: {
-          quantity: existingCartItem.quantity + quantity,
+          quantity: quantity,
+        },
+        include: {
+          product: true,
         },
       });
 
@@ -53,6 +58,9 @@ const handlePost = async (req, res) => {
           userId,
           productId,
           quantity,
+        },
+        include: {
+          product: true,
         },
       });
 
@@ -80,6 +88,40 @@ const handleGet = async (req, res) => {
     });
 
     return res.status(200).json(cartItems);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+const handleDelete = async (req, res) => {
+  const { userId, productId } = req.body;
+
+  if (!userId || !productId) {
+    return res.status(400).json({ message: userId +'Invalid input'+productId });
+  }
+
+  try {
+    const cartItem = await prisma.cartItem.findUnique({
+      where: {
+        userId_productId: {
+          userId,
+          productId,
+        },
+      },
+    });
+
+    if (!cartItem) {
+      return res.status(404).json({ message: 'Cart item not found' });
+    }
+
+    await prisma.cartItem.delete({
+      where: {
+        id: cartItem.id,
+      },
+    });
+
+    return res.status(204).end();
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal Server Error' });

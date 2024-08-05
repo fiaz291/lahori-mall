@@ -1,7 +1,7 @@
 // import { prisma } from "../../prisma";
 
 import { ENUMS } from "@/app/utils";
-import prisma from "@/pages/prisma";
+import prisma from "@/app/prisma";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -35,7 +35,7 @@ const POST = async (req, res) => {
     dimensions,
     slug,
     score,
-    discountPrice
+    discountPrice,
   } = req.body;
 
   // Required fields
@@ -215,7 +215,7 @@ export const GET = async (req, res) => {
     } else {
       products = await prisma.product.findMany({
         orderBy: {
-          createdAt: 'desc', // Order by createdAt in descending order
+          createdAt: "desc", // Order by createdAt in descending order
         },
       });
     }

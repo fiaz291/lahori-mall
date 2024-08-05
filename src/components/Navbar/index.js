@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useStore } from "@tanstack/react-store";
 import { store } from "@/app/store";
 import useCartItems from "@/app/hooks/cartItems";
+import { useRouter } from "next/navigation";
 
 const navButtons = ["HOME", "ABOUT US", "SHOP", "BLOG", "CONTACT"];
 const loggedInButtons = ["PROFILE", "ORDERS"];
@@ -31,13 +32,18 @@ export default function Navbar() {
 
   const getCartCount = useCallback(() => {
     let quantity = 0;
-    if (ordersInCart.length > 0) {
+    if (ordersInCart && ordersInCart.length > 0) {
       ordersInCart.forEach((cartProd) => {
         quantity = cartProd.quantity + quantity;
       });
     }
     return quantity;
   }, [ordersInCart]);
+
+  const router = useRouter();
+  const handleRedirect = (redirectTo) => {
+    router.push(redirectTo);
+  };
 
   return (
     <div
@@ -64,15 +70,27 @@ export default function Navbar() {
           !isCollapsed ? "pt-8" : "pt-2"
         }`}
       >
-        <img src="/logo.png" className="w-[80px] h-[80px]" />
+        <img
+          src="/logo.png"
+          className="w-[80px] h-[80px] cursor-pointer hover:opacity-80"
+          onClick={() => {
+            handleRedirect("/");
+          }}
+        />
         {isCollapsed && (
           <div className="flex gap-[16px] items-center">
             {user && (
               <div className="flex items-center gap-[16px]">
-                <Badge count={cartLoading ? 0 : getCartCount()}>
-                  <div className="text-[30px]" style={{ color: COLORS.red }}>
+                <Badge
+                  count={cartLoading ? 0 : getCartCount()}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    handleRedirect("/cart");
+                  }}
+                >
+                  <button style={{ color: COLORS.red }} className="text-[30px]">
                     <ShoppingCartOutlined />
-                  </div>
+                  </button>
                 </Badge>
                 <div
                   style={{ color: COLORS.gray }}
@@ -100,7 +118,13 @@ export default function Navbar() {
           closable={false}
         >
           <div className="flex justify-center">
-            <img src="/logo.png" className="w-[40px] h-[40px]" />
+            <img
+              src="/logo.png"
+              className="w-[40px] h-[40px]"
+              onClick={() => {
+                handleRedirect("/");
+              }}
+            />
           </div>
           {navButtons.map((btn, index) => (
             <Link href="/" key={index}>
@@ -164,6 +188,7 @@ export default function Navbar() {
               ))}
             </div>
             <UserProfileMenu
+              handleRedirect={handleRedirect}
               cartLoading={cartLoading}
               cartCount={getCartCount()}
               key={user}

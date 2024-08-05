@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/footer";
 import EditForm from "./components/edit-form";
+import Footer from "@/components/Footer";
 
 export default function UserProfile() {
   const user = {

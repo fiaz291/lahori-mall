@@ -16,7 +16,7 @@ export default function AddCategory() {
 
   const [form] = Form.useForm();
 
-  const checkAvailableSlug = async () => {
+  const checkAvailableSlug = async() => {
     seErr(null);
     setMsg(null);
     const val = form.getFieldValue("slug");
