@@ -40,7 +40,6 @@ export default function Product_Details({ prod }) {
 
   const { user } = useAuthUser();
   const { cartItems: ordersInCart } = useCartItems();
-
   const handleAddToCart = async () => {
     setLoading(true);
     try {
@@ -52,7 +51,7 @@ export default function Product_Details({ prod }) {
       const data = {
         userId: user.id,
         productId: prod.id,
-        quantity: ifAlreadyExist.quantity
+        quantity: ifAlreadyExist && ifAlreadyExist.quantity
           ? ifAlreadyExist.quantity + Number(quantity)
           : Number(quantity),
       };
