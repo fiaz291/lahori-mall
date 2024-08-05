@@ -78,13 +78,13 @@ const AdminLayout = ({ children }) => {
   //   checkAdmin();
   // }, []);
 
-  if (loading) {
-    return (
-      <div className="h-[100vh] width-[100vw] flex justify-center items-center">
-        <Loader />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="h-[100vh] width-[100vw] flex justify-center items-center">
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
 
   return (
     <Layout>
