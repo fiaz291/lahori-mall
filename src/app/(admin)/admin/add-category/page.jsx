@@ -16,7 +16,7 @@ export default function AddCategory() {
 
   const [form] = Form.useForm();
 
-  const checkAvailableSlug = async() => {
+  const checkAvailableSlug = async () => {
     seErr(null);
     setMsg(null);
     const val = form.getFieldValue("slug");
@@ -47,11 +47,12 @@ export default function AddCategory() {
     }
   };
   const onFinish = async (values) => {
+    console.log({ values, file });
     if (!file) {
       return;
     }
-    data.url = file;
     const data = { ...values };
+    data.url = file;
     seErr(null);
     setMsg(null);
 
