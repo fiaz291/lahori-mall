@@ -9,7 +9,7 @@ import useAuthUser from "@/app/hooks/authUser";
 
 export default function Edit_Form({ user, setOpenModal }) {
   const [form] = Form.useForm();
-  const { resetUser } = useAuthUser();
+  const { resetUser, user } = useAuthUser();
 
   useEffect(() => {
     if (user) {
