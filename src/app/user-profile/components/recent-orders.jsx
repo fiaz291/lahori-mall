@@ -54,8 +54,8 @@ function RecentOrders({ orders, loading }) {
                   }
                   key={order.id}
                 >
-                  {order.orderItems.map((item) => (
-                    <Row align="middle" gutter={12} justify="start">
+                  {order.orderItems.map((item, index) => (
+                    <Row align="middle" gutter={12} justify="start" key={index}>
                       <Col span={4} md={4} sm={8} xs={8}>
                         <Link href={`/product/${item.slug}`}>
                           <img
