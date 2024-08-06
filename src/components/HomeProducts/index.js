@@ -7,6 +7,7 @@ import dummy_products from "@/app/dummy_products";
 import { useQuery } from "@tanstack/react-query";
 import config from "@/app/config";
 import Loader from "../Loader";
+import { Skeleton } from "antd";
 
 const newProducts = dummy_products;
 
@@ -43,6 +44,8 @@ const responsive = {
   },
 };
 
+const array = [1, 2, 3, 4];
+
 export default function HomeProducts() {
   const { isPending, error, data } = useQuery({
     queryKey: ["repoData"],
@@ -50,7 +53,41 @@ export default function HomeProducts() {
   });
 
   if (isPending) {
-    return <Loader width={40} height={40} />;
+    return (
+      <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
+        <div className="mt-[40px] flex flex-col  w-full max-w-[1200px] p-[16px]">
+          <h2 className="text-[36px] mb-[20px]">Our Products</h2>
+            <>
+              <div
+                className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px]"
+                style={{ textDecoration: "underline", fontWeight: 600 }}
+              >
+                New Product
+              </div>
+                  <Skeleton active />
+            </>
+            <>
+              <div
+                className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mt-[20px] mb-[20px]"
+                style={{ textDecoration: "underline", fontWeight: 600 }}
+              >
+                Last Month Best Seller
+              </div>
+               <Skeleton active />
+            </>
+            <>
+              <div
+                className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mt-[20px] mb-[20px]"
+                style={{ textDecoration: "underline", fontWeight: 600 }}
+              >
+                On Sale
+              </div>
+               <Skeleton active />
+              {/* </div> */}
+            </>
+        </div>
+      </div>
+    );
   }
   console.log({ data });
   if (error) {

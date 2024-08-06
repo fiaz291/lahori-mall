@@ -1,26 +1,12 @@
+"use client"
 import React from "react";
 import Navbar from "@/components/Navbar";
 import EditForm from "./components/edit-form";
 import Footer from "@/components/Footer";
+import useAuthUser from "../hooks/authUser";
 
 export default function UserProfile() {
-  const user = {
-    firstName: "Abdul",
-    lastName: "Saboor",
-    username: "abdulS",
-    email: "abc@example.com",
-    phoneNumber: "+92 12345678",
-    address: "Shahdara",
-    city: "Lahore",
-    state: "Punjab",
-    zipcode: "54950",
-    country: "Pakistan",
-    profilePicture: [
-      {
-        url: "https://picsum.photos/150?random=2",
-      },
-    ],
-  };
+  const { user } = useAuthUser();
 
   return (
     <div className="min-h-screen flex flex-col">

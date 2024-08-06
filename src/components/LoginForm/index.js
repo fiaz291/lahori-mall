@@ -19,6 +19,7 @@ export default function LoginForm({ setOpenModal, setIsLogin }) {
         };
       });
       message.success(`Welcome`);
+      form.resetFields();
       setOpenModal(false);
     } catch (error) {
       if (error.response && error.response.data) {
@@ -75,7 +76,7 @@ export default function LoginForm({ setOpenModal, setIsLogin }) {
           placeholder="Enter your Password"
         />
       </Form.Item>
-      <div>
+      <div className="mt-4 font-semibold clickable">
         Don't have account?{" "}
         <span
           style={{ borderBottom: "1px dotted black" }}
@@ -91,9 +92,9 @@ export default function LoginForm({ setOpenModal, setIsLogin }) {
       <Flex justify="flex-end" gap={10} className="mt-[10px]">
         <Button
           type="dashed"
-          htmlType="submit"
           onClick={() => {
             setOpenModal(false);
+            form.resetFields();
           }}
         >
           Cancel

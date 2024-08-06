@@ -2,8 +2,8 @@ import React from "react";
 import ProductCard from "../ProductCard";
 import { useQuery } from "@tanstack/react-query";
 import config from "@/app/config";
-import Loader from "../Loader";
 import Carousel from "react-multi-carousel";
+import { Skeleton } from "antd";
 
 
 const responsive = {
@@ -44,7 +44,24 @@ export default function NewTrending() {
     queryFn: () => fetch(config.url + "/api/product").then((res) => res.json()),
   });
   if (isPending) {
-    return <Loader width={40} height={40} />;
+    return (
+      <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
+        <div className="mt-[40px] flex flex-col  w-full max-w-[1200px] p-[16px]">
+          <h2 className="text-[36px] mb-[20px]">Trending</h2>
+          {data?.products && (
+            <>
+              <div
+                className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px]"
+                style={{ textDecoration: "underline", fontWeight: 600 }}
+              >
+                Flying High
+              </div>
+              <Skeleton active />
+            </>
+          )}
+        </div>
+      </div>
+    );
   }
   if (error) {
     return null;

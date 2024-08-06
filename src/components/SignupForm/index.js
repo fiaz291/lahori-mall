@@ -217,7 +217,7 @@ export default function SignupForm({ setOpenModal, setIsLogin }) {
           placeholder="Re-enter Password"
         />
       </Form.Item>
-      <div>
+      <div className="mt-4 font-semibold clickable">
         Already have an account?{" "}
         <span
           style={{ borderBottom: "1px dotted black" }}
@@ -232,9 +232,9 @@ export default function SignupForm({ setOpenModal, setIsLogin }) {
       <Flex justify="flex-end" gap={10} className="mt-[10px]">
         <Button
           type="dashed"
-          htmlType="submit"
           onClick={() => {
             setOpenModal(false);
+            form.resetFields();
           }}
         >
           Cancel

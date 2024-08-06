@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { CheckCircleFilled, StarFilled } from "@ant-design/icons";
+import { CheckCircleFilled, HeartFilled, StarFilled } from "@ant-design/icons";
 import { COLORS } from "@/constants";
 import useAuthUser from "@/app/hooks/authUser";
 import axios from "axios";
@@ -11,6 +11,10 @@ import config from "@/app/config";
 import { store } from "@/app/store";
 import useCartItems from "@/app/hooks/cartItems";
 import IncDecCounter from "@/components/IncrementDecrementCounter";
+import { Modal, message } from "antd";
+import LoginForm from "@/components/LoginForm";
+import SignupForm from "@/components/SignupForm";
+import useFavorites from "@/app/hooks/favorites";
 
 const responsive = {
   superLargeDesktop: {
@@ -37,9 +41,21 @@ export default function Product_Details({ prod }) {
   );
 
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
 
   const { user } = useAuthUser();
   const { cartItems: ordersInCart } = useCartItems();
+  const { favorites } = useFavorites();
+  console.log({ favorites });
+
+  const isProductIsFavorite = useCallback(() => {
+    const isAlreadyThere = favorites.find((item) => item.productId === prod.id);
+    if (isAlreadyThere) {
+      return true;
+    }
+    return false;
+  }, [favorites, favorites?.length]);
   const handleAddToCart = async () => {
     setLoading(true);
     try {
@@ -51,9 +67,10 @@ export default function Product_Details({ prod }) {
       const data = {
         userId: user.id,
         productId: prod.id,
-        quantity: ifAlreadyExist && ifAlreadyExist.quantity
-          ? ifAlreadyExist.quantity + Number(quantity)
-          : Number(quantity),
+        quantity:
+          ifAlreadyExist && ifAlreadyExist.quantity
+            ? ifAlreadyExist.quantity + Number(quantity)
+            : Number(quantity),
       };
       const res = await axios.post(config.url + "/api/cart", data);
 
@@ -76,7 +93,40 @@ export default function Product_Details({ prod }) {
     }
   };
 
+  const handleAddToFavorite = async () => {
+    try {
+      const favData = [...favorites];
+      const ifAlreadyExist = favData.find(
+        (favProd) => favProd.productId === prod.id
+      );
+
+      if (ifAlreadyExist) {
+        message.info("Product Already Added to favorite");
+        return;
+      }
+
+      const data = {
+        userId: user.id,
+        productId: prod.id,
+      };
+      const res = await axios.post(config.url + "/api/favorites", data);
+
+      favData.push(res.data);
+
+      store.setState((state) => {
+        return {
+          ...state,
+          favorites: favData,
+        };
+      });
+      message.info("Product Added to favorite");
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
   const debouncedHandleAddToCart = debounce(handleAddToCart, 300);
+  const debouncedHandleAddToFavorite = debounce(handleAddToFavorite, 300);
 
   return (
     <div className="flex flex-col md:flex-row w-full gap-4">
@@ -171,21 +221,35 @@ export default function Product_Details({ prod }) {
         </div>
         <button
           className="bg-[#007f3e] mb-[-4px] text-white py-2 px-4 rounded-full w-full text-base md:text-lg"
+          disabled={loading}
           onClick={() => {
+            if (!user) {
+              setOpenModal(true);
+              return;
+            }
             debouncedHandleAddToCart();
           }}
         >
-          Buy now
+          Add to Cart
         </button>
         <button
           className="bg-gray-100 text-black py-2 px-4 rounded-full w-full mt-2 text-base md:text-lg"
-          disabled={loading}
+          onClick={() => {
+            if (!user) {
+              setOpenModal(true);
+              return;
+            }
+            debouncedHandleAddToFavorite();
+          }}
         >
-          Add to cart
+          <span style={{ color: COLORS.red }}>
+            <HeartFilled />
+          </span>{" "}
+          {isProductIsFavorite() ? "Added to Favorite" : "Add to Favorite"}
         </button>
         {prod?.isDiscount && prod?.discountPrice && (
           <p className="text-[#007f3e] text-sm md:text-base font-semibold mt-2">
-            {(prod?.discountPrice / prod?.price) * 100}% off discount
+            {100 - (prod?.discountPrice / prod?.price) * 100}% off discount
           </p>
         )}
         <p className="text-sm md:text-base text-[#007f3e] mt-2">
@@ -233,6 +297,20 @@ export default function Product_Details({ prod }) {
           </div>
         </div>
       </div>
+      <Modal
+        open={openModal}
+        closable={false}
+        centered={true}
+        title={isLogin ? "Login" : "Signup"}
+        okText={isLogin ? "Login" : "Signup"}
+        footer={false}
+      >
+        {isLogin ? (
+          <LoginForm setOpenModal={setOpenModal} setIsLogin={setIsLogin} />
+        ) : (
+          <SignupForm setOpenModal={setOpenModal} setIsLogin={setIsLogin} />
+        )}
+      </Modal>
     </div>
   );
 }

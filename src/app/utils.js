@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants";
 import { getCookie } from "cookies-next";
 
 export function getJwtToken() {
@@ -100,4 +101,15 @@ export const ENUMS = {
   latest: "latest",
   topWeek: "topWeek",
   onSale: "onSale",
+};
+
+export const orderStatuses = {
+  pending: { key: "pending", name: "Pending", color: COLORS.gray }, // Order has been placed but not yet processed
+  processing: { key: "processing", name: "Processing", color: COLORS.gray }, // Order is being prepared
+  shipped: { key: "shipped", name: "Shipped", color: COLORS.gray }, // Order has been shipped out
+  out_for_delivery: { key: "out_for_delivery", name: "Out for Delivery", color: COLORS.gray }, // Order is out for delivery
+  delivered: { key: "delivered", name: "Delivered", color: COLORS.green }, // Order has been delivered to the customer
+  canceled: { key: "canceled", name: "Canceled", color: COLORS.red }, // Order has been canceled
+  returned: { key: "returned", name: "Returned", color: COLORS.red }, // Order has been returned by the customer
+  failed: { key: "failed", name: "Failed", color: COLORS.red }, // Delivery attempt failed
 };

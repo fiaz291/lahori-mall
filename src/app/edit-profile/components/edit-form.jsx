@@ -1,10 +1,15 @@
 "use client";
 import React, { useEffect } from "react";
-import { Button, Flex, Form, Input, Upload } from "antd";
+import { Button, Flex, Form, Input, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
+import axios from "axios";
+import config from "@/app/config";
+import useAuthUser from "@/app/hooks/authUser";
 
-export default function Edit_Form({ user }) {
+export default function Edit_Form({ user, setOpenModal }) {
   const [form] = Form.useForm();
+  const { resetUser } = useAuthUser();
 
   useEffect(() => {
     if (user) {
@@ -12,8 +17,24 @@ export default function Edit_Form({ user }) {
     }
   }, [user, form]);
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = async (values) => {
+    values.id = user.id;
+    try {
+      const res = await axios.patch(`${config.url}/api/user`, {
+        ...values,
+      });
+      resetUser(res?.data?.user);
+      message.success("User Updated Successfully");
+      if (setOpenModal) {
+        setOpenModal(false);
+      }
+    } catch (error) {
+      if (error?.response?.data) {
+        message.error(error?.response?.data?.error);
+      } else {
+        message.error("something went wrong!");
+      }
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -64,7 +85,7 @@ export default function Edit_Form({ user }) {
             placeholder="Enter your Last Name"
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           className="mb-0"
           name="username"
           label={<span className="">Username</span>}
@@ -76,8 +97,8 @@ export default function Edit_Form({ user }) {
           ]}
         >
           <Input className="form-control bg-white" disabled />
-        </Form.Item>
-        <Form.Item
+        </Form.Item> */}
+        {/* <Form.Item
           className="mb-0"
           name="email"
           label={<span className="">Email</span>}
@@ -89,7 +110,7 @@ export default function Edit_Form({ user }) {
           ]}
         >
           <Input className="form-control bg-white" disabled />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           className="mb-0"
           name="phoneNumber"
@@ -117,9 +138,10 @@ export default function Edit_Form({ user }) {
             },
           ]}
         >
-          <Input
+          <TextArea
+            rows={4}
             className="form-control bg-white"
-            placeholder="Enter your Address"
+            placeholder="Address"
           />
         </Form.Item>
         <Form.Item
@@ -156,7 +178,7 @@ export default function Edit_Form({ user }) {
         </Form.Item>
         <Form.Item
           className="mb-0"
-          name="zipcode"
+          name="zipCode"
           label={<span className="">Zipcode</span>}
           rules={[
             {
@@ -186,7 +208,7 @@ export default function Edit_Form({ user }) {
             placeholder="Enter your Country"
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           className="mb-0"
           name="profilePicture"
           label={<span className="">Profile Picture</span>}
@@ -201,17 +223,8 @@ export default function Edit_Form({ user }) {
           >
             <Button icon={<UploadOutlined />}>Upload Profile Picture</Button>
           </Upload>
-        </Form.Item>
+        </Form.Item> */}
         <Flex justify="flex-end" gap={10} className="mt-[10px]">
-          <Button
-            type="dashed"
-            htmlType="button"
-            onClick={() => {
-              form.resetFields();
-            }}
-          >
-            Cancel
-          </Button>
           <Button type="primary" htmlType="submit">
             Save Changes
           </Button>

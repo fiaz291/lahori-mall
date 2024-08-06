@@ -66,3 +66,11 @@ aside {
 .ql-clean {
   display: none !important;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}

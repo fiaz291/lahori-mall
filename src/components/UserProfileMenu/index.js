@@ -18,7 +18,7 @@ export default function UserProfileMenu({
   const items = [
     {
       key: "1",
-      label: <Link href="/profile">Profile</Link>,
+      label: <Link href="/user-profile">Profile</Link>,
     },
     user &&
       user.role === "admin" && {

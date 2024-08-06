@@ -4,58 +4,25 @@ import Navbar from "@/components/Navbar";
 import React, { useCallback, useState } from "react";
 import useAuthUser from "../hooks/authUser";
 import config from "../config";
-import { isArray } from "lodash";
+import { debounce, isArray } from "lodash";
 import useCartItems from "../hooks/cartItems";
 import Loader from "@/components/Loader";
 import { store } from "../store";
 import axios from "axios";
 import IncDecCounter from "@/components/IncrementDecrementCounter";
-import { Col, Divider, Flex, Row, Tooltip } from "antd";
+import { Col, Divider, Flex, Row, Tooltip, message } from "antd";
 import { COLORS } from "@/constants";
 import { DeleteOutlined, PushpinOutlined } from "@ant-design/icons";
 import EditProfileModal from "@/components/EditProdileModal";
 import useWindowSize from "../hooks/windowSize";
-import { useRouter } from "next/navigation";
 
-export default function Cart() {
+export default function PlaceOrder() {
   const { user } = useAuthUser();
-  console.log({ user });
   const { cartItems, cartLoading, getCartPrice } = useCartItems();
   const [loading, setLoading] = useState(null);
   const [deleteLoader, setDeleteLoader] = useState(null);
   const [openModal, setOpenModal] = useState(false);
-  const { width, height } = useWindowSize();
-  const router = useRouter();
-
-  const handleAddToCart = async (cartItem, quantity) => {
-    const prod = cartItem.product;
-    setLoading(cartItem.id);
-
-    try {
-      const data = {
-        userId: user.id,
-        productId: prod.id,
-        quantity: Number(quantity),
-      };
-      const res = await axios.post(config.url + "/api/cart", data);
-      console.log({ res });
-      const cartData = [...cartItems];
-      const ifAlreadyExist = cartData.find(
-        (cartProd) => cartProd.productId === prod.id
-      );
-      cartData.splice(cartData.indexOf(ifAlreadyExist), 1, res.data);
-      store.setState((state) => {
-        return {
-          ...state,
-          cart: cartData,
-        };
-      });
-    } catch (error) {
-      console.log({ error });
-    } finally {
-      setLoading(null);
-    }
-  };
+  const { width } = useWindowSize();
 
   const handleDeleteFromCart = async (cartItem) => {
     const prod = cartItem.product;
@@ -87,6 +54,43 @@ export default function Cart() {
     }
   };
 
+  const handlePlaceOrder = async () => {
+    try {
+      const orderItems = cartItems.map((cartItem) => {
+        const price = cartItem.product.isDiscount
+          ? cartItem.product.discountPrice
+          : cartItem.product.price;
+        return {
+          productId: cartItem.productId,
+          quantity: cartItem.quantity,
+          price: price,
+          slug: cartItem.product.slug,
+          cartId: cartItem.id,
+        };
+      });
+      const data = {
+        userId: user.id,
+        orderItems: orderItems,
+      };
+
+      const res = await axios.post(config.url + "/api/order", data);
+
+      if (!res.error) {
+        store.setState((state) => {
+          return {
+            ...state,
+            cart: [],
+          };
+        });
+        message.info("Order Placed Successfully");
+      }
+    } catch (error) {
+      console.log({ error });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getCartCount = useCallback(() => {
     let quantity = 0;
     if (cartItems && cartItems.length > 0) {
@@ -96,6 +100,8 @@ export default function Cart() {
     }
     return quantity;
   }, [cartItems]);
+
+  const debouncedHandlePlaceOrder = debounce(handlePlaceOrder, 300);
 
   if (cartLoading) {
     return (
@@ -197,18 +203,8 @@ export default function Cart() {
                                 )}
                               </div>
                             </td>
-                            <td className="">
-                              {loading === item.id ? (
-                                <Loader width={40} height={40} />
-                              ) : (
-                                <IncDecCounter
-                                  value={item?.quantity}
-                                  setValue={(e) => {
-                                    handleAddToCart(item, e);
-                                  }}
-                                  max={item?.product?.inventory || 1}
-                                />
-                              )}
+                            <td className="font-semibold">
+                              <p>Quanitity: {item?.quantity}</p>
                             </td>
                             <td className="">
                               {deleteLoader === item.id ? (
@@ -283,18 +279,8 @@ export default function Cart() {
                               )}
                             </div>
                           </td>
-                          <td className="">
-                            {loading === item.id ? (
-                              <Loader width={40} height={40} />
-                            ) : (
-                              <IncDecCounter
-                                value={item?.quantity}
-                                setValue={(e) => {
-                                  handleAddToCart(item, e);
-                                }}
-                                max={item?.product?.inventory || 1}
-                              />
-                            )}
+                          <td className="font-semibold">
+                            <p>Quanitity: {item?.quantity}</p>
                           </td>
                           <td className="">
                             {deleteLoader === item.id ? (
@@ -372,11 +358,9 @@ export default function Cart() {
                   disabled={!user?.address}
                   className="w-full mt-[40px] text-white h-[40px] font-semibold disabled:opacity-50"
                   style={{ background: COLORS.green }}
-                  onClick={() => {
-                    router.push("/place-order");
-                  }}
+                  onClick={() => debouncedHandlePlaceOrder()}
                 >
-                  Proceed to checkout ({getCartCount()})
+                  Place Order
                 </button>
                 {!user.address && (
                   <p className="mt-2 text-center" style={{ color: COLORS.red }}>
