@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
 import { Button, Flex, Form, Input, Upload, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
 import config from "@/app/config";
@@ -9,7 +8,7 @@ import useAuthUser from "@/app/hooks/authUser";
 
 export default function Edit_Form({ user, setOpenModal }) {
   const [form] = Form.useForm();
-  const { resetUser, user } = useAuthUser();
+  const { resetUser } = useAuthUser();
 
   useEffect(() => {
     if (user) {
