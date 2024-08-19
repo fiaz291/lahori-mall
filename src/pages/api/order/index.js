@@ -64,13 +64,22 @@ const handlePost = async (req, res) => {
 };
 
 const handleGet = async (req, res) => {
-  const { userId } = req.query;
-
+  const { userId, limit = 20, page = 1 } = req.query;
+  const orderLimit = Number(limit);
+  const orderPage = Number(page);
+  const skip = (orderPage - 1) * orderLimit;
   if (!userId) {
     return res.status(400).json({ message: "Invalid input" });
   }
 
   try {
+    const totalOrders = await prisma.order.count({
+      where: { userId: parseInt(userId) },
+    });
+
+    // Then, calculate the total number of pages
+    const totalPages = Math.ceil(totalOrders / orderLimit);
+
     const orders = await prisma.order.findMany({
       where: { userId: parseInt(userId) },
       include: {
@@ -80,9 +89,11 @@ const handleGet = async (req, res) => {
           },
         },
       },
+      skip: skip,
+      take: orderLimit,
     });
 
-    return res.status(200).json(orders);
+    return res.status(200).json({ orders, totalPages });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });

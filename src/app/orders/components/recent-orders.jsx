@@ -7,24 +7,15 @@ import {
   InfoCircleOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";
-import { Col, Collapse, Flex, Row, Skeleton } from "antd";
+import { Col, Row, Skeleton } from "antd";
 import { isArray } from "lodash";
 import Link from "next/link";
 import React from "react";
 
 function RecentOrders({ orders, loading }) {
-  // const tableHeader = ["Order #", "Placed On", "Items", "Total", "Status"];
-  // const orders = [...props.orders];
-  console.log({ orders });
-
   return (
     <div className="flex flex-col gap-4">
-      <Flex justify="space-between">
-        <h3 className="text-[15px]">Recent Orders</h3>
-        <Link href="/orders?page=1">
-          <h3 className="text-[15px]">View All</h3>
-        </Link>
-      </Flex>
+      <h3 className="text-[15px]">Recent Orders</h3>
 
       {loading && <Skeleton active />}
       {!loading && (

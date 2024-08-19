@@ -201,7 +201,7 @@ export default function Navbar() {
           </>
         )}
       </div>
-      <div className="flex justify-between gap-16 items-center w-full max-w-[1200px]">
+      <div className="flex justify-between gap-16 items-center w-full max-w-[1200px] pl-[20px] pr-[20px]">
         {!isCollapsed && (
           <button
             style={{ background: COLORS.green }}

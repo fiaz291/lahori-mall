@@ -74,3 +74,27 @@ aside {
 .clickable:hover {
   opacity: 0.8;
 }
+
+.pangination > ul {
+  display: flex;
+  gap: 10px;
+}
+
+.pagination-button {
+  background: white;
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.pagination-button:hover {
+  opacity: 0.7;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+.active-pagination {
+  background: #00803e;
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: white;
+}
