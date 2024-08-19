@@ -178,7 +178,6 @@ export default function SignupForm({ setOpenModal, setIsLogin }) {
       <Form.Item
         className="mb-0"
         name="password"
-        type="password"
         label={<span className="">Password</span>}
         rules={[
           {
@@ -188,6 +187,7 @@ export default function SignupForm({ setOpenModal, setIsLogin }) {
         ]}
       >
         <Input
+          type="password"
           className="form-control bg-white"
           placeholder="enter your Password"
         />
@@ -195,7 +195,6 @@ export default function SignupForm({ setOpenModal, setIsLogin }) {
       <Form.Item
         className="mb-0"
         name="confirmPassword"
-        type="password"
         label={<span className="">Re-enter Password</span>}
         rules={[
           {
@@ -215,6 +214,7 @@ export default function SignupForm({ setOpenModal, setIsLogin }) {
         ]}
       >
         <Input
+          type="password"
           className="form-control bg-white"
           placeholder="Re-enter Password"
         />
