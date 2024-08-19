@@ -11,7 +11,7 @@ export default function ProductCard({ product, image }) {
   const { favorites } = useFavorites();
 
   const isProductIsFavorite = useCallback(() => {
-    const isAlreadyThere = favorites.find(
+    const isAlreadyThere = favorites?.find(
       (item) => item.productId === product.id
     );
     if (isAlreadyThere) {

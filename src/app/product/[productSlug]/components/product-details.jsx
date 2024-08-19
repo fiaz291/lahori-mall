@@ -50,7 +50,7 @@ export default function Product_Details({ prod }) {
   console.log({ favorites });
 
   const isProductIsFavorite = useCallback(() => {
-    const isAlreadyThere = favorites.find((item) => item.productId === prod.id);
+    const isAlreadyThere = favorites?.find((item) => item.productId === prod.id);
     if (isAlreadyThere) {
       return true;
     }
