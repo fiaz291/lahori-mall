@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AntdStyledComponentsRegistry from "./AntdComponentRegistry";
 import { Provider } from "./QueryProvider";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,9 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className}>
         <Provider>
-            <AntdStyledComponentsRegistry>
-              {children}
-            </AntdStyledComponentsRegistry>
+          <AntdStyledComponentsRegistry>
+            <Suspense>{children}</Suspense>
+          </AntdStyledComponentsRegistry>
         </Provider>
       </body>
     </html>
