@@ -58,7 +58,7 @@ model Category {
 
 model Product {
     id                Int      @id @default(autoincrement())
-    isActive          Boolean  @default(true)
+    // isActive          Boolean  @default(true)
     name              String
     description       String
     price             Float
@@ -82,7 +82,7 @@ model Product {
     score             Float?   @default(0.7)
     freebieProductIDs Int[]
     relatedProductIDs Int[]
-    totalSold         Int      @default(0)
+    // totalSold         Int      @default(0)
 
     orderItems OrderItem[] // Relation to order items
     favorites  Favorite[] // Relation to users who favorited this product

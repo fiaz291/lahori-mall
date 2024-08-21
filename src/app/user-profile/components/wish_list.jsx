@@ -8,19 +8,12 @@ import { COLORS } from "@/constants";
 
 export default function Wish_List(props) {
   const { favorites } = useFavorites();
-  console.log({ favorites });
-  const tableHeader = ["Product", "Quantity", "Rate", "Total", "Availability"];
-  const products = [...props.wishlist];
-
-  const to_int = (value) => {
-    return parseInt(value.replace(/[^\d]/g, ""), 10);
-  };
 
   return (
     <div>
       <h3 className="mb-[20px]">Favorites to buy | Visit Propducts</h3>
       <div className="container">
-        {favorites.map((fav, index) => (
+        {favorites?.map((fav, index) => (
           <Tooltip title={fav?.product?.name} key={index}>
             <Link
               href={`product/${fav?.product?.slug}`}

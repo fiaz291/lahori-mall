@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import config from "@/app/config";
 import Carousel from "react-multi-carousel";
 import { Skeleton } from "antd";
-
+import { materialTags } from "@/app/utils";
+import Link from "next/link";
 
 const responsive = {
   superLargeDesktop: {
@@ -47,12 +48,11 @@ export default function NewTrending() {
     return (
       <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
         <div className="mt-[40px] flex flex-col  w-full max-w-[1200px] p-[16px]">
-          <h2 className="text-[36px] mb-[20px]">Trending</h2>
           {data?.products && (
             <>
               <div
                 className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px]"
-                style={{ textDecoration: "underline", fontWeight: 600 }}
+                style={{ fontWeight: 600 }}
               >
                 Flying High
               </div>
@@ -68,18 +68,17 @@ export default function NewTrending() {
   }
   return (
     <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
-      <div className="mt-[40px] flex flex-col  w-full max-w-[1200px] p-[16px]">
-        <h2 className="text-[36px] mb-[20px]">Trending</h2>
-        {data?.products && (
+      <div className="mt-[0px] flex flex-col  w-full max-w-[1200px] p-[16px]">
+        {data?.products?.onSale && (
           <>
             <div
               className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px]"
-              style={{ textDecoration: "underline", fontWeight: 600 }}
+              style={{ fontWeight: 600 }}
             >
               Flying High
             </div>
             <Carousel responsive={responsive} partialVisible={true}>
-              {data?.products?.map((prod, index) => (
+              {data?.products?.onSale?.map((prod, index) => (
                 <ProductCard
                   key={index}
                   image={prod.images[0] || null}
@@ -89,6 +88,23 @@ export default function NewTrending() {
             </Carousel>
           </>
         )}
+        <>
+          <div
+            className="text-[20px] mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px] mt-[20px]"
+            style={{ fontWeight: 600 }}
+          >
+            Search By Material
+          </div>
+          <div className="container">
+            {materialTags.map((tag) => (
+              <Link key={tag.key} href="#">
+                <div className="p-[10px] shadow-md bg-white rounded text-center">
+                  {tag.value}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </>
       </div>
     </div>
   );

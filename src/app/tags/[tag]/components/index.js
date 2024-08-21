@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { FaChevronRight } from "react-icons/fa";
 
-export default function Product_Route({ prod }) {
+export default function Product_Route({ tag }) {
   const router = useRouter();
   const handleRedirect = (redirectTo) => {
     router.push(redirectTo);
@@ -14,18 +14,15 @@ export default function Product_Route({ prod }) {
           Home
         </p>
         <FaChevronRight />
-        <p
-          className="cursor-pointer"
-          onClick={() => handleRedirect(`/category/${prod?.category?.slug}`)}
-        >
-          {prod?.category?.name}
+        <p className="cursor-pointer" onClick={() => handleRedirect(`/tags`)}>
+          Tags
         </p>
         <FaChevronRight />
         <p
           className="text-[#3e3e3e] font-semibold cursor-pointer"
-          onClick={() => handleRedirect(`/product/${prod?.slug}`)}
+          onClick={() => handleRedirect(`/tags/${tag?.key}`)}
         >
-          {prod?.name?.split(" ").splice(0, 4).join(" ") + "...."}
+          {tag?.value}
         </p>
       </div>
     </div>

@@ -39,7 +39,7 @@ export default function AddProduct() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const getAllCategories = async() => {
+    const getAllCategories = async () => {
       setLoading(true);
       const response = await axios.get(config.url + "/api/category");
       if (
@@ -229,8 +229,6 @@ export default function AddProduct() {
           onBlur={() => {
             const name = form.getFieldValue("name");
             if (name) {
-              // const slug = name.toLowerCase(); // Convert to lowercase
-              // const cleanSlug = encodeURI(slug);
               const slug = slugify(name, {
                 replacement: "-", // replace spaces and special characters with -
                 lower: true, // convert to lowercase
@@ -255,7 +253,6 @@ export default function AddProduct() {
       >
         <Select
           className="form-select"
-          // onChange={() => setPageUpdate(true)}
           placeholder="Add Category for the Product"
           rules={[
             {
@@ -384,18 +381,18 @@ export default function AddProduct() {
               <div
                 key={index}
                 style={
-                  selectedTags.includes(tag)
+                  selectedTags.includes(tag.value)
                     ? {
                         borderColor: "red",
                       }
                     : {}
                 }
                 onClick={() => {
-                  handleTags(tag);
+                  handleTags(tag.value);
                 }}
                 className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
               >
-                {tag}
+                {tag.value}
               </div>
             ))}
           </div>
@@ -405,18 +402,18 @@ export default function AddProduct() {
               <div
                 key={index}
                 style={
-                  selectedTags.includes(tag)
+                  selectedTags.includes(tag.value)
                     ? {
                         borderColor: "red",
                       }
                     : {}
                 }
                 onClick={() => {
-                  handleTags(tag);
+                  handleTags(tag.value);
                 }}
                 className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
               >
-                {tag}
+                {tag.value}
               </div>
             ))}
           </div>
@@ -426,18 +423,18 @@ export default function AddProduct() {
               <div
                 key={index}
                 style={
-                  selectedTags.includes(tag)
+                  selectedTags.includes(tag.value)
                     ? {
                         borderColor: "red",
                       }
                     : {}
                 }
                 onClick={() => {
-                  handleTags(tag);
+                  handleTags(tag.value);
                 }}
                 className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
               >
-                {tag}
+                {tag.value}
               </div>
             ))}
           </div>
@@ -447,18 +444,18 @@ export default function AddProduct() {
               <div
                 key={index}
                 style={
-                  selectedTags.includes(tag)
+                  selectedTags.includes(tag.value)
                     ? {
                         borderColor: "red",
                       }
                     : {}
                 }
                 onClick={() => {
-                  handleTags(tag);
+                  handleTags(tag.value);
                 }}
                 className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
               >
-                {tag}
+                {tag.value}
               </div>
             ))}
           </div>
@@ -468,18 +465,18 @@ export default function AddProduct() {
               <div
                 key={index}
                 style={
-                  selectedTags.includes(tag)
+                  selectedTags.includes(tag.value)
                     ? {
                         borderColor: "red",
                       }
                     : {}
                 }
                 onClick={() => {
-                  handleTags(tag);
+                  handleTags(tag.value);
                 }}
                 className="p-[4px] w-fit border cursor-pointer hover:opacity-80 rounded"
               >
-                {tag}
+                {tag.value}
               </div>
             ))}
           </div>

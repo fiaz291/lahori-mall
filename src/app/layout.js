@@ -1,10 +1,10 @@
-import { Inter } from "next/font/google";
+import { League_Spartan } from "next/font/google";
 import "./globals.css";
 import AntdStyledComponentsRegistry from "./AntdComponentRegistry";
 import { Provider } from "./QueryProvider";
 import { Suspense } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = League_Spartan({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",

@@ -9,14 +9,23 @@ import UserProfileMenu from "../UserProfileMenu";
 import useWindowSize from "@/app/hooks/windowSize";
 import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import useAuthUser from "@/app/hooks/authUser";
-import { Badge, Drawer } from "antd";
+import { Badge, Drawer, Flex } from "antd";
 import Link from "next/link";
 import { useStore } from "@tanstack/react-store";
 import { store } from "@/app/store";
 import useCartItems from "@/app/hooks/cartItems";
 import { useRouter } from "next/navigation";
 
-const navButtons = ["HOME", "ABOUT US", "SHOP", "BLOG", "CONTACT"];
+const navButtons = ["HOME", "CATEGORIES", "ABOUT US", "CONTACT"];
+
+const linkMap = {
+  HOME: "/",
+  CATEGORIES: "/tags",
+  "ABOUT US": "#",
+  CONTACT: "#",
+  PROFILE: "/user-profile",
+  ORDERS: "/orders",
+};
 const loggedInButtons = ["PROFILE", "ORDERS"];
 
 export default function Navbar() {
@@ -126,8 +135,9 @@ export default function Navbar() {
               }}
             />
           </div>
+          {/* <Flex> */}
           {navButtons.map((btn, index) => (
-            <Link href="/" key={index}>
+            <Link href={linkMap[btn]} key={index}>
               <p
                 className="p-[10px] mt-[10px] text-white text-center"
                 style={{ background: COLORS.green }}
@@ -136,9 +146,10 @@ export default function Navbar() {
               </p>
             </Link>
           ))}
+          {/* </Flex> */}
           {user &&
             loggedInButtons.map((btn, index) => (
-              <Link href="/" key={index}>
+              <Link href={linkMap[btn]} key={index}>
                 <p
                   className="p-[10px] mt-[10px] text-white text-center"
                   style={{ background: COLORS.gray }}
@@ -180,13 +191,27 @@ export default function Navbar() {
         </Drawer>
         {!isCollapsed && (
           <>
-            <div className="flex gap-8">
-              {navButtons.map((button) => (
-                <button key={button} className="font-[13px] text-[17px]">
-                  {button}
-                </button>
-              ))}
-            </div>
+            <Flex vertical>
+              <div className="flex gap-8">
+                {navButtons.map((button) => (
+                  <button
+                    key={button}
+                    className="font-[13px] text-[17px]"
+                    onClick={() => router.push(linkMap[button])}
+                  >
+                    {button}
+                  </button>
+                ))}
+              </div>
+              <Search
+                className="text-[14px] mt-[10px]"
+                placeholder="SEARCH PRODUCTS"
+                allowClear
+                enterButton="FIND"
+                size="large"
+                onSearch={() => {}}
+              />
+            </Flex>
             <UserProfileMenu
               handleRedirect={handleRedirect}
               cartLoading={cartLoading}
@@ -201,7 +226,7 @@ export default function Navbar() {
           </>
         )}
       </div>
-      <div className="flex justify-between gap-16 items-center w-full max-w-[1200px] pl-[20px] pr-[20px]">
+      {/* <div className="flex justify-between gap-16 items-center w-full max-w-[1200px] pl-[0px] pr-[20px]">
         {!isCollapsed && (
           <button
             style={{ background: COLORS.green }}
@@ -212,13 +237,13 @@ export default function Navbar() {
         )}
         <Search
           className="text-[14px]"
-          placeholder="input search text"
+          placeholder="sEARCH PRODUCTS"
           allowClear
           enterButton="Search"
           size="large"
           onSearch={() => {}}
         />
-      </div>
+      </div> */}
       <Modal
         open={openModal}
         closable={false}

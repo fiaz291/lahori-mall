@@ -208,16 +208,44 @@ const PATCH = async (req, res) => {
 
 export const GET = async (req, res) => {
   try {
-    const { value } = req.query;
-    let products;
-    if (value) {
-      products = await innerHandlerForProducts(value);
-    } else {
-      products = await prisma.product.findMany({
-        orderBy: {
-          createdAt: "desc", // Order by createdAt in descending order
-        },
-      });
+    let products = {
+      new: [],
+      onSale: [],
+      topWeek: [],
+    };
+    const allProducts = await prisma.product.findMany({
+      orderBy: {
+        createdAt: "desc", // Order by createdAt in descending order
+      },
+    });
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        // Generate a random index from 0 to i
+        const j = Math.floor(Math.random() * (i + 1));
+
+        // Swap elements array[i] and array[j]
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    const values = [ENUMS.latest, ENUMS.onSale, ENUMS.topWeek];
+    for (const val of values) {
+      const result = await innerHandlerForProducts(val);
+      if (val === ENUMS.latest) {
+        products.new = result;
+      } else if (val === ENUMS.onSale) {
+        products.onSale = result;
+      } else if (val === ENUMS.topWeek) {
+        if (result.length > 5) {
+          products.topWeek = result;
+        } else {
+          const newArr = shuffleArray(allProducts);
+          const splicedArray = newArr.splice(0, 20);
+          products.topWeek = splicedArray;
+        }
+      }
     }
 
     const data = { products, status: 200 };
@@ -243,10 +271,10 @@ const innerHandlerForProducts = async (value) => {
 
 const getLatestProducts = async () => {
   const products = await prisma.product.findMany({
-    isActive: true,
-    inventory: {
-      gt: 0,
-    },
+    // isActive: true,
+    // inventory: {
+    //   gt: 0,
+    // },
     orderBy: {
       createdAt: "desc",
     },
@@ -258,11 +286,11 @@ const getLatestProducts = async () => {
 const getLatestDiscountedProducts = async () => {
   const products = await prisma.product.findMany({
     where: {
-      isActive: true,
-      inventory: {
-        gt: 0,
-      },
-      isDiscount: true,
+      // isActive: true,
+      // inventory: {
+      //   gt: 0,
+      // },
+      // isDiscount: true,
       discountPrice: {
         not: null,
       },
@@ -281,10 +309,10 @@ const getTopSellingProductsLast30Days = async () => {
 
   const products = await prisma.product.findMany({
     where: {
-      isActive: true,
-      inventory: {
-        gt: 1,
-      },
+      // isActive: true,
+      // inventory: {
+      //   gt: 1,
+      // },
       orderItems: {
         some: {
           order: {
@@ -302,17 +330,19 @@ const getTopSellingProductsLast30Days = async () => {
         },
       },
     },
+    take: 20,
   });
 
-  const productSales = products.map((product) => ({
-    ...product,
-    totalSales: product.orderItems.reduce(
-      (acc, item) => acc + item.quantity,
+  // Calculate the total quantity sold for each product
+  const productsWithSales = products.map((product) => {
+    const totalQuantitySold = product.orderItems.reduce(
+      (total, item) => total + item.quantity,
       0
-    ),
-  }));
+    );
+    return { ...product, totalQuantitySold };
+  });
 
-  productSales.sort((a, b) => b.totalSales - a.totalSales);
-
-  return productSales.slice(0, 20);
+  productsWithSales.sort((a, b) => b.totalQuantitySold - a.totalQuantitySold);
+  const topProducts = productsWithSales.slice(0, 20);
+  return topProducts;
 };
