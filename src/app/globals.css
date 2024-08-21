@@ -18,7 +18,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: #ececec;
+  background:  linear-gradient(to right, #ece6ff , #ffeded);;
   user-select: none;
 }
 
