@@ -29,7 +29,7 @@ export default function Page({ params }) {
                       <Link
                         href={`/tags/${catS.key}`}
                         key={index}
-                        className="text-[#666666] hover:text-[#ec1c24]"
+                        className="text-[#666666] hover:text-[#ec1c24] shadow-lg"
                       >
                         <div className="bg-white p-[10px] rounded h-[100px] flex justify-center items-center text-center">
                           <div className="text-[14px] font-semibold">
