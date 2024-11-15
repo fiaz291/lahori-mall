@@ -28,6 +28,8 @@ First, run the development server:
 # start db 
 psql -U postgres
 
+DATABASE_URL=postgresql://postgres:11223344@localhost:5432/testdb
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
