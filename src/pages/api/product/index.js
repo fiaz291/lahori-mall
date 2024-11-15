@@ -36,9 +36,14 @@ const POST = async (req, res) => {
     slug,
     score,
     discountPrice,
+    freebieProductIDs = [],
+    relatedProductIDs = [],
+    totalSold = 0,
+    isActive = true,
+    subCategoryIds = [],
   } = req.body;
 
-  // Required fields
+  // Required fields validation
   const requiredFields = {
     name,
     slug,
@@ -50,7 +55,6 @@ const POST = async (req, res) => {
     tags,
   };
 
-  // Check for missing required fields
   for (const [field, value] of Object.entries(requiredFields)) {
     if (!value) {
       return res
@@ -60,25 +64,28 @@ const POST = async (req, res) => {
   }
 
   try {
+    // Check for unique fields
     const existingSlug = await prisma.product.findUnique({
       where: { slug },
     });
 
     if (existingSlug) {
       return res
-        .status(200)
+        .status(400)
         .json({ error: "Slug already in use", errorCode: 2 });
     }
+
     const existingSku = await prisma.product.findUnique({
-      where: { slug },
+      where: { SKU },
     });
 
     if (existingSku) {
       return res
-        .status(200)
-        .json({ error: "SKU already in use", errorCode: 2 });
+        .status(400)
+        .json({ error: "SKU already in use", errorCode: 3 });
     }
 
+    // Create the new product
     const newProduct = await prisma.product.create({
       data: {
         name,
@@ -99,11 +106,19 @@ const POST = async (req, res) => {
         isDiscount: !!discountPrice,
         score,
         discountPrice,
+        freebieProductIDs,
+        relatedProductIDs,
+        totalSold,
+        isActive,
+        subCategories: {
+          connect: subCategoryIds.map((id) => ({ id })),
+        },
       },
     });
-    const data = { product: newProduct, status: 201 };
-    res.status(201).json(data);
+
+    res.status(201).json({ product: newProduct, status: 201 });
   } catch (error) {
+    console.error("Error creating product:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -129,13 +144,16 @@ const PATCH = async (req, res) => {
     slug,
     score,
     discountPrice,
+    freebieProductIDs,
+    relatedProductIDs,
+    totalSold,
+    isActive,
+    subCategoryIds,
   } = req.body;
 
   // Ensure 'id' is provided
   if (!id) {
-    return res
-      .status(400)
-      .json({ error: "Product ID is required", errorCode: 1 });
+    return res.status(400).json({ error: "Product ID is required", errorCode: 1 });
   }
 
   try {
@@ -154,9 +172,7 @@ const PATCH = async (req, res) => {
       });
 
       if (existingSlug) {
-        return res
-          .status(200)
-          .json({ error: "Slug already in use", errorCode: 2 });
+        return res.status(400).json({ error: "Slug already in use", errorCode: 2 });
       }
     }
 
@@ -167,9 +183,7 @@ const PATCH = async (req, res) => {
       });
 
       if (existingSku) {
-        return res
-          .status(200)
-          .json({ error: "SKU already in use", errorCode: 2 });
+        return res.status(400).json({ error: "SKU already in use", errorCode: 4 });
       }
     }
 
@@ -193,15 +207,26 @@ const PATCH = async (req, res) => {
     if (slug !== undefined) dataToUpdate.slug = slug;
     if (score !== undefined) dataToUpdate.score = score;
     if (discountPrice !== undefined) dataToUpdate.discountPrice = discountPrice;
+    if (freebieProductIDs !== undefined) dataToUpdate.freebieProductIDs = freebieProductIDs;
+    if (relatedProductIDs !== undefined) dataToUpdate.relatedProductIDs = relatedProductIDs;
+    if (totalSold !== undefined) dataToUpdate.totalSold = totalSold;
+    if (isActive !== undefined) dataToUpdate.isActive = isActive;
+
+    // Handle updating subcategories relationship
+    if (subCategoryIds !== undefined) {
+      dataToUpdate.subCategories = {
+        set: subCategoryIds.map((id) => ({ id })), // Replace existing relations with new ones
+      };
+    }
 
     const updatedProduct = await prisma.product.update({
       where: { id },
       data: dataToUpdate,
     });
 
-    const data = { product: updatedProduct, status: 200 };
-    res.status(200).json(data);
+    res.status(200).json({ product: updatedProduct, status: 200 });
   } catch (error) {
+    console.error("Error updating product:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

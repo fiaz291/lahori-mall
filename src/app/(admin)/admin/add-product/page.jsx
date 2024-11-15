@@ -2,6 +2,7 @@
 import config from "@/app/config";
 import {
   Button,
+  Checkbox,
   Flex,
   Form,
   Input,
@@ -212,16 +213,12 @@ export default function AddProduct() {
       autoComplete="off"
       form={form}
     >
+      {/* Product Name */}
       <Form.Item
         className="mb-0"
         name="name"
-        label={<span className="">Product Name</span>}
-        rules={[
-          {
-            required: true,
-            message: "Product Name is Required",
-          },
-        ]}
+        label="Product Name"
+        rules={[{ required: true, message: "Product Name is Required" }]}
       >
         <Input
           className="form-control bg-white"
@@ -230,9 +227,9 @@ export default function AddProduct() {
             const name = form.getFieldValue("name");
             if (name) {
               const slug = slugify(name, {
-                replacement: "-", // replace spaces and special characters with -
-                lower: true, // convert to lowercase
-                strict: true, // remove characters that are not alphanumeric, dashes or underscores
+                replacement: "-",
+                lower: true,
+                strict: true,
               });
               form.setFieldValue("slug", slug);
             }
@@ -240,138 +237,162 @@ export default function AddProduct() {
         />
       </Form.Item>
 
+      {/* Category */}
       <Form.Item
         className="mb-0"
         name="categoryId"
-        label={<span className="">Category</span>}
-        rules={[
-          {
-            required: true,
-            message: "Category is Required",
-          },
-        ]}
+        label="Category"
+        rules={[{ required: true, message: "Category is Required" }]}
       >
         <Select
           className="form-select"
           placeholder="Add Category for the Product"
-          rules={[
-            {
-              required: true,
-              message: "Category is required",
-            },
-          ]}
-          style={{
-            width: "100%",
-          }}
+          style={{ width: "100%" }}
           options={categories}
         />
       </Form.Item>
 
+      {/* Subcategories */}
+      <Form.Item className="mb-0" name="subCategories" label="Subcategories">
+        <Select
+          className="form-select"
+          mode="multiple"
+          placeholder="Select subcategories"
+          style={{ width: "100%" }}
+          options={[]}
+        />
+      </Form.Item>
+
+      {/* Slug */}
       <Form.Item
         className="mb-0"
         name="slug"
-        label={<span className="">Slug</span>}
-        rules={[
-          {
-            required: true,
-            message: "Slug is Required",
-          },
-        ]}
+        label="Slug"
+        rules={[{ required: true, message: "Slug is Required" }]}
       >
         <Input className="form-control bg-white" placeholder="Enter Slug" />
       </Form.Item>
       {err && <p style={{ color: "red", textAlign: "center" }}>{err}</p>}
       {msg && <p style={{ color: "black", textAlign: "center" }}>{msg}</p>}
       <Form.Item label="Check Slug" className="mb-0">
-        <Button
-          onClick={() => {
+        <Button  onClick={() => {
             checkAvailableSlug();
-          }}
-        >
-          Check Availability
-        </Button>
+          }}>Check Availability</Button>
       </Form.Item>
 
-      <Form.Item
-        className="mb-0"
-        name="image"
-        label={<span className="">Image</span>}
-      >
-        <div>
-          <Upload customRequest={customRequest} showUploadList={false} multiple>
-            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-          </Upload>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {files.map((file, index) => (
-              <div key={file.name}>
-                {file.url && (
-                  <div className="h-[170px] w-[170px] bg-[rgba(0,0,0,0.2)] flex items-center justify-center">
-                    <img src={file.url} className="h-[150px] w-[150px]" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+      {/* Image Upload */}
+      <Form.Item className="mb-0" name="image" label="Image">
+        <Upload customRequest={customRequest} showUploadList={false} multiple>
+          <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        </Upload>
+        <div className="flex flex-wrap gap-2 mt-4">
+          {files.map((file, index) => (
+            <div key={file.name}>
+              {file.url && (
+                <div className="h-[170px] w-[170px] bg-[rgba(0,0,0,0.2)] flex items-center justify-center">
+                  <img
+                    src={file.url}
+                    className="h-[150px] w-[150px]"
+                    alt="product"
+                  />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </Form.Item>
 
-      <Form.Item
-        className="mb-0"
-        name="price"
-        label={<span className="">Price</span>}
-      >
+      {/* Price & Discount */}
+      <Form.Item className="mb-0" name="price" label="Price">
         <Input
           className="form-control bg-white"
           placeholder="Price"
           type="number"
         />
       </Form.Item>
-
-      <Form.Item
-        className="mb-0"
-        name="discountPrice"
-        label={<span className="">Discount Price</span>}
-      >
+      <Form.Item className="mb-0" name="discountPrice" label="Discount Price">
         <Input
-          type="number"
           className="form-control bg-white"
           placeholder="Discount Price"
+          type="number"
         />
       </Form.Item>
 
-      <Form.Item
-        className="mb-0"
-        name="SKU"
-        label={<span className="">SKU Number</span>}
-      >
+      {/* SKU, Inventory, Currency */}
+      <Form.Item className="mb-0" name="SKU" label="SKU Number">
         <Input
           className="form-control bg-white"
           placeholder="SKU Number"
-          type="number"
+          type="text"
         />
       </Form.Item>
-      <Form.Item
-        className="mb-0"
-        name="inventory"
-        label={<span className="">Inventory</span>}
-      >
+      <Form.Item className="mb-0" name="inventory" label="Inventory">
         <Input
-          type="number"
           className="form-control bg-white"
           placeholder="Inventory"
+          type="number"
         />
       </Form.Item>
-      <Form.Item
-        className="mb-0"
-        name="description"
-        label={<span className="">Description</span>}
-      >
-        <div ref={quillRef} />
+      <Form.Item className="mb-0" name="currency" label="Currency">
+        <Input className="form-control bg-white" placeholder="Currency" />
       </Form.Item>
 
+      {/* Product Attributes */}
+      <Form.Item className="mb-0" name="description" label="Description">
+        <div ref={quillRef} />
+      </Form.Item>
+      <Form.Item className="mb-0" name="rating" label="Rating">
+        <Input
+          className="form-control bg-white"
+          placeholder="Rating"
+          type="number"
+          min="0"
+          max="5"
+        />
+      </Form.Item>
+      <Form.Item className="mb-0" name="weight" label="Weight">
+        <Input
+          className="form-control bg-white"
+          placeholder="Weight"
+          type="number"
+        />
+      </Form.Item>
+      <Form.Item className="mb-0" name="dimensions" label="Dimensions">
+        <Input className="form-control bg-white" placeholder="Dimensions" />
+      </Form.Item>
+
+      {/* Freebie Products */}
       <Form.Item
         className="mb-0"
-        name="description"
+        name="freebieProductIDs"
+        label="Freebie Products"
+      >
+        <Select
+          mode="multiple"
+          placeholder="Select freebie products"
+          style={{ width: "100%" }}
+          options={[]}
+        />
+      </Form.Item>
+
+      {/* Related Products */}
+      {/* <Form.Item
+        className="mb-0"
+        name="relatedProductIDs"
+        label="Related Products"
+      >
+        <Select
+          mode="multiple"
+          placeholder="Select related products"
+          style={{ width: "100%" }}
+          options={[]}
+        />
+      </Form.Item> */}
+
+      {/* Tags */}
+      <Form.Item
+        className="mb-0"
+        name="tags"
         label={<span className="">Tags</span>}
       >
         <div className="mb-[10px]">
@@ -483,11 +504,36 @@ export default function AddProduct() {
         </div>
       </Form.Item>
 
-      <Flex justify="flex-end" gap={10} className="mt-[10px]">
+      {/* Total Sold, Score, isFeatured, isActive */}
+      {/* <Form.Item className="mb-0" name="totalSold" label="Total Sold">
+        <Input
+          className="form-control bg-white"
+          placeholder="Total Sold"
+          type="number"
+        />
+      </Form.Item> */}
+      {/* <Form.Item className="mb-0" name="score" label="Score">
+        <Input
+          className="form-control bg-white"
+          placeholder="Score"
+          type="number"
+          min="0"
+          max="5"
+        />
+      </Form.Item> */}
+      <Form.Item name="isFeatured" valuePropName="checked" label="Is Featured">
+        <Checkbox>Featured Product</Checkbox>
+      </Form.Item>
+      <Form.Item name="isActive" valuePropName="checked" label="Is Active">
+        <Checkbox>Active Product</Checkbox>
+      </Form.Item>
+
+      {/* Submit */}
+      <Form.Item>
         <Button type="primary" htmlType="submit">
           Add Product
         </Button>
-      </Flex>
+      </Form.Item>
     </Form>
   );
 }

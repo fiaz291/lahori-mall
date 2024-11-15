@@ -47,46 +47,72 @@ model Order {
 }
 
 model Category {
+    id            Int           @id @default(autoincrement())
+    name          String        @unique
+    slug          String        @unique
+    url           String        @unique
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
+    products      Product[]     // Relation to products
+    subCategories SubCategory[] // Relation to subcategories
+}
+
+model SubCategory {
+    id          Int        @id @default(autoincrement())
+    name        String     @unique
+    slug        String     @unique
+    url         String     @unique
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    categoryId  Int        // Foreign key to main Category
+    category    Category   @relation(fields: [categoryId], references: [id])
+    products    Product[]  @relation("ProductSubCategories") // Many-to-many relation with products
+}
+
+model Banner {
     id        Int       @id @default(autoincrement())
     name      String    @unique
     slug      String    @unique
-    url       String?
+    url       String
+    active    Boolean   @default(false)
+    order     Int       @default(1)
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
-    products  Product[] // Relation to products
 }
 
 model Product {
-    id                Int      @id @default(autoincrement())
-    // isActive          Boolean  @default(true)
+    id                Int         @id @default(autoincrement())
+    isActive          Boolean     @default(true)
     name              String
     description       String
     price             Float
-    isDiscount        Boolean  @default(false)
+    isDiscount        Boolean     @default(false)
     discountPrice     Float?
     currency          String?
-    SKU               String   @unique
+    SKU               String      @unique
     inventory         Int
-    categoryId        Int
-    category          Category @relation(fields: [categoryId], references: [id])
+    categoryId        Int         // Main category foreign key
+    category          Category    @relation(fields: [categoryId], references: [id])
     tags              String[]
-    createdAt         DateTime @default(now())
-    updatedAt         DateTime @updatedAt
+    createdAt         DateTime    @default(now())
+    updatedAt         DateTime    @updatedAt
     images            String[]
-    isFeatured        Boolean? @default(false)
-    rating            Float?   @default(4.9)
+    isFeatured        Boolean?    @default(false)
+    rating            Float?      @default(4.9)
     brand             String?
     weight            Float?
     dimensions        String?
-    slug              String   @unique
-    score             Float?   @default(0.7)
+    slug              String      @unique
+    score             Float?      @default(0.1)
     freebieProductIDs Int[]
     relatedProductIDs Int[]
-    // totalSold         Int      @default(0)
+    totalSold         Int         @default(0)
 
-    orderItems OrderItem[] // Relation to order items
-    favorites  Favorite[] // Relation to users who favorited this product
-    cartItems  CartItem[] // Relation to cart items
+    subCategories     SubCategory[] @relation("ProductSubCategories") // Many-to-many relation with subcategories
+
+    orderItems        OrderItem[]
+    favorites         Favorite[]
+    cartItems         CartItem[]
 }
 
 model OrderItem {

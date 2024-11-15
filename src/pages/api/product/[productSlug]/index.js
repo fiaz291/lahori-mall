@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const { productSlug } = req.query;
   switch (method) {
     case "GET":
-      return handleGet(req, res, productSlug);
+      return Get(req, res, productSlug);
     case "PATCH":
       return PATCH(req, res, productSlug);
     case "DELETE":
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   }
 }
 
-async function handleGet(req, res, productSlug) {
+async function Get(req, res, productSlug) {
   try {
     const product = await prisma.product.findUnique({
       where: {
@@ -31,8 +31,8 @@ async function handleGet(req, res, productSlug) {
       include: {
         category: {
           select: {
-            slug: true, // Only select the slug from the category
-            name: true,
+          slug: true, // Only select the slug from the category
+          name: true,
           },
         },
       },

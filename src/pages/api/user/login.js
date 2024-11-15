@@ -25,16 +25,15 @@ const POST = async (req, res) => {
       where: { email },
     });
 
+    console.log(user)
+
     // Check if the user exists
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
     // Check if the password is correct
-    const isPasswordValid = await bcrypt.compare(
-      `${password}${email.length.toString()}`,
-      user.password
-    );
+    const isPasswordValid = password === user.password;
 
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid email or password" });

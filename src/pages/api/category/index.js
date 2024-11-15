@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 }
 
 const POST = async (req, res) => {
-  const { name, slug } = req.body;
+  const { name, slug, url } = req.body;
 
   // Required fields
   const requiredFields = { name, slug };
@@ -44,6 +44,7 @@ const POST = async (req, res) => {
       data: {
         name,
         slug: slug.toLowerCase(),
+        url,
       },
     });
     const data = { category: newCategory, status: 201 };

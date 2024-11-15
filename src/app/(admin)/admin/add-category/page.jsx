@@ -1,6 +1,6 @@
 "use client";
 import config from "@/app/config";
-import { storage, auth } from "@/firebase";
+import { storage } from "@/firebase";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Flex, Form, Input, Progress, Upload, message } from "antd";
 import axios from "axios";
@@ -47,7 +47,7 @@ export default function AddCategory() {
     }
   };
   const onFinish = async (values) => {
-    console.log({ values, file });
+    // console.log({ values, file });
     if (!file) {
       return;
     }
@@ -55,7 +55,7 @@ export default function AddCategory() {
     data.url = file;
     seErr(null);
     setMsg(null);
-
+    console.log({ data });
     try {
       const response = await axios.post(config.url + "/api/category", data);
       if (response.status === 200 && response.data.error) {

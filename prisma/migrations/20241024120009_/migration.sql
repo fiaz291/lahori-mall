@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Product" ADD COLUMN     "isActive" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN     "totalSold" INTEGER NOT NULL DEFAULT 0,
+ALTER COLUMN "score" SET DEFAULT 0.1;

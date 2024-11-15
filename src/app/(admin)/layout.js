@@ -26,6 +26,13 @@ const Routes = [
     breadcrumb: "Add Category",
   },
   {
+    label: "Add Sub Category",
+    //   icon: <HomeIcon width="2" />,
+    key: "/admin/add-subcategory",
+    url: "/admin/add-subcategory",
+    breadcrumb: "Add Category",
+  },
+  {
     label: "Add Product",
     //   icon: <HomeIcon width="2" />,
     key: "/admin/add-product",
