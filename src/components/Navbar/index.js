@@ -1,18 +1,19 @@
 "use client";
 import React, { useCallback, useState } from "react";
-import Search from "antd/es/input/Search";
 import { COLORS } from "@/constants";
 import Modal from "antd/es/modal/Modal";
 import SignupForm from "../SignupForm";
 import LoginForm from "../LoginForm";
 import UserProfileMenu from "../UserProfileMenu";
 import useWindowSize from "@/app/hooks/windowSize";
-import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  SearchOutlined,
+  ShoppingCartOutlined,
+} from "@ant-design/icons";
 import useAuthUser from "@/app/hooks/authUser";
 import { Badge, Drawer, Flex } from "antd";
 import Link from "next/link";
-import { useStore } from "@tanstack/react-store";
-import { store } from "@/app/store";
 import useCartItems from "@/app/hooks/cartItems";
 import { useRouter } from "next/navigation";
 
@@ -60,7 +61,7 @@ export default function Navbar() {
         isCollapsed ? "gap-1" : "gap-4"
       }`}
     >
-      {!isCollapsed && (
+      {/* {!isCollapsed && (
         <div
           className={`flex w-full p-1 bg-black pl-3 pr-3  ${
             isCollapsed
@@ -73,15 +74,15 @@ export default function Navbar() {
             save big at our store!
           </p>
         </div>
-      )}
+      )} */}
       <div
         className={`flex ${"justify-between"} pl-[30px] px-4 items-center w-full max-w-[1200px] ${
           !isCollapsed ? "pt-8" : "pt-2"
         }`}
       >
         <img
-          src="/logo.png"
-          className="w-[80px] h-[80px] cursor-pointer hover:opacity-80"
+          src="/logo-dark.png"
+          className="w-[200px] h-[80px] cursor-pointer hover:opacity-80"
           onClick={() => {
             handleRedirect("/");
           }}
@@ -192,7 +193,7 @@ export default function Navbar() {
         {!isCollapsed && (
           <>
             <Flex vertical>
-              <div className="flex gap-8">
+              {/* <div className="flex gap-8">
                 {navButtons.map((button) => (
                   <button
                     key={button}
@@ -202,15 +203,25 @@ export default function Navbar() {
                     {button}
                   </button>
                 ))}
-              </div>
-              <Search
+              </div> */}
+              {/* <Search
                 className="text-[14px] mt-[10px]"
                 placeholder="SEARCH PRODUCTS"
                 allowClear
                 enterButton="FIND"
                 size="large"
                 onSearch={() => {}}
-              />
+              /> */}
+              <div className="relative">
+                <input
+                  type="text"
+                  className="min-w-[554px] outline-none h-[45px] pl-6 pr-6 rounded-3xl"
+                  style={{ border: "2px solid #067DFD" }}
+                />
+                <div className="absolute right-4 top-2 text-[24px] cursor-pointer hover:opacity-60 text-[#067DFD]">
+                  <SearchOutlined />
+                </div>
+              </div>
             </Flex>
             <UserProfileMenu
               handleRedirect={handleRedirect}
