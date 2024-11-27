@@ -8,43 +8,75 @@ generator client {
 }
 
 model User {
-    id             Int       @id @default(autoincrement())
-    username       String    @unique
-    email          String    @unique
-    password       String
-    createdAt      DateTime  @default(now())
-    updatedAt      DateTime  @updatedAt
-    firstName      String?
-    lastName       String?
-    phoneNumber    String
-    address        String?
-    city           String?
-    state          String?
-    zipCode        String?
-    country        String?
-    role           String    @default("customer")
-    isVerified     Boolean   @default(false)
-    lastLogin      DateTime?
-    profilePicture String?
-    dateOfBirth    DateTime?
-    isActive       Boolean   @default(true)
+  id             Int       @id @default(autoincrement())
+  username       String    @unique
+  email          String    @unique
+  password       String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  firstName      String?
+  lastName       String?
+  phoneNumber    String
+  address        String?
+  city           String?
+  state          String?
+  zipCode        String?
+  country        String?
+  role           String    @default("customer")
+  isVerified     Boolean   @default(false)
+  lastLogin      DateTime?
+  profilePicture String?
+  dateOfBirth    DateTime?
+  isActive       Boolean   @default(true)
 
-    orders    Order[] // Relation to orders
-    favorites Favorite[] // Relation to users who favorited this product
-    cartItems CartItem[] // Relation to cart items
+  orders         Order[] 
+  favorites      Favorite[] 
+  cartItems      CartItem[] 
+  vouchers       UserVoucher[] // Relation to user-voucher linking table
+  financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
 }
 
 model Order {
-    id          Int      @id @default(autoincrement())
-    userId      Int
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    totalAmount Float
-    status      String
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  totalAmount Float
+  status      String
 
-    user       User        @relation(fields: [userId], references: [id]) // Foreign key to User
-    orderItems OrderItem[] // Relation to order items
+  user        User        @relation(fields: [userId], references: [id]) // Foreign key to User
+  orderItems  OrderItem[] // Relation to order items
+  vouchers    UserVoucher[] // Vouchers applied to this order
+  financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
 }
+
+model Voucher {
+  id           Int       @id @default(autoincrement())
+  code         String    @unique
+  amount       Float     // Cash value of the voucher
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  expiresAt    DateTime? // Optional expiration date
+  description  String?   // Details about the voucher
+  userVouchers UserVoucher[] // Relation to user-voucher linking table
+  financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
+}
+
+model UserVoucher {
+  id           Int       @id @default(autoincrement())
+  userId       Int       // Reference to the User model
+  voucherId    Int       // Reference to the Voucher model
+  orderId      Int?      // Reference to the Order model where it was used
+  isUsed       Boolean   @default(false) // Whether the voucher has been used
+  usedAt       DateTime? // Date when the voucher was used
+
+  user         User      @relation(fields: [userId], references: [id])
+  voucher      Voucher   @relation(fields: [voucherId], references: [id])
+  order        Order?    @relation(fields: [orderId], references: [id])
+
+  createdAt    DateTime  @default(now())
+}
+
 
 model Category {
     id            Int           @id @default(autoincrement())
@@ -152,3 +184,22 @@ model CartItem {
 
     @@unique([userId, productId]) // Ensure unique combination of userId and productId
 }
+
+
+model FinancialTransaction {
+  id             Int       @id @default(autoincrement())
+  userId         Int?      // Optional: reference to the user involved (null for system-level transactions)
+  orderId        Int?      // Optional: reference to the associated order
+  voucherId      Int?      // Optional: reference to the voucher (if a discount was applied)
+  transactionType String    // e.g., "order", "refund", "voucher", "adjustment"
+  amount         Float     // Positive for income, negative for expenses/refunds
+  currency       String    // Currency type (e.g., USD, EUR)
+  description    String?   // Optional: description or notes about the transaction
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user           User?     @relation(fields: [userId], references: [id])
+  order          Order?    @relation(fields: [orderId], references: [id])
+  voucher        Voucher?  @relation(fields: [voucherId], references: [id])
+}
+
