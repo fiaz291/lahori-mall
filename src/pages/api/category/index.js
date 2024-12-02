@@ -6,10 +6,14 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       return POST(req, res);
+    case "PUT":
+      return PUT(req, res);
+    case "PATCH":
+      return PATCH(req, res);
     case "GET":
       return GET(req, res);
     default:
-      res.setHeader("Allow", ["POST", "GET"]);
+      res.setHeader("Allow", ["POST", "GET", "PUT", "PATCH"]);
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
@@ -41,6 +45,63 @@ const POST = async (req, res) => {
     }
 
     const newCategory = await prisma.category.create({
+      data: {
+        name,
+        slug: slug.toLowerCase(),
+        url,
+      },
+    });
+    const data = { category: newCategory, status: 201 };
+    res.status(201).json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+const PUT = async (req, res) => {
+  const { name, slug, url } = req.body;
+
+  try {
+    const existingSlug = await prisma.category.findUnique({
+      where: { slug },
+    });
+
+    if (existingSlug) {
+      return res
+        .status(200)
+        .json({ error: "Slug already in use", errorCode: 2 });
+    }
+
+    const newCategory = await prisma.category.update({
+       where: { slug },
+      data: {
+        name,
+        slug: slug.toLowerCase(),
+        url,
+      },
+    });
+    const data = { category: newCategory, status: 201 };
+    res.status(201).json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const PATCH = async (req, res) => {
+  const { name, slug, url } = req.body;
+
+  try {
+    const existingSlug = await prisma.category.findUnique({
+      where: { slug },
+    });
+
+    if (existingSlug) {
+      return res
+        .status(200)
+        .json({ error: "Slug already in use", errorCode: 2 });
+    }
+
+    const newCategory = await prisma.category.update({
+      where: { slug },
       data: {
         name,
         slug: slug.toLowerCase(),
