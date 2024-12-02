@@ -233,6 +233,8 @@ const PATCH = async (req, res) => {
 
 export const GET = async (req, res) => {
   try {
+    const searchParams = req.nextUrl.searchParams
+  const query = searchParams.get('query')
     let products = {
       new: [],
       onSale: [],
@@ -255,14 +257,12 @@ export const GET = async (req, res) => {
       return array;
     }
 
-    const values = [ENUMS.latest, ENUMS.onSale, ENUMS.topWeek];
-    for (const val of values) {
-      const result = await innerHandlerForProducts(val);
-      if (val === ENUMS.latest) {
+      const result = await innerHandlerForProducts(query);
+      if (query === ENUMS.latest) {
         products.new = result;
-      } else if (val === ENUMS.onSale) {
+      } else if (query === ENUMS.onSale) {
         products.onSale = result;
-      } else if (val === ENUMS.topWeek) {
+      } else if (query === ENUMS.topWeek) {
         if (result.length > 5) {
           products.topWeek = result;
         } else {
@@ -271,7 +271,7 @@ export const GET = async (req, res) => {
           products.topWeek = splicedArray;
         }
       }
-    }
+    
 
     const data = { products, status: 200 };
     res.status(200).json(data);
