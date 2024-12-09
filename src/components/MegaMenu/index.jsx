@@ -336,7 +336,7 @@ const menu = {
 
   
 const inlineStyles = {
-  zIndex: 100,
+  zIndex: 999999999,
 };
 export default function MegaMenu({
   open,
@@ -372,7 +372,7 @@ export default function MegaMenu({
       }}
     >
       <List
-        className="w-[170px]"
+        className="w-[185px]"
         style={{ borderRadius: "unset", background: "white" }}
         bordered
         dataSource={Object.keys(menu)}
@@ -391,8 +391,8 @@ export default function MegaMenu({
       />
       {!!selectedMenu && (
         <Flex
-          className="absolute left-[170px] top-0 p-2 h-[187px]"
-          style={{ border: "1px solid rgba(0,0,0,0.4)", borderLeft: "none" }}
+          className="absolute left-[185px] top-0 p-2 h-[402px] bg-white"
+          style={{ border: "1px solid rgba(0,0,0,0.4)", borderLeft: "none", zIndex: 100 }}
           gap={4}
         >
           {(selectedMenu?.items || [])

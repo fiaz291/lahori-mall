@@ -19,7 +19,7 @@ export default function Footer() {
             <p className="text-sm md:text-base lg:text-lg">
               Download our new app today! Don&apos;t miss our mobile-only offers
             </p>
-            <button className="p-2 md:p-3 px-4 md:px-7 rounded-md text-sm md:text-base bg-[#00803e]  text-white">
+            <button className="p-2 md:p-3 px-4 md:px-7 rounded-md text-sm md:text-base bg-[#CD2E3A]  text-white">
               Shop Now
             </button>
           </div>
@@ -28,27 +28,27 @@ export default function Footer() {
           <div className="flex flex-col gap-6 items-center md:items-start">
             <div className="flex flex-col gap-4 justify-center items-center w-full md:w-auto">
               <img
-                src="/logo.png"
-                className="w-[120px] h-[120px] md:w-[220px] md:h-[220px]"
+                src="/logo-dark.png"
+                className="w-[240px] h-[120px]"
               />
-              <p className="text-base md:text-lg">Rehman Garden Lahore</p>
+              <p className="text-base md:text-lg">Some Location of store</p>
             </div>
             <p className="font-extralight text-base md:text-lg text-[#949494]">
               FOLLOW US
             </p>
-            <div className="flex gap-4 md:gap-6 text-[#00803e] text-lg md:text-xl">
-              <FaFacebookF className="cursor-pointer" />
-              <FaTwitter className="cursor-pointer" />
-              <FaInstagram className="cursor-pointer" />
-              <FaLinkedinIn className="cursor-pointer" />
-              <FaWhatsapp className="cursor-pointer" />
+            <div className="flex gap-4 md:gap-6 text-[#1677ff] text-lg md:text-xl">
+              <FaFacebookF className="cursor-pointer text-[#1877F2]" />
+              <img src="/x.jpg" className="w-[18px] h-[18px] cursor-pointer"/>
+              {/* <FaTwitter className="cursor-pointer text-[#1DA1F2]" /> */}
+              <FaInstagram className="cursor-pointer text-[#CD2E3A]" />
+              <FaWhatsapp className="cursor-pointer  text-[#075e54]" />
             </div>
           </div>
           <div className="flex flex-col">
             <div className="h-10 md:h-20"></div>
             <div className="grid items-start gap-10 md:gap-20 grid-cols-1 md:grid-cols-3">
               <div className="flex flex-col gap-2 md:gap-3">
-                <p className="text-lg md:text-xl text-[#00803e] mb-2 md:mb-4 font-normal">
+                <p className="text-lg md:text-xl text-[#CD2E3A] mb-2 md:mb-4 font-normal">
                   COMPANY
                 </p>
                 <p className="cursor-pointer">Profile</p>
@@ -57,7 +57,7 @@ export default function Footer() {
                 <p className="cursor-pointer">Address</p>
               </div>
               <div className="flex flex-col gap-2 md:gap-3">
-                <p className="text-lg md:text-xl text-[#00803e] mb-2 md:mb-4 font-normal">
+                <p className="text-lg md:text-xl text-[#CD2E3A] mb-2 md:mb-4 font-normal">
                   COMMUNITY
                 </p>
                 <p className="cursor-pointer">Facebook</p>
@@ -66,13 +66,12 @@ export default function Footer() {
                 <p className="cursor-pointer">LinkedIn</p>
               </div>
               <div className="flex flex-col gap-2 md:gap-3">
-                <p className="text-lg md:text-xl text-[#00803e] mb-2 md:mb-4 font-normal">
+                <p className="text-lg md:text-xl text-[#CD2E3A] mb-2 md:mb-4 font-normal">
                   RETURNS
                 </p>
                 <p className="cursor-pointer">FAQs</p>
                 <p className="cursor-pointer">Size Guide</p>
                 <p className="cursor-pointer">Contact Us</p>
-                <p className="cursor-pointer">Sell With Us</p>
                 <p className="cursor-pointer">Sell With Us</p>
                 <p className="cursor-pointer">Sitemap FAQs</p>
               </div>
@@ -86,7 +85,7 @@ export default function Footer() {
             <p>Contact Us</p>
           </div>
           <div className="text-center md:text-left">
-            Copyright © Lahori Mall Impex
+            Copyright © The Korean Stop
           </div>
         </div>
       </div>

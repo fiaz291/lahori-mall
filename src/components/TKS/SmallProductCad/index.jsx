@@ -11,13 +11,12 @@ const SmallProductCard = ({title}) => {
       hoverable
       className="small-product-card"
       style={{
-        width: 270,
+        width: 250,
         display: "flex",
         flexDirection: "row",
         height: "auto",
         marginTop: 30,
         marginBottom: 30,
-        marginLeft: 30,
       }}
     >
       {/* Image on the left */}
@@ -63,78 +62,6 @@ const SmallProductCard = ({title}) => {
             <TextComponent size={16} weight={700}>
               2,299,000 AED
             </TextComponent>
-
-            {/* Price and Discount */}
-            {/* <div className="box__price--coupon box__price">
-              <span className="text__item--title">
-                <Row gutter={8}>
-                  <Col>
-                    <TextComponent type="danger">
-                      Coupon applied price
-                    </TextComponent>
-                  </Col>
-                  <Col>
-                    <TextComponent strike={true}>2,570,330 AED</TextComponent>
-                  </Col>
-                </Row>
-              </span>
-              <div className="box__price--sale">
-                <Row gutter={8}>
-                  <Col>
-                    <TextComponent type="danger" bold size={16}>
-                      10%
-                    </TextComponent>
-                  </Col>
-                  <Col>
-                    <TextComponent bold={true} size={16}>
-                      2,299,000 AED
-                    </TextComponent>
-                  </Col>
-                </Row>
-              </div>
-            </div> */}
-            {/* Product Title */}
-            {/* <p
-              className="text__itemcard-title"
-              style={{
-                fontWeight: "bold",
-                marginTop: 10,
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                WebkitLineClamp: 2, // Limits to 2 lines
-                textOverflow: "ellipsis",
-                fontSize: "14px",
-              }}
-            >
-              Samsung Bespoke Grande AI One Body WF2520HCEED Detergent Automatic
-              25KG+20KG Washer Dryer Gray
-            </p> */}
-            {/* Delivery Info */}
-            {/* <Row gutter={1} style={{ marginTop: 10 }}>
-              <Col> */}
-            {/* SHIPPING PRICE */}
-            {/* <Tag style={{ fontSize: 8 }} color="green">
-                  Free Shipping
-                </Tag>
-              </Col>
-              <Col> */}
-            {/* SOLD COUNT */}
-            {/* <Tag style={{ fontSize: 8 }} color="orange">
-                  Purchase 119
-                </Tag>
-              </Col>
-            </Row> */}
-            {/* Payment Discount */}
-            {/* <div
-              className="box__itemcard-nudging-group"
-              style={{ marginTop: 10 }}
-            >
-              <TextComponent type="success" bold>
-                <CheckCircleOutlined style={{ marginRight: 4 }} />
-                7% discount on payment
-              </TextComponent>
-            </div> */}
           </div>
         </Link>
       </div>

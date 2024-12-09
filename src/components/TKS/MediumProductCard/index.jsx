@@ -15,7 +15,7 @@ const MediumProductCard = () => {
           src="//image.gmarket.co.kr/hanbando/202411/144ec47d-f3fb-4543-9de3-a78313aa7e22.jpg"
         />
       }
-      style={{ width: 300 }}
+      style={{ width: 'auto' }}
     >
       <Link
         href="http://item.gmarket.co.kr/Item?goodsCode=3883121456"

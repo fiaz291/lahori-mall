@@ -57,9 +57,8 @@ export default function Navbar() {
 
   return (
     <div
-      className={`flex flex-col justify-center items-center ${
-        isCollapsed ? "gap-1" : "gap-4"
-      }`}
+      className={`flex flex-col justify-center items-center ${isCollapsed ? "gap-1" : "gap-4"
+        }`}
     >
       {/* {!isCollapsed && (
         <div
@@ -76,9 +75,8 @@ export default function Navbar() {
         </div>
       )} */}
       <div
-        className={`flex ${"justify-between"} pl-[30px] px-4 items-center w-full max-w-[1200px] ${
-          !isCollapsed ? "pt-8" : "pt-2"
-        }`}
+        className={`flex ${"justify-between"} pl-[30px] px-4 items-center w-full max-w-[1200px] ${!isCollapsed ? "pt-8" : "pt-2"
+          }`}
       >
         <img
           src="/logo-dark.png"
@@ -223,7 +221,18 @@ export default function Navbar() {
                 </div>
               </div>
             </Flex>
-            <UserProfileMenu
+            <Flex gap={30}>
+              <div>
+                <img src="/icons/userIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+              </div>
+              <div>
+                <img src="/icons/recentProductsIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+              </div>
+              <div>
+                <img src="/icons/cartIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+              </div>
+            </Flex>
+            {/* <UserProfileMenu
               handleRedirect={handleRedirect}
               cartLoading={cartLoading}
               cartCount={getCartCount()}
@@ -233,7 +242,7 @@ export default function Navbar() {
               user={user}
               userLoading={userLoading}
               logout={logout}
-            />
+            /> */}
           </>
         )}
       </div>

@@ -7,19 +7,37 @@ import Navbar from "@/components/Navbar";
 import useWindowSize from "./hooks/windowSize";
 import NewTrending from "@/components/NewTrending";
 import Footer from "@/components/Footer";
+import BestSellingSlider from "@/components/BestSellingSlider";
+import HomeTabsProducts from "@/components/HomeTabsProducts";
+import TKSServices from "@/components/TKSServices";
+import TKSHomePageProducts from "@/components/TKSHomePageProducts";
 
 export default function Home() {
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between pb-12`}
     >
-      <div className="max-w-[1440px] w-full">
+      <div className="w-full">
         <Navbar />
         <HomePageSlider />
-        <HomePageServicesIcons />
-        <HomeProducts />
+        <div className="outer">
+          <div className="inner">
+            <div className="w-full h-[100px] mt-[26px]" style={{borderRadius: 20, background: "linear-gradient(to right, #f953c6, #b91d73, #ff0066)"}} />
+          </div>
+        </div>
+        {/* <HomePageServicesIcons /> */}
+        <BestSellingSlider />
+        <HomeTabsProducts />
+        <div className="outer">
+          <div className="inner">
+            <div className="w-full h-[100px] mt-[26px]" style={{borderRadius: 20, background: "linear-gradient(to right, #f953c6, #b91d73, #ff0066)"}} />
+          </div>
+        </div>
+        <TKSServices />
+        <TKSHomePageProducts />
+        {/* <HomeProducts /> */}
         <AppBanner />
-        <NewTrending />
+        {/* <NewTrending /> */}
         <Footer />
       </div>
     </main>
