@@ -1,11 +1,11 @@
 "use client";
 import config from "@/app/config";
-import { storage } from "@/firebase";
+// import { storage } from "@/firebase";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Flex, Form, Input, Progress, Upload, message } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+// import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export default function AddCategory() {
   const [err, seErr] = useState(null);
@@ -76,37 +76,37 @@ export default function AddCategory() {
 
   const onFinishFailed = (errorInfo) => {};
 
-  const handleUpload = ({ file }) => {
-    const storageRef = ref(storage, `uploads/${file.name}`);
-    const token = "admin";
-    const uploadTask = uploadBytesResumable(storageRef, file, {
-      customMetadata: {
-        token,
-      },
-    });
-    setIsUploading(true);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setUploadProgress(progress);
-      },
-      (error) => {
-        message.error(`${file.name} file upload failed.`);
-        setIsUploading(false);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setFile(downloadURL);
-          message.success(`${file.name} file uploaded successfully`);
-        });
-        setIsUploading(false);
-      }
-    );
-  };
+  // const handleUpload = ({ file }) => {
+  //   const storageRef = ref(storage, `uploads/${file.name}`);
+  //   const token = "admin";
+  //   const uploadTask = uploadBytesResumable(storageRef, file, {
+  //     customMetadata: {
+  //       token,
+  //     },
+  //   });
+  //   setIsUploading(true);
+  //   uploadTask.on(
+  //     "state_changed",
+  //     (snapshot) => {
+  //       const progress =
+  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //       setUploadProgress(progress);
+  //     },
+  //     (error) => {
+  //       message.error(`${file.name} file upload failed.`);
+  //       setIsUploading(false);
+  //     },
+  //     () => {
+  //       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+  //         setFile(downloadURL);
+  //         message.success(`${file.name} file uploaded successfully`);
+  //       });
+  //       setIsUploading(false);
+  //     }
+  //   );
+  // };
   const customRequest = ({ file, onSuccess }) => {
-    handleUpload({ file });
+    // handleUpload({ file });
     onSuccess("ok");
   };
 

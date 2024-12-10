@@ -13,8 +13,8 @@ import {
 } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { storage } from "@/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+// import { storage } from "@/firebase";
+// import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { UploadOutlined } from "@ant-design/icons";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css"; // Add css for snow theme
@@ -39,25 +39,25 @@ export default function AddProduct() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const getAllCategories = async () => {
-      setLoading(true);
-      const response = await axios.get(config.url + "/api/category");
-      if (
-        response &&
-        response.data.categories &&
-        response.data.categories.length > 0
-      ) {
-        const cats = response.data.categories.map((cat) => {
-          return { value: cat.id, label: cat.name };
-        });
-        setCatgories(cats);
-      }
-      setLoading(false);
-    };
+  // useEffect(() => {
+  //   const getAllCategories = async () => {
+  //     setLoading(true);
+  //     const response = await axios.get(config.url + "/api/category");
+  //     if (
+  //       response &&
+  //       response.data.categories &&
+  //       response.data.categories.length > 0
+  //     ) {
+  //       const cats = response.data.categories.map((cat) => {
+  //         return { value: cat.id, label: cat.name };
+  //       });
+  //       setCatgories(cats);
+  //     }
+  //     setLoading(false);
+  //   };
 
-    getAllCategories();
-  }, []);
+  //   getAllCategories();
+  // }, []);
   const checkAvailableSlug = async () => {
     seErr(null);
     setMsg(null);
@@ -130,61 +130,61 @@ export default function AddProduct() {
   }, [quill]);
 
   const onFinishFailed = (errorInfo) => {};
-  const handleUpload = (file) => {
-    const storageRef = ref(storage, `uploads/${file.name}`);
-    const token = "admin";
-    const uploadTask = uploadBytesResumable(storageRef, file, {
-      customMetadata: {
-        token,
-      },
-    });
+  // const handleUpload = (file) => {
+  //   const storageRef = ref(storage, `uploads/${file.name}`);
+  //   const token = "admin";
+  //   const uploadTask = uploadBytesResumable(storageRef, file, {
+  //     customMetadata: {
+  //       token,
+  //     },
+  //   });
 
-    setIsUploading(true);
+  //   setIsUploading(true);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //   uploadTask.on(
+  //     "state_changed",
+  //     (snapshot) => {
+  //       const progress =
+  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-        setUploadProgress((prevProgress) => {
-          const updatedProgress = [...prevProgress];
-          const fileIndex = files.findIndex((f) => f.name === file.name);
-          if (fileIndex > -1) {
-            updatedProgress[fileIndex] = progress;
-          } else {
-            updatedProgress.push(progress);
-          }
-          return updatedProgress;
-        });
-      },
-      (error) => {
-        message.error(`${file.name} file upload failed.`);
-        setIsUploading(false);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setFiles((prevFiles) => {
-            const updatedFiles = [...prevFiles];
-            const fileIndex = updatedFiles.findIndex(
-              (f) => f.name === file.name
-            );
-            if (fileIndex > -1) {
-              updatedFiles[fileIndex].url = downloadURL;
-            } else {
-              updatedFiles.push({ name: file.name, url: downloadURL });
-            }
-            return updatedFiles;
-          });
-          message.success(`${file.name} file uploaded successfully`);
-        });
-        setIsUploading(false);
-      }
-    );
-  };
+  //       setUploadProgress((prevProgress) => {
+  //         const updatedProgress = [...prevProgress];
+  //         const fileIndex = files.findIndex((f) => f.name === file.name);
+  //         if (fileIndex > -1) {
+  //           updatedProgress[fileIndex] = progress;
+  //         } else {
+  //           updatedProgress.push(progress);
+  //         }
+  //         return updatedProgress;
+  //       });
+  //     },
+  //     (error) => {
+  //       message.error(`${file.name} file upload failed.`);
+  //       setIsUploading(false);
+  //     },
+  //     () => {
+  //       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+  //         setFiles((prevFiles) => {
+  //           const updatedFiles = [...prevFiles];
+  //           const fileIndex = updatedFiles.findIndex(
+  //             (f) => f.name === file.name
+  //           );
+  //           if (fileIndex > -1) {
+  //             updatedFiles[fileIndex].url = downloadURL;
+  //           } else {
+  //             updatedFiles.push({ name: file.name, url: downloadURL });
+  //           }
+  //           return updatedFiles;
+  //         });
+  //         message.success(`${file.name} file uploaded successfully`);
+  //       });
+  //       setIsUploading(false);
+  //     }
+  //   );
+  // };
 
   const customRequest = ({ file, onSuccess }) => {
-    handleUpload(file);
+    // handleUpload(file);
     onSuccess("ok");
   };
 
@@ -198,9 +198,9 @@ export default function AddProduct() {
     copiedTags.push(tag);
     setSelectedTags(copiedTags);
   };
-  if (loading) {
-    return <Loader width={200} height={200} />;
-  }
+  // if (loading) {
+  //   return <Loader width={200} height={200} />;
+  // }
   return (
     <Form
       name="basic"
@@ -238,7 +238,7 @@ export default function AddProduct() {
       </Form.Item>
 
       {/* Category */}
-      <Form.Item
+      {/* <Form.Item
         className="mb-0"
         name="categoryId"
         label="Category"
@@ -250,7 +250,7 @@ export default function AddProduct() {
           style={{ width: "100%" }}
           options={categories}
         />
-      </Form.Item>
+      </Form.Item> */}
 
       {/* Subcategories */}
       <Form.Item className="mb-0" name="subCategories" label="Subcategories">
@@ -390,7 +390,7 @@ export default function AddProduct() {
       </Form.Item> */}
 
       {/* Tags */}
-      <Form.Item
+      {/* <Form.Item
         className="mb-0"
         name="tags"
         label={<span className="">Tags</span>}
@@ -502,7 +502,7 @@ export default function AddProduct() {
             ))}
           </div>
         </div>
-      </Form.Item>
+      </Form.Item> */}
 
       {/* Total Sold, Score, isFeatured, isActive */}
       {/* <Form.Item className="mb-0" name="totalSold" label="Total Sold">
