@@ -26,7 +26,8 @@ First, run the development server:
 
 
 # start db 
-psql -U postgres
+<!-- psql -U postgres -->
+pg_ctl -D /usr/local/var/postgres start
 
 DATABASE_URL=postgresql://postgres:11223344@localhost:5432/testdb
 

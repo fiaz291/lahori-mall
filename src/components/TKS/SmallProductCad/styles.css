@@ -1,0 +1,4 @@
+.small-product-card > .ant-card-body {
+  display: flex;
+  padding: 0px !important;
+}

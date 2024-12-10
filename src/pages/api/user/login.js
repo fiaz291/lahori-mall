@@ -25,7 +25,6 @@ const POST = async (req, res) => {
       where: { email },
     });
 
-    console.log(user)
 
     // Check if the user exists
     if (!user) {

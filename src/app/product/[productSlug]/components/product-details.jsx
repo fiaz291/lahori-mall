@@ -11,10 +11,12 @@ import config from "@/app/config";
 import { store } from "@/app/store";
 import useCartItems from "@/app/hooks/cartItems";
 import IncDecCounter from "@/components/IncrementDecrementCounter";
-import { Modal, message } from "antd";
+import { Collapse, Modal, message } from "antd";
 import LoginForm from "@/components/LoginForm";
 import SignupForm from "@/components/SignupForm";
 import useFavorites from "@/app/hooks/favorites";
+import BestSellingSlider from "@/components/BestSellingSlider";
+import TKSHomePageProducts from "@/components/TKSHomePageProducts";
 
 const responsive = {
   superLargeDesktop: {
@@ -34,6 +36,30 @@ const responsive = {
     items: 5,
   },
 };
+
+const text = `
+  A dog is a type of domesticated animal.
+  Known for its loyalty and faithfulness,
+  it can be found as a welcome guest in many households across the world.
+`;
+const items = [
+  {
+    key: '1',
+    label: 'Some Information about product',
+    children: <p>{text}</p>,
+  },
+  {
+    key: '2',
+    label: 'Is there any discount card available',
+    children: <p>{text}</p>,
+  },
+  {
+    key: '3',
+    label: 'Get your additional points for later use',
+    children: <p>{text}</p>,
+  },
+];
+
 export default function Product_Details({ prod }) {
   const [quantity, setQuantity] = useState(1);
   const [mainImage, setMainImage] = useState(
@@ -129,17 +155,20 @@ export default function Product_Details({ prod }) {
   const debouncedHandleAddToFavorite = debounce(handleAddToFavorite, 300);
 
   return (
+    
+    <div>
     <div className="flex flex-col md:flex-row w-full gap-4">
-      <div className="flex flex-col gap-2 md:gap-3 w-full md:w-2/3">
+      
+      <div className="flex flex-col gap-2 md:gap-3 w-full md:w-10/24">
         <div className="border border-slate-400">
           <img
-            src={mainImage}
+            src={"/product.webp" }
             className="w-full h-full object-cover"
             alt="product"
           />
         </div>
         <div>
-          <Carousel responsive={responsive} showDots={true}>
+          {/* <Carousel responsive={responsive} showDots={true}>
             {prod?.images?.map((img, index) => (
               <div
                 key={index}
@@ -157,16 +186,16 @@ export default function Product_Details({ prod }) {
                 </div>
               </div>
             ))}
-          </Carousel>
+          </Carousel> */}
         </div>
       </div>
-      <div className="flex flex-col h-auto w-full md:w-1/3 md:px-4 gap-2 ">
+      <div className="flex flex-col h-auto w-full md:w-14/24 md:px-4 gap-2 ">
         {/* <div className="bg-green-100 text-[#007f3e] p-[6px] px-3 text-sm md:text-base rounded-md font-semibold flex items-center gap-2">
           <CheckCircleFilled />
           Free shipping for this item
         </div> */}
         <p className="text-base md:text-lg font-semibold">
-          {prod?.name}
+          {prod?.name || "BEAUTY OF JOSEON Glow Serum : Propolis+Niacinamide"}
           {/* 20 Piece Dinner Set Porcelain Ivory White Dinnerware with Pink Flower
           Pattern Plates and Bowls Services for 4 */}
         </p>
@@ -176,22 +205,22 @@ export default function Product_Details({ prod }) {
             className="text-[32px] md:text-[24px] font-semibold"
             style={{ color: COLORS.red }}
           >
-            {prod?.price} PKR
+            {prod?.price} AED 8900
           </p>
         )}
         {prod?.isDiscount && (
           <>
             <p
               className="text-[32px] md:text-[24px] font-semibold"
-              style={{ color: COLORS.red }}
+              style={{ color: "#CD2E3A" }}
             >
-              {prod?.discountPrice} PKR
+              {prod?.discountPrice} AED
             </p>
             <p
               className="text-[14px] md:text-[14px] font-semibold line-through"
-              style={{ color: COLORS.gray }}
+              style={{ color: "#0047A0" }}
             >
-              {prod?.price} PKR
+              {prod?.price} AED
             </p>
           </>
         )}
@@ -220,7 +249,7 @@ export default function Product_Details({ prod }) {
           /> */}
         </div>
         <button
-          className="bg-[#007f3e] mb-[-4px] text-white py-2 px-4 rounded-full w-full text-base md:text-lg"
+          className="bg-[#0047A0] mb-[-4px] text-white py-2 px-4 rounded-full w-full text-base md:text-lg"
           disabled={loading}
           onClick={() => {
             if (!user) {
@@ -272,7 +301,7 @@ export default function Product_Details({ prod }) {
         </div> */}
         <div className="flex items-center gap-2 text-[#007f3e] mt-4">
           <CheckCircleFilled />
-          <p className="font-semibold">Lahori Mall Commitments</p>
+          <p className="font-semibold">TKS Commitments</p>
         </div>
         <div className="text-sm md:text-base text-gray-600 mt-2">
           <div className="flex items-start gap-2">
@@ -285,7 +314,7 @@ export default function Product_Details({ prod }) {
               </ul>
             </div>
           </div>
-          <div className="flex items-start gap-2 mt-2">
+          <div className="flex items-start gap-2 mt-2 mb-[20px]">
             <div className="text-[#007f3e]">✔</div>
             <div>
               <p className="font-semibold">Delivery guarantee</p>
@@ -295,8 +324,10 @@ export default function Product_Details({ prod }) {
               </ul>
             </div>
           </div>
+          <Collapse accordion items={items} />
         </div>
       </div>
+      
       <Modal
         open={openModal}
         closable={false}
@@ -311,6 +342,14 @@ export default function Product_Details({ prod }) {
           <SignupForm setOpenModal={setOpenModal} setIsLogin={setIsLogin} />
         )}
       </Modal>
+      
+    </div>
+    <BestSellingSlider />
+      <div className="mt-[20px]">
+
+    <TKSHomePageProducts />
+      </div>
+
     </div>
   );
 }

@@ -1,154 +1,215 @@
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model User {
-    id             Int       @id @default(autoincrement())
-    username       String    @unique
-    email          String    @unique
-    password       String
-    createdAt      DateTime  @default(now())
-    updatedAt      DateTime  @updatedAt
-    firstName      String?
-    lastName       String?
-    phoneNumber    String
-    address        String?
-    city           String?
-    state          String?
-    zipCode        String?
-    country        String?
-    role           String    @default("customer")
-    isVerified     Boolean   @default(false)
-    lastLogin      DateTime?
-    profilePicture String?
-    dateOfBirth    DateTime?
-    isActive       Boolean   @default(true)
+  id             Int       @id @default(autoincrement())
+  username       String    @unique
+  email          String    @unique
+  password       String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  firstName      String?
+  lastName       String?
+  phoneNumber    String
+  address        String?
+  city           String?
+  state          String?
+  zipCode        String?
+  country        String?
+  role           String    @default("customer")
+  isVerified     Boolean   @default(false)
+  lastLogin      DateTime?
+  profilePicture String?
+  dateOfBirth    DateTime?
+  isActive       Boolean   @default(true)
 
-    orders    Order[] // Relation to orders
-    favorites Favorite[] // Relation to users who favorited this product
-    cartItems CartItem[] // Relation to cart items
+  orders                Order[]
+  favorites             Favorite[]
+  cartItems             CartItem[]
+  vouchers              UserVoucher[] // Relation to user-voucher linking table
+  financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
+
+  storeId     Int?
+  store       Store?   @relation("StoreUsers", fields: [storeId], references: [id])
+}
+
+model Store {
+  id          Int      @id @default(autoincrement())
+  name        String
+  storeSlug   String   @unique
+  users       User[]   @relation("StoreUsers")
+ products    Product[] @relation("StoreProducts")
 }
 
 model Order {
-    id          Int      @id @default(autoincrement())
-    userId      Int
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    totalAmount Float
-    status      String
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  totalAmount Float
+  status      String
 
-    user       User        @relation(fields: [userId], references: [id]) // Foreign key to User
-    orderItems OrderItem[] // Relation to order items
+  user                  User                   @relation(fields: [userId], references: [id]) // Foreign key to User
+  orderItems            OrderItem[] // Relation to order items
+  vouchers              UserVoucher[] // Vouchers applied to this order
+  financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
+}
+
+model Voucher {
+  id                    Int                    @id @default(autoincrement())
+  code                  String                 @unique
+  amount                Float // Cash value of the voucher
+  isActive              Boolean                @default(true)
+  createdAt             DateTime               @default(now())
+  expiresAt             DateTime? // Optional expiration date
+  description           String? // Details about the voucher
+  userVouchers          UserVoucher[] // Relation to user-voucher linking table
+  financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
+}
+
+model UserVoucher {
+  id        Int       @id @default(autoincrement())
+  userId    Int // Reference to the User model
+  voucherId Int // Reference to the Voucher model
+  orderId   Int? // Reference to the Order model where it was used
+  isUsed    Boolean   @default(false) // Whether the voucher has been used
+  usedAt    DateTime? // Date when the voucher was used
+
+  user    User    @relation(fields: [userId], references: [id])
+  voucher Voucher @relation(fields: [voucherId], references: [id])
+  order   Order?  @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
 }
 
 model Category {
-    id            Int           @id @default(autoincrement())
-    name          String        @unique
-    slug          String        @unique
-    url           String        @unique
-    createdAt     DateTime      @default(now())
-    updatedAt     DateTime      @updatedAt
-    products      Product[]     // Relation to products
-    subCategories SubCategory[] // Relation to subcategories
+  id            Int           @id @default(autoincrement())
+  name          String        @unique
+  slug          String        @unique
+  url           String        @unique
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  products      Product[] // Relation to products
+  subCategories SubCategory[] // Relation to subcategories
 }
 
 model SubCategory {
-    id          Int        @id @default(autoincrement())
-    name        String     @unique
-    slug        String     @unique
-    url         String     @unique
-    createdAt   DateTime   @default(now())
-    updatedAt   DateTime   @updatedAt
-    categoryId  Int        // Foreign key to main Category
-    category    Category   @relation(fields: [categoryId], references: [id])
-    products    Product[]  @relation("ProductSubCategories") // Many-to-many relation with products
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  slug       String    @unique
+  url        String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  categoryId Int // Foreign key to main Category
+  category   Category  @relation(fields: [categoryId], references: [id])
+  products   Product[] @relation("ProductSubCategories") // Many-to-many relation with products
 }
 
 model Banner {
-    id        Int       @id @default(autoincrement())
-    name      String    @unique
-    slug      String    @unique
-    url       String
-    active    Boolean   @default(false)
-    order     Int       @default(1)
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  slug      String   @unique
+  url       String
+  active    Boolean  @default(false)
+  order     Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Product {
-    id                Int         @id @default(autoincrement())
-    isActive          Boolean     @default(true)
-    name              String
-    description       String
-    price             Float
-    isDiscount        Boolean     @default(false)
-    discountPrice     Float?
-    currency          String?
-    SKU               String      @unique
-    inventory         Int
-    categoryId        Int         // Main category foreign key
-    category          Category    @relation(fields: [categoryId], references: [id])
-    tags              String[]
-    createdAt         DateTime    @default(now())
-    updatedAt         DateTime    @updatedAt
-    images            String[]
-    isFeatured        Boolean?    @default(false)
-    rating            Float?      @default(4.9)
-    brand             String?
-    weight            Float?
-    dimensions        String?
-    slug              String      @unique
-    score             Float?      @default(0.1)
-    freebieProductIDs Int[]
-    relatedProductIDs Int[]
-    totalSold         Int         @default(0)
+  id                Int      @id @default(autoincrement())
+  isActive          Boolean  @default(true)
+  name              String
+  description       String
+  price             Float
+  isDiscount        Boolean  @default(false)
+  discountPrice     Float?
+  currency          String?
+  SKU               String   @unique
+  inventory         Int
+  categoryId        Int // Main category foreign key
+  category          Category @relation(fields: [categoryId], references: [id])
+  tags              String[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  images            String[]
+  isFeatured        Boolean? @default(false)
+  rating            Float?   @default(4.9)
+  brand             String?
+  weight            Float?
+  dimensions        String?
+  slug              String   @unique
+  score             Float?   @default(0.1)
+  freebieProductIDs Int[]
+  relatedProductIDs Int[]
+  totalSold         Int      @default(0)
 
-    subCategories     SubCategory[] @relation("ProductSubCategories") // Many-to-many relation with subcategories
+  subCategories SubCategory[] @relation("ProductSubCategories") // Many-to-many relation with subcategories
 
-    orderItems        OrderItem[]
-    favorites         Favorite[]
-    cartItems         CartItem[]
+  orderItems OrderItem[]
+  favorites  Favorite[]
+  cartItems  CartItem[]
+  storeId           Int?         // Store the product's associated store
+  store             Store?       @relation("StoreProducts", fields: [storeId], references: [id]) // One-to-many relation with store
 }
 
 model OrderItem {
-    id        Int    @id @default(autoincrement())
-    orderId   Int
-    productId Int
-    quantity  Int    @default(0)
-    price     Float // Price at the time of order
-    slug      String // Product slug
+  id        Int    @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int    @default(0)
+  price     Float // Price at the time of order
+  slug      String // Product slug
 
-    order   Order   @relation(fields: [orderId], references: [id]) // Foreign key to Order
-    product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
+  order   Order   @relation(fields: [orderId], references: [id]) // Foreign key to Order
+  product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
 
-    @@unique([orderId, productId]) // Ensure unique combination of orderId and productId
+  @@unique([orderId, productId]) // Ensure unique combination of orderId and productId
 }
 
 model Favorite {
-    id        Int @id @default(autoincrement())
-    userId    Int
-    productId Int
+  id        Int @id @default(autoincrement())
+  userId    Int
+  productId Int
 
-    user    User    @relation(fields: [userId], references: [id])
-    product Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 
-    @@unique([userId, productId]) // Ensure each user can favorite a product only once
+  @@unique([userId, productId]) // Ensure each user can favorite a product only once
 }
 
 model CartItem {
-    id        Int      @id @default(autoincrement())
-    userId    Int
-    productId Int
-    quantity  Int      @default(1)
-    addedAt   DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int      @default(1)
+  addedAt   DateTime @default(now())
 
-    user    User    @relation(fields: [userId], references: [id]) // Foreign key to User
-    product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
+  user    User    @relation(fields: [userId], references: [id]) // Foreign key to User
+  product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
 
-    @@unique([userId, productId]) // Ensure unique combination of userId and productId
+  @@unique([userId, productId]) // Ensure unique combination of userId and productId
+}
+
+model FinancialTransaction {
+  id              Int      @id @default(autoincrement())
+  userId          Int? // Optional: reference to the user involved (null for system-level transactions)
+  orderId         Int? // Optional: reference to the associated order
+  voucherId       Int? // Optional: reference to the voucher (if a discount was applied)
+  transactionType String // e.g., "order", "refund", "voucher", "adjustment"
+  amount          Float // Positive for income, negative for expenses/refunds
+  currency        String // Currency type (e.g., USD, EUR)
+  description     String? // Optional: description or notes about the transaction
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user    User?    @relation(fields: [userId], references: [id])
+  order   Order?   @relation(fields: [orderId], references: [id])
+  voucher Voucher? @relation(fields: [voucherId], references: [id])
 }

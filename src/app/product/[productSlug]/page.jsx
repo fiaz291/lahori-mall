@@ -21,28 +21,31 @@ export default function Page({ params }) {
         res.json()
       ),
   });
-  if (isPending) {
-    return (
-      <div className="h-[100vh] w-[100vw] flex justify-center items-center">
-        <Loader width={200} height={200} />
-      </div>
-    );
-  }
-  if (error) {
-    return null;
-  }
+  // if (isPending) {
+  //   return (
+  //     <div className="h-[100vh] w-[100vw] flex justify-center items-center">
+  //       <Loader width={200} height={200} />
+  //     </div>
+  //   );
+  // }
+  // if (error) {
+  //   return null;
+  // }
 
   return (
-    <div>
-      <Navbar />
-      <div className="flex justify-center">
-        <div className="flex flex-col w-full max-w-[1200px] mt-10 mx-4 px-4 gap-8">
-          <Product_Route prod={data} />
-          <Product_details prod={data} />
-          {/* <Reviews /> */}
+    <div className="outer">
+      <div className="inner">
+
+        <Navbar />
+        <div className="flex justify-center">
+          <div className="flex flex-col w-full max-w-[1200px] mt-10 mx-4 px-4 gap-8">
+            {/* <Product_Route prod={data} /> */}
+            <Product_details prod={Products} />
+            {/* <Reviews /> */}
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }

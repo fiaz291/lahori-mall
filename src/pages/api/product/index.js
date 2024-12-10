@@ -85,6 +85,8 @@ const POST = async (req, res) => {
         .json({ error: "SKU already in use", errorCode: 3 });
     }
 
+    const storeId = user?.storeId || "TKS";
+
     // Create the new product
     const newProduct = await prisma.product.create({
       data: {
@@ -110,6 +112,7 @@ const POST = async (req, res) => {
         relatedProductIDs,
         totalSold,
         isActive,
+        storeId,
         subCategories: {
           connect: subCategoryIds.map((id) => ({ id })),
         },
@@ -296,10 +299,10 @@ const innerHandlerForProducts = async (value) => {
 
 const getLatestProducts = async () => {
   const products = await prisma.product.findMany({
-    // isActive: true,
-    // inventory: {
-    //   gt: 0,
-    // },
+    isActive: true,
+    inventory: {
+      gt: 0,
+    },
     orderBy: {
       createdAt: "desc",
     },
@@ -311,11 +314,11 @@ const getLatestProducts = async () => {
 const getLatestDiscountedProducts = async () => {
   const products = await prisma.product.findMany({
     where: {
-      // isActive: true,
-      // inventory: {
-      //   gt: 0,
-      // },
-      // isDiscount: true,
+      isActive: true,
+      inventory: {
+        gt: 0,
+      },
+      isDiscount: true,
       discountPrice: {
         not: null,
       },
@@ -334,10 +337,10 @@ const getTopSellingProductsLast30Days = async () => {
 
   const products = await prisma.product.findMany({
     where: {
-      // isActive: true,
-      // inventory: {
-      //   gt: 1,
-      // },
+      isActive: true,
+      inventory: {
+        gt: 1,
+      },
       orderItems: {
         some: {
           order: {

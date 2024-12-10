@@ -18,6 +18,7 @@ import Footer from "@/components/Footer";
 import "./styles.css";
 import Product_Route from "./components";
 import { useRouter } from "next/router";
+import TKSHomePageProducts from "@/components/TKSHomePageProducts";
 
 export default function Page({ params }) {
   const { tag } = params;
@@ -93,13 +94,13 @@ export default function Page({ params }) {
                 </div>
               ))}
             </div>
-            {isPending && <Skeleton />}
+            {/* {isPending && <Skeleton />} */}
             {!isPending && tagData.length === 0 && (
               <div className="flex justify-center w-full">
                 <img src="/product-not-found.png" className="w-[50%] h-fit" />
               </div>
             )}
-            {!isPending && tagData.length > 0 && (
+            {/* {!isPending && tagData.length > 0 && ( */}
               <Flex vertical className="w-full max-w-[100%]">
                 <Flex className="mb-[20px] bg-white p-3 rounded">
                   <Form
@@ -137,7 +138,8 @@ export default function Page({ params }) {
                     </Flex>
                   </Form>
                 </Flex>
-                <div className="container2">
+                <TKSHomePageProducts title="All Products" />
+                {/* <div className="container2">
                   {tagData?.map((product, index) => (
                     <Tooltip title={product?.name} key={index}>
                       <Link
@@ -184,7 +186,7 @@ export default function Page({ params }) {
                       </Link>
                     </Tooltip>
                   ))}
-                </div>
+                </div> */}
                 <Flex justify="center" gap={50} className="w-full mt-[20px]">
                   <button
                     disabled={!page || Number(page) < 2}
@@ -199,15 +201,15 @@ export default function Page({ params }) {
                   <button
                     disabled={tagData?.length < 50}
                     onClick={handleNext}
-                    className={`p-2 md:p-3 px-4 md:px-7 rounded-md text-sm md:text-base bg-[#00803e] text-white ${
-                      tagData?.length < 50 && "bg-[#58595b] cursor-not-allowed"
+                    className={`p-2 md:p-3 px-4 md:px-7 rounded-md text-sm md:text-base bg-[#0047A0] text-white ${
+                      tagData?.length < 50 && "bg-[#0047A0] cursor-not-allowed"
                     }`}
                   >
                     Next
                   </button>
                 </Flex>
               </Flex>
-            )}
+            {/* )} */}
           </Flex>
         </div>
       </div>
