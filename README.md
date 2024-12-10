@@ -28,7 +28,6 @@ First, run the development server:
 # start db 
 <!-- psql -U postgres -->
 pg_ctl -D /usr/local/var/postgres start
-    // "postinstall": "npx prisma generate && npx prisma migrate deploy"
 
 DATABASE_URL=postgresql://postgres:11223344@localhost:5432/testdb
 
