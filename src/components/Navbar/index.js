@@ -229,7 +229,9 @@ export default function Navbar() {
                 <img src="/icons/recentProductsIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
               </div>
               <div>
-                <img src="/icons/cartIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                <Link href="/cart">
+                  <img src="/icons/cartIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                </Link>
               </div>
             </Flex>
             {/* <UserProfileMenu

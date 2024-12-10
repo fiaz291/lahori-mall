@@ -33,7 +33,7 @@ const SmallProductCard = ({title}) => {
       {/* Information block on the right */}
       <div className="p-[8px]">
         <Link
-          href="http://item.gmarket.co.kr/Item?goodsCode=3883121456"
+          href="/product/sample-product"
           className="link__item"
           data-montelena-asn="1"
           data-montelena-acode="200009652"

@@ -97,13 +97,13 @@ export default function Cart() {
     return quantity;
   }, [cartItems]);
 
-  if (cartLoading) {
-    return (
-      <div className="h-[100vh] w-[100vw] flex items-center justify-center">
-        <Loader width={200} height={200} />
-      </div>
-    );
-  }
+  // if (cartLoading) {
+  //   return (
+  //     <div className="h-[100vh] w-[100vw] flex items-center justify-center">
+  //       <Loader width={280} height={200} />
+  //     </div>
+  //   );
+  // }
 
   if (!cartItems || (isArray(cartItems) && cartItems.length < 1)) {
     return (
