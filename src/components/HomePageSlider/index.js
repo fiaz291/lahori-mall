@@ -7,6 +7,7 @@ import { Carousel, useCarousel } from "nuka-carousel";
 import Slider from "react-slick";
 import { MenuOutlined } from "@ant-design/icons";
 import "./styles.css";
+import Link from "next/link";
 
 export default function HomePageSlider() {
 
@@ -37,7 +38,9 @@ export default function HomePageSlider() {
                 defaultSelected={false}
               />
             </div>
-            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Best</Button>
+            <Link href="/tags/sample-category">
+              <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Best</Button>
+            </Link>
             <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Super Deals</Button>
             <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Free Delivery</Button>
             <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Top of Week</Button>
