@@ -1,14 +1,14 @@
 import prisma from "@/app/prisma";
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     return handlePost(req, res);
-  } else if (req.method === 'GET') {
+  } else if (req.method === "GET") {
     return handleGet(req, res);
-  } else if (req.method === 'DELETE') {
+  } else if (req.method === "DELETE") {
     return handleDelete(req, res);
   } else {
-    res.setHeader('Allow', ['POST', 'GET', 'DELETE']);
+    res.setHeader("Allow", ["POST", "GET", "DELETE"]);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
@@ -17,7 +17,7 @@ const handlePost = async (req, res) => {
   const { userId, productId, quantity } = req.body;
 
   if (!userId || !productId || !quantity || quantity < 1) {
-    return res.status(400).json({ message: 'Invalid input' });
+    return res.status(400).json({ message: "Invalid input" });
   }
 
   try {
@@ -26,7 +26,7 @@ const handlePost = async (req, res) => {
     });
 
     if (!product || product.inventory < quantity) {
-      return res.status(404).json({ message: 'Product not found or insufficient inventory' });
+      return res.status(404).json({ message: "Product not found or insufficient inventory" });
     }
 
     const existingCartItem = await prisma.cartItem.findUnique({
@@ -68,7 +68,7 @@ const handlePost = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -76,7 +76,7 @@ const handleGet = async (req, res) => {
   const { userId } = req.query;
 
   if (!userId) {
-    return res.status(400).json({ message: 'User ID is required' });
+    return res.status(400).json({ message: "User ID is required" });
   }
 
   try {
@@ -90,7 +90,7 @@ const handleGet = async (req, res) => {
     return res.status(200).json(cartItems);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -98,7 +98,7 @@ const handleDelete = async (req, res) => {
   const { userId, productId } = req.body;
 
   if (!userId || !productId) {
-    return res.status(400).json({ message: userId +'Invalid input'+productId });
+    return res.status(400).json({ message: userId +"Invalid input"+productId });
   }
 
   try {
@@ -112,7 +112,7 @@ const handleDelete = async (req, res) => {
     });
 
     if (!cartItem) {
-      return res.status(404).json({ message: 'Cart item not found' });
+      return res.status(404).json({ message: "Cart item not found" });
     }
 
     await prisma.cartItem.delete({
@@ -124,6 +124,6 @@ const handleDelete = async (req, res) => {
     return res.status(204).end();
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };

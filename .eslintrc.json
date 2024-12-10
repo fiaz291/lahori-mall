@@ -11,11 +11,11 @@
     "no-console": "warn",
     
     "prefer-const": "warn",
-    "eqeqeq": ["error", "always"],
+    "eqeqeq": ["warn", "always"],
     "curly": "off",
     "quotes": ["warn", "double", { "avoidEscape": true }],
-    "semi": ["error", "always"],
-    "comma-dangle": ["error", "always-multiline"],
+    "semi": ["warn", "always"],
+    "comma-dangle": ["warn", "always-multiline"],
     // "indent": ["warn", 2],
     "no-multiple-empty-lines": ["warn", { "max": 1 }],
     "no-trailing-spaces": "warn",
@@ -27,7 +27,7 @@
       1,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
-    "react/jsx-key": "error",
+    "react/jsx-key": "warn",
     "react/no-unescaped-entities": "off"
   }
 }

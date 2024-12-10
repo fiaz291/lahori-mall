@@ -51,7 +51,7 @@ const products = [
     "slug": "sample-product",
     "price": 5000,
     "isDiscount": true,
-    "discountPrice": 4500
+    "discountPrice": 4500,
   },
   {
     "id": 1,
@@ -59,7 +59,7 @@ const products = [
     "slug": "sample-product",
     "price": 5000,
     "isDiscount": true,
-    "discountPrice": 4500
+    "discountPrice": 4500,
   },
   {
     "id": 1,
@@ -67,7 +67,7 @@ const products = [
     "slug": "sample-product",
     "price": 5000,
     "isDiscount": true,
-    "discountPrice": 4500
+    "discountPrice": 4500,
   },
   {
     "id": 1,
@@ -75,7 +75,7 @@ const products = [
     "slug": "sample-product",
     "price": 5000,
     "isDiscount": true,
-    "discountPrice": 4500
+    "discountPrice": 4500,
   },
   {
     "id": 1,
@@ -83,7 +83,7 @@ const products = [
     "slug": "sample-product",
     "price": 5000,
     "isDiscount": true,
-    "discountPrice": 4500
+    "discountPrice": 4500,
   },
   {
     "id": 1,
@@ -91,9 +91,9 @@ const products = [
     "slug": "sample-product",
     "price": 5000,
     "isDiscount": true,
-    "discountPrice": 4500
+    "discountPrice": 4500,
   },
-]
+];
 
 export default function BestSellingSlider({title}) {
   // const { isPending, error, data } = useQuery({
@@ -143,8 +143,6 @@ export default function BestSellingSlider({title}) {
   //   return null;
   // }
 
-
-  
   return (
     <>
       <div className="outer mt-[20px] relative">
@@ -153,7 +151,7 @@ export default function BestSellingSlider({title}) {
             <div
               className="mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px]"
               style={{
-                color: 'black',
+                color: "black",
                 fontWeight: 400,
                 fontSize: 30,
               }}

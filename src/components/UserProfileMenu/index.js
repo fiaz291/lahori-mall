@@ -63,7 +63,7 @@ export default function UserProfileMenu({
     <button
       key={user}
       style={{ background: COLORS.gray }}
-      className={`pl-[6px] pr-[6px] pt-[2px] pb-[2px] text-white w-[124px] h-[40px] rounded`}
+      className={"pl-[6px] pr-[6px] pt-[2px] pb-[2px] text-white w-[124px] h-[40px] rounded"}
       onClick={() => {
         setOpenModal(true);
       }}

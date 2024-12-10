@@ -9,7 +9,6 @@ export async function middleware(request) {
 
   };
 
-  
   // Return the debug info for now to see the request details
   // return new NextResponse(JSON.stringify({ message: "Debug Info", debugInfo }), {
   //   status: 200,

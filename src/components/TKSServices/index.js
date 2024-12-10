@@ -10,7 +10,7 @@ export default function TKSServices() {
         <div
           className="mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px]"
           style={{
-            color: 'black',
+            color: "black",
             fontWeight: 400,
             fontSize: 30,
             // textDecoration: "underline",
@@ -27,7 +27,7 @@ export default function TKSServices() {
                   "/placeholder.webp"
                 }
                 className="min-w-[100px] h-[100px] object-contain bg-black"
-                style={{borderRadius: '50%'}}
+                style={{borderRadius: "50%"}}
               />
               <div>asdas</div>
             </Flex>

@@ -15,7 +15,7 @@ import TKSHomePageProducts from "@/components/TKSHomePageProducts";
 export default function Home() {
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between pb-12`}
+      className={"flex min-h-screen flex-col items-center justify-between pb-12"}
     >
       <div className="w-full">
         <Navbar />

@@ -18,7 +18,7 @@ export default function LoginForm({ setOpenModal, setIsLogin }) {
           user: response.data.user,
         };
       });
-      message.success(`Welcome`);
+      message.success("Welcome");
       form.resetFields();
       setOpenModal(false);
     } catch (error) {

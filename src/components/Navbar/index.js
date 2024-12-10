@@ -102,7 +102,7 @@ export default function Navbar() {
                 </Badge>
                 <div
                   style={{ color: COLORS.gray }}
-                  className={`pl-[6px] pr-[6px] pt-[2px] pb-[2px] w-full h-[40px] rounded flex justify-center items-center`}
+                  className={"pl-[6px] pr-[6px] pt-[2px] pb-[2px] w-full h-[40px] rounded flex justify-center items-center"}
                 >
                   {user?.firstName}
                 </div>

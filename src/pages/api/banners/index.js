@@ -34,7 +34,7 @@ async function POST(req, res) {
     return res.status(201).json(banner);
   } catch (error) {
     console.error("Error creating banner:", error);
-    return res.status(500).json({ message: 'Internal server error', error: error.message });
+    return res.status(500).json({ message: "Internal server error", error: error.message });
   }
 }
 
@@ -43,12 +43,12 @@ async function GET(req, res) {
   try {
     const banners = await prisma.banner.findMany({
       orderBy: {
-        order: 'asc',
+        order: "asc",
       },
     });
     return res.status(200).json(banners);
   } catch (error) {
     console.error("Error fetching banners:", error);
-    return res.status(500).json({ message: 'Internal server error', error: error.message });
+    return res.status(500).json({ message: "Internal server error", error: error.message });
   }
 }

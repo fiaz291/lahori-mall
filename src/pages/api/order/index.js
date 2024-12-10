@@ -56,10 +56,9 @@ const handlePost = async (req, res) => {
       return createdOrder;
     });
     await Promise.all(orderItems.map((item) => {
-      return updateProductTotalSold(item.productId,item.quantity)
+      return updateProductTotalSold(item.productId,item.quantity);
 
-    }))
-    
+    }));
 
     return res.status(201).json(order);
   } catch (error) {
@@ -79,10 +78,10 @@ async function updateProductTotalSold(productId, quantitySold) {
       },
     });
 
-    console.log('Product updated:', updatedProduct);
+    console.log("Product updated:", updatedProduct);
     return updatedProduct;
   } catch (error) {
-    console.error('Error updating totalSold:', error);
+    console.error("Error updating totalSold:", error);
   }
 }
 const handleGet = async (req, res) => {

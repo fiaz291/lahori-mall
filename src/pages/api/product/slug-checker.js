@@ -28,7 +28,7 @@ const POST = async (req, res) => {
 
     return res.status(200).json({ message: catSlug.toLowerCase() +  " "+"Slug is available", status: 200 });
   } catch (error) {
-    console.error('Error checking Slug:', error);
+    console.error("Error checking Slug:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };

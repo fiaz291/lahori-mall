@@ -3,13 +3,12 @@ import { COLORS } from "@/constants";
 import { Button, Flex } from "antd";
 import React, { useState } from "react";
 import MegaMenu from "../MegaMenu";
-import { Carousel, useCarousel } from 'nuka-carousel';
+import { Carousel, useCarousel } from "nuka-carousel";
 import Slider from "react-slick";
 import { MenuOutlined } from "@ant-design/icons";
-import "./styles.css"
+import "./styles.css";
 
 export default function HomePageSlider() {
-
 
   const { isMobile } = useWindowSize();
   const [open, setOpen] = useState(false);
@@ -20,7 +19,7 @@ export default function HomePageSlider() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000
+    autoplaySpeed: 2000,
   };
   return (
 
@@ -29,7 +28,7 @@ export default function HomePageSlider() {
         <div className="inner">
           <Flex gap={8} className="overflow-scroll">
             <div className="relative">
-              <Button icon={<MenuOutlined />} style={{ border: 'none', padding: "0 30px", height: 60, background: '#0047A0', borderRadius: 'unset', color: 'white', fontSize: 16 }} onClick={() => setOpen(!open)}>All Categories</Button>
+              <Button icon={<MenuOutlined />} style={{ border: "none", padding: "0 30px", height: 60, background: "#0047A0", borderRadius: "unset", color: "white", fontSize: 16 }} onClick={() => setOpen(!open)}>All Categories</Button>
               <MegaMenu
                 open={open}
                 defaultOpen={false}
@@ -38,10 +37,10 @@ export default function HomePageSlider() {
                 defaultSelected={false}
               />
             </div>
-            <Button style={{ border: 'none', padding: "0 30px", height: 60, fontSize: 16 }}>Best</Button>
-            <Button style={{ border: 'none', padding: "0 30px", height: 60, fontSize: 16 }}>Super Deals</Button>
-            <Button style={{ border: 'none', padding: "0 30px", height: 60, fontSize: 16 }}>Free Delivery</Button>
-            <Button style={{ border: 'none', padding: "0 30px", height: 60, fontSize: 16 }}>Top of Week</Button>
+            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Best</Button>
+            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Super Deals</Button>
+            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Free Delivery</Button>
+            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Top of Week</Button>
             {/* <Button style={{ border: 'none', padding: "0 30px", height: 60, fontSize: 16 }}>asasdasd</Button> */}
           </Flex>
 

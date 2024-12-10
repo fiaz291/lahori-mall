@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 let prisma;
 
@@ -9,7 +9,7 @@ if (!global.prisma) {
         url: process.env.DATABASE_URL,
       },
     },
-    log: process.env.NODE_ENV === 'production' ? ['error'] : ['query', 'info', 'warn', 'error'],
+    log: process.env.NODE_ENV === "production" ? ["error"] : ["query", "info", "warn", "error"],
   });
 }
 

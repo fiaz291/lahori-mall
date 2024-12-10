@@ -14,7 +14,7 @@ export default function Product_Route() {
           Home
         </p>
         <FaChevronRight />
-        <p className="cursor-pointer" onClick={() => handleRedirect(`/tags`)}>
+        <p className="cursor-pointer" onClick={() => handleRedirect("/tags")}>
           Tags
         </p>
       </div>

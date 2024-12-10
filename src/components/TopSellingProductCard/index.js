@@ -23,12 +23,12 @@ export default function TopSellingProductCard({ product, image }) {
   return (
     <Tooltip title={name}>
       <Link href={`product/${slug}`}>
-        <div className="product-card-width flex flex-col overflow-hidden bg-white] cursor-pointer hover:opacity-80 h-full pt-[10px]" style={{border: '1px solid black', borderRadius: 2, background: 'rgba(0,0,0,0.1)'}}>
+        <div className="product-card-width flex flex-col overflow-hidden bg-white] cursor-pointer hover:opacity-80 h-full pt-[10px]" style={{border: "1px solid black", borderRadius: 2, background: "rgba(0,0,0,0.1)"}}>
           <div className="w-full product-card-image-height mb-[10px] flex justify-center">
             <img
               src={image ? image : "http://image.gmarket.co.kr/hanbando/202411/144ec47d-f3fb-4543-9de3-a78313aa7e22.jpg"}
               className="w-[200px] h-[200px] object-cover"
-              style={{borderRadius: '50%'}}
+              style={{borderRadius: "50%"}}
             />
           </div>
           {/* <div className="flex justify-between p-[6px] gap-[4px]">

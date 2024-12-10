@@ -236,9 +236,9 @@ const PATCH = async (req, res) => {
 
 export const GET = async (req, res) => {
   try {
-    const searchParams = req.nextUrl.searchParams
-  const query = searchParams.get('query')
-    let products = {
+    const searchParams = req.nextUrl.searchParams;
+  const query = searchParams.get("query");
+    const products = {
       new: [],
       onSale: [],
       topWeek: [],
@@ -274,7 +274,6 @@ export const GET = async (req, res) => {
           products.topWeek = splicedArray;
         }
       }
-    
 
     const data = { products, status: 200 };
     res.status(200).json(data);

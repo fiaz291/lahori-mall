@@ -25,7 +25,6 @@ const POST = async (req, res) => {
       where: { email },
     });
 
-
     // Check if the user exists
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
@@ -47,7 +46,7 @@ const POST = async (req, res) => {
     // Return the token
     res.status(200).json({ token, user: user });
   } catch (error) {
-    if (error.name === 'TokenExpiredError') {
+    if (error.name === "TokenExpiredError") {
         return res.status(401).json({ error: "Token has expired" });
       }
     res.status(500).json({ error: "Internal Server Error" });
