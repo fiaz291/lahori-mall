@@ -3,7 +3,6 @@ import { COLORS } from "@/constants";
 import { Button, Flex } from "antd";
 import React, { useState } from "react";
 import MegaMenu from "../MegaMenu";
-import { Carousel, useCarousel } from "nuka-carousel";
 import Slider from "react-slick";
 import { MenuOutlined } from "@ant-design/icons";
 import "./styles.css";
@@ -52,7 +51,6 @@ export default function HomePageSlider() {
       <div className="outer">
         <div className="inner">
           <div className="w-full">
-            {/* <Carousel showArrows="always"> */}
             <Slider {...settings}>
               <img src="/slide1.png" className=" max-h-[400px]" />
               <img src="/slide2.webp" className=" max-h-[400px]" />
