@@ -23,8 +23,7 @@ model Vendor {
   isActive    Boolean  @default(true)               // Vendor status: active/inactive
   createdAt   DateTime @default(now())              // Creation timestamp
   updatedAt   DateTime @updatedAt                   // Last update timestamp
-
-  products Product[]                                // Relation to products
+  images            String[]
 }
 
 model User {
