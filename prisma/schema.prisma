@@ -7,6 +7,26 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Vendor {
+  id          Int      @id @default(autoincrement()) // Unique identifier for the vendor
+  name        String   @unique                      // Vendor name
+  email       String   @unique                      // Vendor's email (unique)
+  phoneNumber String                                // Vendor's contact phone number
+  address     String?                               // Vendor's address
+  city        String?                               // City where the vendor operates
+  state       String?                               // State where the vendor operates
+  zipCode     String?                               // ZIP/Postal code
+  country     String?                               // Country of the vendor
+  companyName String?                               // Optional: Vendor's company name
+  taxId       String?                               // Vendor's Tax ID or VAT number
+  rating      Float    @default(0.0)                // Vendor's rating (from reviews)
+  isActive    Boolean  @default(true)               // Vendor status: active/inactive
+  createdAt   DateTime @default(now())              // Creation timestamp
+  updatedAt   DateTime @updatedAt                   // Last update timestamp
+
+  products Product[]                                // Relation to products
+}
+
 model User {
   id             Int       @id @default(autoincrement())
   username       String    @unique
@@ -59,6 +79,7 @@ model Order {
   orderItems            OrderItem[] // Relation to order items
   vouchers              UserVoucher[] // Vouchers applied to this order
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
+  vendorId    Int?
 }
 
 model Voucher {
@@ -71,6 +92,7 @@ model Voucher {
   description           String? // Details about the voucher
   userVouchers          UserVoucher[] // Relation to user-voucher linking table
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
+  vendorId              Int?
 }
 
 model UserVoucher {
@@ -157,6 +179,7 @@ model Product {
   cartItems  CartItem[]
   storeId           Int?         // Store the product's associated store
   store             Store?       @relation("StoreProducts", fields: [storeId], references: [id]) // One-to-many relation with store
+  vendorId          Int?
 }
 
 model OrderItem {
@@ -171,6 +194,7 @@ model OrderItem {
   product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
 
   @@unique([orderId, productId]) // Ensure unique combination of orderId and productId
+  vendorId  Int?
 }
 
 model Favorite {
@@ -195,6 +219,7 @@ model CartItem {
   product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
 
   @@unique([userId, productId]) // Ensure unique combination of userId and productId
+  vendorId  Int?
 }
 
 model FinancialTransaction {
@@ -212,4 +237,5 @@ model FinancialTransaction {
   user    User?    @relation(fields: [userId], references: [id])
   order   Order?   @relation(fields: [orderId], references: [id])
   voucher Voucher? @relation(fields: [voucherId], references: [id])
+  vendorId         Int?
 }
