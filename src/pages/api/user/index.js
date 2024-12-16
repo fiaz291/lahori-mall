@@ -30,6 +30,7 @@ const POST = async (req, res) => {
     zipCode,
     country = "PK",
     dateOfBirth,
+    vendorId
   } = req.body;
 
   // Required fields
@@ -73,6 +74,7 @@ const POST = async (req, res) => {
         zipCode,
         country,
         dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
+        vendorId
       },
     });
     const token = jwt.sign(
@@ -99,6 +101,7 @@ const PATCH = async (req, res) => {
     zipCode,
     role,
     country = "PK",
+    vendorId
   } = req.body;
 
   // Required fields
@@ -135,16 +138,13 @@ const PATCH = async (req, res) => {
       dataToUpdate.phoneNumber = phoneNumber;
       dataToUpdate.isVerified = false;
     }
+    if (vendorId) dataToUpdate.vendorId = vendorId
+      
     const newUser = await prisma.user.update({
       where: { id },
       data: dataToUpdate,
     });
-    const token = jwt.sign(
-      { userId: newUser.id, email: newUser.email, role: newUser.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION_TIME }
-    );
-    const data = { user: newUser, token, status: 201 };
+    const data = { user: newUser, status: 201 };
     res.status(201).json(data);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", err: error });

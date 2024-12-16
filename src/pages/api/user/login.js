@@ -22,18 +22,19 @@ const POST = async (req, res) => {
 
   try {
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: {email}
     });
-
     // Check if the user exists
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    // Check if the password is correct
-    const isPasswordValid = password === user.password;
+     // Reconstruct the input string used during hashing
+  const inputToHash = `${password}${email.length.toString()}`;
 
-    if (!isPasswordValid) {
+  // Compare the provided plain password (after hashing) with the stored hash
+  const isMatch = await bcrypt.compare(inputToHash, user.password);
+    if (!isMatch) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
@@ -42,13 +43,17 @@ const POST = async (req, res) => {
       { userId: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
     );
+    await prisma.user.update({
+      where: { id:user.id },
+      data: {token},
+    });
 
     // Return the token
-    res.status(200).json({ token, user: user });
+    res.status(200).json({ user: { ...user,token } });
   } catch (error) {
     if (error.name === "TokenExpiredError") {
         return res.status(401).json({ error: "Token has expired" });
       }
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: error });
   }
 };
