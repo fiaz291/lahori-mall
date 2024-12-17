@@ -18,11 +18,11 @@ export default function Home() {
       className={"flex min-h-screen flex-col items-center justify-between pb-12"}
     >
       <div className="w-full">
-        <Navbar />
-        <HomePageSlider />
+        <Navbar defaultOpenMegaMenu />
+        {/* <HomePageSlider /> */}
         <div className="outer">
           <div className="inner">
-            <div className="w-full h-[100px] mt-[26px]" style={{borderRadius: 20, background: "linear-gradient(to right, #f953c6, #b91d73, #ff0066)"}} />
+            <div className="w-full h-[100px] mt-[26px]" style={{ borderRadius: 20, background: "linear-gradient(to right, #f953c6, #b91d73, #ff0066)" }} />
           </div>
         </div>
         {/* <HomePageServicesIcons /> */}
@@ -30,7 +30,7 @@ export default function Home() {
         <HomeTabsProducts />
         <div className="outer">
           <div className="inner">
-            <div className="w-full h-[100px] mt-[26px]" style={{borderRadius: 20, background: "linear-gradient(to right, #f953c6, #b91d73, #ff0066)"}} />
+            <div className="w-full h-[100px] mt-[26px]" style={{ borderRadius: 20, background: "linear-gradient(to right, #f953c6, #b91d73, #ff0066)" }} />
           </div>
         </div>
         <TKSServices />

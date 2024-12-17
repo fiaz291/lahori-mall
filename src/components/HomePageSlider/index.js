@@ -9,7 +9,7 @@ import { MenuOutlined } from "@ant-design/icons";
 import "./styles.css";
 import Link from "next/link";
 
-export default function HomePageSlider() {
+export default function HomePageSlider({ hideSlider, defaultOpenMegaMenu }) {
 
   const { isMobile } = useWindowSize();
   const [open, setOpen] = useState(false);
@@ -26,41 +26,43 @@ export default function HomePageSlider() {
 
     <div className="flex flex-col w-full pt-8">
       <div className="outer">
-        <div className="inner">
-          <Flex gap={8} className="overflow-scroll">
-            <div className="relative">
-              <Button icon={<MenuOutlined />} style={{ border: "none", padding: "0 30px", height: 60, background: "#0047A0", borderRadius: "unset", color: "white", fontSize: 16 }} onClick={() => setOpen(!open)}>All Categories</Button>
-              <MegaMenu
-                open={open}
-                defaultOpen={false}
-                top="58px"
-                left="unset"
-                defaultSelected={false}
-              />
-            </div>
+        <div className="inner relative">
+          <Flex gap={8} className="overflow-x-scroll bg-[#005ed4]">
+            <Button icon={<MenuOutlined />} style={{ border: "none", padding: "0 30px", height: 60, background: "#0047A0", borderRadius: "unset", color: "white", fontSize: 16 }} onClick={() => setOpen(!open)}>All Categories</Button>
             <Link href="/tags/sample-category">
-              <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Best</Button>
+              <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Best</Button>
             </Link>
-            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Super Deals</Button>
-            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Free Delivery</Button>
-            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16 }}>Top of Week</Button>
+            <Link href="/super-deals">
+              <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Super Deals</Button>
+            </Link>
+            {/* <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Super Deals</Button> */}
+            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Free Delivery</Button>
+            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Top of Week</Button>
             {/* <Button style={{ border: 'none', padding: "0 30px", height: 60, fontSize: 16 }}>asasdasd</Button> */}
           </Flex>
+          {!hideSlider &&
+            <div className="flex justify-end w-full">
+              <div className="w-full" style={{ maxWidth: 'calc(100% - 184px)' }}>
+                {/* <Carousel showArrows="always"> */}
+                <Slider {...settings}>
+                  <img src="/slide1.png" className=" max-h-[400px] min-h-[400px]" />
+                  <img src="/slide2.webp" className=" max-h-[400px] min-h-[400px]" />
+                  <img src="/slide3.webp" className=" max-h-[400px] min-h-[400px]" />
+                </Slider>
+              </div>
+            </div>
+          }
+          <MegaMenu
+            open={open}
+            defaultOpen={defaultOpenMegaMenu}
+            top="60px"
+            left="unset"
+            defaultSelected={false}
+          />
 
-        </div>
-      </div>
-      <div className="outer">
-        <div className="inner">
-          <div className="w-full">
-            {/* <Carousel showArrows="always"> */}
-            <Slider {...settings}>
-              <img src="/slide1.png" className=" max-h-[400px]" />
-              <img src="/slide2.webp" className=" max-h-[400px]" />
-              <img src="/slide3.webp" className=" max-h-[400px]" />
-            </Slider>
 
-            {/* <img src="/slide-1.webp" className="w-[400px] max-h-[400px] object-cover" /> */}
-            {/* <div className="flex items-center absolute right-10 bottom-10 gap-4">
+          {/* <img src="/slide-1.webp" className="w-[400px] max-h-[400px] object-cover" /> */}
+          {/* <div className="flex items-center absolute right-10 bottom-10 gap-4">
           <div
             className={`text-white ${isMobile ? "text-[14px]" : "text-[20px]"
               } shadow bg-[rgba(0,0,0,0.6)] p-[10px]`}
@@ -76,7 +78,6 @@ export default function HomePageSlider() {
             Shop Now
           </button>
         </div> */}
-          </div>
         </div>
       </div>
     </div>
