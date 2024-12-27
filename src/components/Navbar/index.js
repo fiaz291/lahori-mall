@@ -60,14 +60,14 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
     <>
       <div className="outer border-b-2 border-[#e3e3e3]">
         <div className="inner">
-          <div className="flex justify-between">
+          <div className="hidden md:flex justify-between">
             <div className="flex items-center gap-2">
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">English</div>
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Arabic</div>
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Korean</div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="border-r-2 border-[#e3e3e3] pr-2"><span className="text-[#005ed4] clickable">Hi! Sign In</span> or <span className="text-[#005ed4] clickable">Register</span></div>
+              <div className="border-r-2 border-[#e3e3e3] pr-2"><Link href="/login"><span className="text-[#005ed4] clickable">Hi! Sign In</span></Link> or <Link href="/signup"><span className="text-[#005ed4] clickable">Register</span></Link></div>
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Help</div>
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Cart</div>
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Wishlist</div>
@@ -149,25 +149,23 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
           >
             <div className="flex justify-center">
               <img
-                src="/logo.png"
-                className="w-[40px] h-[40px]"
+                src="/logo-dark.png"
+                className="w-[120px] h-[70px]"
                 onClick={() => {
                   handleRedirect("/");
                 }}
               />
             </div>
-            {/* <Flex> */}
             {navButtons.map((btn, index) => (
               <Link href={linkMap[btn]} key={index}>
                 <p
                   className="p-[10px] mt-[10px] text-white text-center"
-                  style={{ background: COLORS.green }}
+                  style={{ background: '#0047A0' }}
                 >
                   {btn}
                 </p>
               </Link>
             ))}
-            {/* </Flex> */}
             {user &&
               loggedInButtons.map((btn, index) => (
                 <Link href={linkMap[btn]} key={index}>

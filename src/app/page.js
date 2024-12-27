@@ -27,6 +27,7 @@ export default function Home() {
         </div>
         {/* <HomePageServicesIcons /> */}
         <BestSellingSlider />
+
         <HomeTabsProducts />
         <div className="outer">
           <div className="inner">

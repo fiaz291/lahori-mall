@@ -37,20 +37,10 @@ export default function HomeTabsProducts() {
     return (
         <div className='outer pt-[20px] pb-[20px] outer-background-2'>
             <div className='inner inner-background'>
-                {/* <div
-                    className="mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px]"
-                    style={{
-                        color: 'black',
-                        fontWeight: 400,
-                        fontSize: 30,
-                    }}
-                >
-                    💰Discount is a Must!
-                </div> */}
                 <Flex>
                     <Row className='w-full' gutter={20}>
-                        <Col sm={12}><Tabs defaultActiveKey="1" className='tabs-products' items={items} onChange={onChange} /></Col>
-                        <Col sm={12}><Tabs defaultActiveKey="1" items={items2} onChange={onChange} /></Col>
+                        <Col xs={12} sm={6}><Tabs defaultActiveKey="1" className='tabs-products' items={items} onChange={onChange} /></Col>
+                        <Col xs={12} sm={6}><Tabs defaultActiveKey="1" items={items2} onChange={onChange} /></Col>
                     </Row>
                 </Flex>
             </div>

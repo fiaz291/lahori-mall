@@ -11,7 +11,8 @@ import Link from "next/link";
 
 export default function HomePageSlider({ hideSlider, defaultOpenMegaMenu }) {
 
-  const { isMobile } = useWindowSize();
+  const { isMobile, isTab } = useWindowSize();
+  // console.log({isTab})
   const [open, setOpen] = useState(false);
   var settings = {
     dots: true,
@@ -28,9 +29,11 @@ export default function HomePageSlider({ hideSlider, defaultOpenMegaMenu }) {
       <div className="outer">
         <div className="inner relative">
           <Flex gap={8} className="overflow-x-scroll bg-[#005ed4]">
-            <Button icon={<MenuOutlined />} style={{ border: "none", padding: "0 30px", height: 60, background: "#0047A0", borderRadius: "unset", color: "white", fontSize: 16 }} onClick={() => setOpen(!open)}>All Categories</Button>
-            <Link href="/tags/sample-category">
-              <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Best</Button>
+            {!isMobile &&
+              <Button icon={<MenuOutlined />} style={{ border: "none", padding: "0 30px", height: 60, background: "#0047A0", borderRadius: "unset", color: "white", fontSize: 16 }} onClick={() => setOpen(!open)}>All Categories</Button>
+            }
+            <Link href="/best-sellers">
+              <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Best Sellers</Button>
             </Link>
             <Link href="/super-deals">
               <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Super Deals</Button>
@@ -42,19 +45,19 @@ export default function HomePageSlider({ hideSlider, defaultOpenMegaMenu }) {
           </Flex>
           {!hideSlider &&
             <div className="flex justify-end w-full">
-              <div className="w-full" style={{ maxWidth: 'calc(100% - 184px)' }}>
+              <div className="w-full" style={{ maxWidth: !isTab ? 'calc(100% - 184px)' : "100%" }}>
                 {/* <Carousel showArrows="always"> */}
                 <Slider {...settings}>
-                  <img src="/slide1.png" className=" max-h-[400px] min-h-[400px]" />
-                  <img src="/slide2.webp" className=" max-h-[400px] min-h-[400px]" />
-                  <img src="/slide3.webp" className=" max-h-[400px] min-h-[400px]" />
+                  <img src="/slide1.png" className="max-h-full min-h-full md:max-h-[400px] min-h-[400px]" />
+                  <img src="/slide2.webp" className="max-h-full min-h-full md:max-h-[400px] min-h-[400px]" />
+                  <img src="/slide3.webp" className="max-h-full min-h-full md:max-h-[400px] min-h-[400px]" />
                 </Slider>
               </div>
             </div>
           }
           <MegaMenu
             open={open}
-            defaultOpen={defaultOpenMegaMenu}
+            defaultOpen={defaultOpenMegaMenu && !isTab}
             top="60px"
             left="unset"
             defaultSelected={false}

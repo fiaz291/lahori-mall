@@ -336,7 +336,7 @@ const menu = {
 
 
 const inlineStyles = {
-  zIndex: 999999999,
+  zIndex: 1,
   maxHeight: 400,
   overflow: 'scroll'
 };
@@ -349,7 +349,7 @@ export default function MegaMenu({
 }) {
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [selectedLabel, setSelectedLabel] = useState(null);
-  console.log({ selectedMenu })
+  
   useEffect(() => {
     if (defaultSelected) {
       setSelectedMenu(Object.values(menu)?.[0]);
@@ -360,7 +360,11 @@ export default function MegaMenu({
     return <></>;
   }
   return (
-    <>
+    <span onMouseLeave={() => {
+      if (defaultSelected) return;
+      setSelectedMenu(null);
+      setSelectedLabel(null);
+    }}>
       <div
         className="absolute"
         style={
@@ -369,9 +373,9 @@ export default function MegaMenu({
             : { ...inlineStyles }
         }
         onMouseLeave={() => {
-          if (defaultSelected) return;
-          setSelectedMenu(null);
-          setSelectedLabel(null);
+          // if (defaultSelected) return;
+          // setSelectedMenu(null);
+          // setSelectedLabel(null);
         }}
       >
         <List
@@ -388,7 +392,7 @@ export default function MegaMenu({
                 setSelectedLabel(item);
               }}
             >
-              <Typography.Text>[ITEM]</Typography.Text> {item}
+              <Typography.Text>{menu?.[item].name}</Typography.Text>
             </List.Item>
           )}
         />
@@ -413,6 +417,6 @@ export default function MegaMenu({
             ))}
         </Flex>
       )}
-    </>
+    </span>
   );
 }

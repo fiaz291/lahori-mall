@@ -44,38 +44,11 @@ export default function SuperDeals() {
                     {/* <div className='text-[24px]'>
                         {title}
                     </div> */}
-                    <Tabs>
-                        <TabList>
-                            {titles.map((i) => (
-                                <Tab key={i.key} onClick={() => setTitle(i.key)}><div className="text-[18px]" style={i.key === title ? { color: '#0047A0' } : {}}>
-                                    {i.title}
-                                </div>
-                                </Tab>
-                            ))}
-                        </TabList>
-
-                        <TabPanel>
-                            <div className='flex'>
-                                {category.map((item, index) => (
-                                    <div key={item} className='pr-[10px] pl-[10px] clickable' style={index + 1 !== category.length ? { borderRight: '1px solid black' } : {}}>{item}</div>
-                                ))}
-                            </div>
-                        </TabPanel>
-                        <TabPanel>
-                            <div className='flex'>
-                                {category.map((item, index) => (
-                                    <div key={item} className='pr-[10px] pl-[10px] clickable' style={index + 1 !== category.length ? { borderRight: '1px solid black' } : {}}>{item}</div>
-                                ))}
-                            </div>
-                        </TabPanel>
-                        <TabPanel>
-                            <div className='flex'>
-                                {category.map((item, index) => (
-                                    <div key={item} className='pr-[10px] pl-[10px] clickable' style={index + 1 !== category.length ? { borderRight: '1px solid black' } : {}}>{item}</div>
-                                ))}
-                            </div>
-                        </TabPanel>
-                    </Tabs>
+                    <div className='flex'>
+                        {category.map((item, index) => (
+                            <div key={item} className='pr-[10px] pl-[10px] clickable' style={index + 1 !== category.length ? { borderRight: '1px solid black' } : {}}>{item}</div>
+                        ))}
+                    </div>
                 </div>
             </div>
             <TKSHomePageProducts title="All Products" />
