@@ -8,50 +8,29 @@ export async function middleware(request) {
     headers: Object.fromEntries(request.headers.entries()),
 
   };
+}
+/* export function middleware(req) {
+  const token = req.headers.get('authorization')?.split(' ')[1];
 
-  // Return the debug info for now to see the request details
-  // return new NextResponse(JSON.stringify({ message: "Debug Info", debugInfo }), {
-  //   status: 200,
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // });
-//   const token = request.headers.get("authorization")?.split(" ")[1];
+  if (!token) {
+    return new NextResponse(JSON.stringify({ error: 'Authentication token is missing.' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
-//   if (!token) {
-//     return new NextResponse(JSON.stringify({ error: "Token is required" }), {
-//       status: 401,
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-//   }
-
-//   try {
-//     const secret = process.env.JWT_SECRET;
-//     jwt.verify(token, secret);
-
-//     // Token is valid, allow the request to proceed
-    // return NextResponse.next();
-//   } catch (err) {
-//     if (err.name === "TokenExpiredError") {
-//       return new NextResponse(JSON.stringify({ error: "Token has expired" }), {
-//         status: 401,
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       });
-//     }
-//     return new NextResponse(JSON.stringify({ error: "Invalid token" }), {
-//       status: 403,
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-//   }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.nextUrl.searchParams.set('user', JSON.stringify(decoded)); // Optionally pass user info
+    return NextResponse.next();
+  } catch (error) {
+    return new NextResponse(JSON.stringify({ error: 'Invalid or expired token.' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }
 
-// Limit middleware to paths starting with `/api/`
-// export const config = {
-//   matcher: "/api/:path*",
-// };
+export const config = {
+  matcher: ['/api/admin/:path*'], // Apply middleware to specific paths
+}; */
