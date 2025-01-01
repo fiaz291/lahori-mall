@@ -66,7 +66,24 @@ const handlePost = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+async function updateProductTotalSold(productId, quantitySold) {
+  try {
+    // Update the totalSold count
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId },
+      data: {
+        totalSold: {
+          increment: quantitySold, // Increment by the quantity sold
+        },
+      },
+    });
 
+    console.log("Product updated:", updatedProduct);
+    return updatedProduct;
+  } catch (error) {
+    console.error("Error updating totalSold:", error);
+  }
+}
 const handleGet = async (req, res) => {
   const { userId, limit = 20, page = 1 } = req.query;
   const orderLimit = Number(limit);
@@ -76,7 +93,6 @@ const handleGet = async (req, res) => {
     return res.status(400).json({ message: "Invalid input" });
   }
 
-  
   try {
     const totalOrders = await prisma.order.count({
       where: { userId: parseInt(userId) },
