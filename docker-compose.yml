@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: admin # Database username
+      POSTGRES_PASSWORD: admin # Database password
+      POSTGRES_DB: ecommerce # Default database
+    ports:
+      - "5432:5432" # Expose PostgreSQL on localhost
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist data
+    networks:
+      - postgres_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com # pgAdmin login email
+      PGADMIN_DEFAULT_PASSWORD: admin # pgAdmin login password
+    ports:
+      - "8080:80" # Expose pgAdmin on localhost
+    networks:
+      - postgres_network
+
+volumes:
+  postgres_data: # Volume for PostgreSQL data persistence
+
+networks:
+  postgres_network: # Shared network for both services
