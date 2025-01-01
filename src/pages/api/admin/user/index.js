@@ -46,7 +46,7 @@ const POST = async (req, res) => {
   }
 
   try {
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.admin.findUnique({
       where: { email },
     });
 
@@ -60,7 +60,7 @@ const POST = async (req, res) => {
       `${password}${email.length.toString()}`,
       10
     );
-    const newUser = await prisma.user.create({
+    const newUser = await prisma.admin.create({
       data: {
         username,
         email,
@@ -117,7 +117,7 @@ const PATCH = async (req, res) => {
   }
 
   try {
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.admin.findUnique({
       where: { id },
     });
 
@@ -140,7 +140,7 @@ const PATCH = async (req, res) => {
     }
     if (vendorId) dataToUpdate.vendorId = vendorId
       
-    const newUser = await prisma.user.update({
+    const newUser = await prisma.admin.update({
       where: { id },
       data: dataToUpdate,
     });

@@ -1,6 +1,6 @@
 import prisma from "@/app/prisma";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { getToken } from "../../../utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -39,10 +39,8 @@ const POST = async (req, res) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign(
-      { userId: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-    );
+
+    const token = await getToken(user)
     await prisma.user.update({
       where: { id:user.id },
       data: {token},

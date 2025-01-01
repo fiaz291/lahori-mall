@@ -44,6 +44,7 @@ CREATE TABLE "User" (
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "storeId" INTEGER,
     "vendorId" INTEGER,
+    "token" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

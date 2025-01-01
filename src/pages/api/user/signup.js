@@ -3,13 +3,12 @@
 import prisma from "@/app/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { getToken } from "../../../utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
-    case "GET":
-      return GET(req, res)
-    /* case "POST":
-      return POST(req, res); */
+    case "POST":
+      return POST(req, res);
     case "PATCH":
       return PATCH(req, res);
     default:
@@ -18,27 +17,7 @@ export default async function handler(req, res) {
   }
 }
 
-const GET = async (req, res) => {
-  const { id } = req.query;
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id:parseInt(id)
-      }
-    });
-
-    const data = { user: user, status: 200 };
-    if (user) {
-      res.status(200).json(data);
-    } else {
-      res.status(200).json(data);
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-/* const POST = async (req, res) => {
+const POST = async (req, res) => {
   const {
     username,
     email,
@@ -99,22 +78,18 @@ const GET = async (req, res) => {
         vendorId
       },
     });
-    const token = jwt.sign(
-      { userId: newUser.id, email: newUser.email, role: newUser.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION_TIME }
-    );
+    
+    const token = await getToken(newUser)
     const data = { user: newUser, token, status: 201 };
     res.status(201).json(data);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", err: error });
   }
-}; */
+};
 
 const PATCH = async (req, res) => {
   const {
     id,
-    username,
     firstName,
     lastName,
     phoneNumber,

@@ -55,7 +55,7 @@ const handleGet = async (req, res) => {
       },
     });
 
-    return res.status(200).json(favorites);
+    return res.status(200).json({favorites});
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });

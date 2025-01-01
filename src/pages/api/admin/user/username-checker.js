@@ -19,7 +19,7 @@ const POST = async (req, res) => {
   }
 
   try {
-    const existingUsername = await prisma.user.findUnique({
+    const existingUsername = await prisma.admin.findUnique({
       where: { username },
     });
 
@@ -47,7 +47,7 @@ const generateSuggestedUsernames = async (username) => {
 
   while (suggestions.length < 5) {
     const newUsername = `${username}${count}`;
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.admin.findUnique({
       where: { username: newUsername },
     });
 

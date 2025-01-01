@@ -21,7 +21,7 @@ const POST = async (req, res) => {
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.admin.findUnique({
       where: {email}
     });
     // Check if the user exists
@@ -43,7 +43,7 @@ const POST = async (req, res) => {
       { userId: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
     );
-    await prisma.user.update({
+    await prisma.admin.update({
       where: { id:user.id },
       data: {token},
     });

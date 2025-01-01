@@ -26,6 +26,34 @@ model Vendor {
   images            String[]
 }
 
+model Admin {
+  id             Int       @id @default(autoincrement())
+  username       String    @unique
+  email          String    @unique
+  password       String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  firstName      String?
+  lastName       String?
+  phoneNumber    String
+  address        String?
+  city           String?
+  state          String?
+  zipCode        String?
+  country        String?
+  role           String    @default("Admin")
+  isVerified     Boolean   @default(false)
+  lastLogin      DateTime?
+  profilePicture String?
+  dateOfBirth    DateTime?
+  isActive       Boolean   @default(true)
+
+  storeId     Int?
+  store       Store?   @relation("StoreAdmins", fields: [storeId], references: [id])
+  vendorId    Int?
+  token       String?
+}
+
 model User {
   id             Int       @id @default(autoincrement())
   username       String    @unique
@@ -53,10 +81,6 @@ model User {
   cartItems             CartItem[]
   vouchers              UserVoucher[] // Relation to user-voucher linking table
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
-
-  storeId     Int?
-  store       Store?   @relation("StoreUsers", fields: [storeId], references: [id])
-  vendorId    Int?
   token       String?
 }
 
@@ -64,7 +88,7 @@ model Store {
   id          Int      @id @default(autoincrement())
   name        String
   storeSlug   String   @unique
-  users       User[]   @relation("StoreUsers")
+  Admins       Admin[]   @relation("StoreAdmins")
  products    Product[] @relation("StoreProducts")
 }
 
