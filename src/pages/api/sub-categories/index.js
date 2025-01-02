@@ -50,7 +50,7 @@ async function POST(req, res) {
       },
     });
 
-    return res.status(201).json(subCategory);
+    return res.status(201).json({data:subCategory});
   } catch (error) {
     console.error("Error creating subcategory:", error);
     return res
@@ -148,8 +148,11 @@ async function PATCH(req, res) {
 // GET: Fetch all subcategories (optional implementation)
 async function GET(req, res) {
   try {
-    const subCategories = await prisma.subCategory.findMany();
-    return res.status(200).json(subCategories);
+    let subCategories = await prisma.subCategory.findMany();
+    if (subCategories.length) {
+      subCategories = subCategories.map((sub)=>({label:sub.name,value:sub.id}))
+    }
+    return res.status(200).json({data:subCategories});
   } catch (error) {
     console.error("Error fetching subcategories:", error);
     return res

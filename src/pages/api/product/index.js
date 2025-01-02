@@ -40,8 +40,8 @@ const POST = async (req, res) => {
     relatedProductIDs = [],
     totalSold = 0,
     isActive = true,
-    subCategoryIds = [],
-    vendorId
+    subCategoryId,
+    storeId
   } = req.body;
 
   // Required fields validation
@@ -54,7 +54,6 @@ const POST = async (req, res) => {
     inventory,
     categoryId,
     tags,
-    vendorId
   };
 
   for (const [field, value] of Object.entries(requiredFields)) {
@@ -100,10 +99,10 @@ const POST = async (req, res) => {
         tags,
         images,
         isFeatured,
-        rating,
+        rating: rating ? parseInt(rating):0,
         brand,
-        weight,
-        dimensions,
+        weight: weight ? parseInt(weight):0,
+        dimensions:dimensions,
         slug,
         isDiscount: !!discountPrice,
         score,
@@ -112,10 +111,8 @@ const POST = async (req, res) => {
         relatedProductIDs,
         totalSold,
         isActive,
-        vendorId,
-        subCategories: {
-          connect: subCategoryIds.map((id) => ({ id })),
-        },
+        storeId,
+        subCategoryId
       },
     });
 

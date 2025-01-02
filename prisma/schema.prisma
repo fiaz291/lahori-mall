@@ -49,8 +49,7 @@ model Admin {
   isActive       Boolean   @default(true)
 
   storeId     Int?
-  store       Store?   @relation("StoreAdmins", fields: [storeId], references: [id])
-  vendorId    Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
   token       String?
 }
 
@@ -88,8 +87,13 @@ model Store {
   id          Int      @id @default(autoincrement())
   name        String
   storeSlug   String   @unique
-  Admins       Admin[]   @relation("StoreAdmins")
- products    Product[] @relation("StoreProducts")
+  admins       Admin[]   
+  products    Product[]
+  oreders     Order[]
+  vouchers     Voucher[]
+  orderItems   OrderItem[]
+  financialTransactions FinancialTransaction[]
+
 }
 
 model Order {
@@ -104,7 +108,8 @@ model Order {
   orderItems            OrderItem[] // Relation to order items
   vouchers              UserVoucher[] // Vouchers applied to this order
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
-  vendorId    Int?
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
 }
 
 model Voucher {
@@ -117,7 +122,8 @@ model Voucher {
   description           String? // Details about the voucher
   userVouchers          UserVoucher[] // Relation to user-voucher linking table
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
-  vendorId              Int?
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
 }
 
 model UserVoucher {
@@ -155,7 +161,7 @@ model SubCategory {
   updatedAt  DateTime  @updatedAt
   categoryId Int // Foreign key to main Category
   category   Category  @relation(fields: [categoryId], references: [id])
-  products   Product[] @relation("ProductSubCategories") // Many-to-many relation with products
+  products   Product[] // Many-to-many relation with products
 }
 
 model Banner {
@@ -180,8 +186,7 @@ model Product {
   currency          String?
   SKU               String   @unique
   inventory         Int
-  categoryId        Int // Main category foreign key
-  category          Category @relation(fields: [categoryId], references: [id])
+  
   tags              String[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -197,14 +202,17 @@ model Product {
   relatedProductIDs Int[]
   totalSold         Int      @default(0)
 
-  subCategories SubCategory[] @relation("ProductSubCategories") // Many-to-many relation with subcategories
-
+  subCategory       SubCategory? @relation(fields: [subCategoryId], references: [id]) // One-to-One relation
+  subCategoryId     Int?         // Foreign key to SubCategory
+  
+  categoryId        Int // Main category foreign key
+  category          Category @relation(fields: [categoryId], references: [id])
+  
   orderItems OrderItem[]
   favorites  Favorite[]
   cartItems  CartItem[]
   storeId           Int?         // Store the product's associated store
-  store             Store?       @relation("StoreProducts", fields: [storeId], references: [id]) // One-to-many relation with store
-  vendorId          Int?
+  store             Store?       @relation(fields: [storeId], references: [id]) // One-to-many relation with store
 }
 
 model OrderItem {
@@ -218,8 +226,11 @@ model OrderItem {
   order   Order   @relation(fields: [orderId], references: [id]) // Foreign key to Order
   product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
 
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
+  
   @@unique([orderId, productId]) // Ensure unique combination of orderId and productId
-  vendorId  Int?
+  
 }
 
 model Favorite {
@@ -244,7 +255,6 @@ model CartItem {
   product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
 
   @@unique([userId, productId]) // Ensure unique combination of userId and productId
-  vendorId  Int?
 }
 
 model FinancialTransaction {
@@ -262,5 +272,6 @@ model FinancialTransaction {
   user    User?    @relation(fields: [userId], references: [id])
   order   Order?   @relation(fields: [orderId], references: [id])
   voucher Voucher? @relation(fields: [voucherId], references: [id])
-  vendorId         Int?
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
 }

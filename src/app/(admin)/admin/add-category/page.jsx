@@ -48,11 +48,11 @@ export default function AddCategory() {
   };
   const onFinish = async (values) => {
     // console.log({ values, file });
-    if (!file) {
+    /* if (!file) {
       return;
-    }
+    } */
     const data = { ...values };
-    data.url = file;
+    data.url = "http://example.com/"; //file;
     seErr(null);
     setMsg(null);
     console.log({ data });

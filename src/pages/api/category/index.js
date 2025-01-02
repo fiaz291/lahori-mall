@@ -117,8 +117,11 @@ const PATCH = async (req, res) => {
 
 const GET = async (req, res) => {
   try {
-    const categories = await prisma.category.findMany();
-    const data = { categories, status: 200 };
+    let categories = await prisma.category.findMany();
+    if (categories.length) {
+      categories = categories.map((cat)=>({label:cat.name,value:cat.id}))
+    }
+    const data = { data:categories, status: 200 };
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
