@@ -1,43 +1,44 @@
+import config from "@/app/config";
 import React from "react";
 import DataTable from "react-data-table-component";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function OrdersToDispatch() {
   const columns = [
     {
       name: "Order Number",
-      selector: (row) => row.orderNumber,
+      selector: (row) => row.id,
     },
     {
-      name: "Customer Name",
-      selector: (row) => row.customerName,
+      name: "Customer Id",
+      selector: (row) => row.userId,
     },
     {
       name: "Order Status",
       cell: (row) => (
         <select
-          defaultValue={row.orderStatus}
-          onChange={(e) =>
-            console.log(
-              `Order ${row.orderNumber} status changed to`,
-              e.target.value
-            )
-          }
+          defaultValue={row.status}
+          onChange={(e) => updateOrderStatus(row.id, e.target.value)}
         >
-          <option value="Pending">Pending</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Dispatched">Dispatched</option>
-          <option value="Delivered">Delivered</option>
-          <option value="Cancelled">Cancelled</option>
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="shipped">Shipped</option>
+          <option value="out_for_delivery">Out for Delivery</option>
+          <option value="delivered">Delivered</option>
+          <option value="canceled">Canceled</option>
+          <option value="returned">Returned</option>
+          <option value="failed">failed</option>
         </select>
       ),
     },
     {
       name: "Order Placement Date",
-      selector: (row) => row.orderDate,
+      selector: (row) => row.updatedAt,
     },
   ];
 
-  const data = [
+  const data1 = [
     {
       id: 1,
       orderNumber: "ORD1001",
@@ -74,10 +75,35 @@ export default function OrdersToDispatch() {
       orderDate: "2024-12-06",
     },
   ];
+  const updateOrderStatus = async (id, status) => {
+    try {
+      const response = await axios.patch(
+        config.url + "/api/admin/order?id=" + id,
+        { status }
+      );
+      console.log("Data posted successfully:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error posting data:", error);
+      throw error; // Re-throw the error if you want to handle it further up the call stack
+    }
+  };
+
+  const { isPending, error, data, isFetching } = useQuery({
+    queryKey: ["oredersData"],
+    queryFn: async () => {
+      const response = await fetch(config.url + "/api/admin/order");
+      return await response.json();
+    },
+  });
+
+  if (isPending) return "Loading...";
+
+  if (error) return "An error has occurred: " + error.message;
 
   return (
     <div>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data?.data} />
     </div>
   );
 }
