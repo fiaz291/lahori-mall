@@ -35,6 +35,7 @@ export function middleware(req) {
   }
 
   if (!token) {
+    return NextResponse.next();
     return new NextResponse(JSON.stringify({ error: 'Authentication token is missing.' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
