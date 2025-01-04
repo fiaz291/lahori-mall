@@ -40,7 +40,8 @@ const POST = async (req, res) => {
     relatedProductIDs = [],
     totalSold = 0,
     isActive = true,
-    subCategoryIds = [],
+    subCategoryId,
+    storeId
   } = req.body;
 
   // Required fields validation
@@ -85,8 +86,6 @@ const POST = async (req, res) => {
         .json({ error: "SKU already in use", errorCode: 3 });
     }
 
-    const storeId = user?.storeId || "TKS";
-
     // Create the new product
     const newProduct = await prisma.product.create({
       data: {
@@ -100,10 +99,10 @@ const POST = async (req, res) => {
         tags,
         images,
         isFeatured,
-        rating,
+        rating: rating ? parseInt(rating):0,
         brand,
-        weight,
-        dimensions,
+        weight: weight ? parseInt(weight):0,
+        dimensions:dimensions,
         slug,
         isDiscount: !!discountPrice,
         score,
@@ -113,16 +112,14 @@ const POST = async (req, res) => {
         totalSold,
         isActive,
         storeId,
-        subCategories: {
-          connect: subCategoryIds.map((id) => ({ id })),
-        },
+        subCategoryId
       },
     });
 
     res.status(201).json({ product: newProduct, status: 201 });
   } catch (error) {
     console.error("Error creating product:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: error });
   }
 };
 
@@ -236,8 +233,7 @@ const PATCH = async (req, res) => {
 
 export const GET = async (req, res) => {
   try {
-    const searchParams = req.nextUrl.searchParams;
-  const query = searchParams.get("query");
+  const {query} = req.query;
     const products = {
       new: [],
       onSale: [],
@@ -259,8 +255,7 @@ export const GET = async (req, res) => {
       }
       return array;
     }
-
-      const result = await innerHandlerForProducts(query);
+    const result = await innerHandlerForProducts(query);
       if (query === ENUMS.latest) {
         products.new = result;
       } else if (query === ENUMS.onSale) {
@@ -279,7 +274,7 @@ export const GET = async (req, res) => {
     res.status(200).json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error });
   }
 };
 
@@ -298,14 +293,17 @@ const innerHandlerForProducts = async (value) => {
 
 const getLatestProducts = async () => {
   const products = await prisma.product.findMany({
-    isActive: true,
+    where: {
+      isActive: true,
     inventory: {
       gt: 0,
+    }
     },
     orderBy: {
       createdAt: "desc",
     },
     take: 20,
+    
   });
   return products;
 };

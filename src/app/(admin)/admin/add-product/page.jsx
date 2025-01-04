@@ -32,6 +32,7 @@ export default function AddProduct() {
   const [err, seErr] = useState(null);
   const [msg, setMsg] = useState(null);
   const [categories, setCatgories] = useState([]);
+  const [subCategories, setSubCatgories] = useState([]);
   const [uploadProgress, setUploadProgress] = useState([]);
   const { quill, quillRef } = useQuill();
   const [files, setFiles] = useState([]);
@@ -39,25 +40,33 @@ export default function AddProduct() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   const getAllCategories = async () => {
-  //     setLoading(true);
-  //     const response = await axios.get(config.url + "/api/category");
-  //     if (
-  //       response &&
-  //       response.data.categories &&
-  //       response.data.categories.length > 0
-  //     ) {
-  //       const cats = response.data.categories.map((cat) => {
-  //         return { value: cat.id, label: cat.name };
-  //       });
-  //       setCatgories(cats);
-  //     }
-  //     setLoading(false);
-  //   };
 
-  //   getAllCategories();
-  // }, []);
+  const getAllCategories = async () => {
+    setLoading(true);
+    const response = await axios.get(config.url + "/api/category");
+    if (response && response.data.data && response.data.data.length > 0) {
+      /* const cats = response.data.categories.map((cat) => {
+          return { value: cat.id, label: cat.name };
+        }); */
+      setCatgories(response.data.data);
+    }
+    setLoading(false);
+  };
+  const getSubCategories = async () => {
+    setLoading(true);
+    const response = await axios.get(config.url + "/api/sub-categories");
+    if (response && response.data.data && response.data.data.length > 0) {
+      /* const cats = response.data.categories.map((cat) => {
+          return { value: cat.id, label: cat.name };
+        }); */
+      setSubCatgories(response.data.data);
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    getSubCategories();
+    getAllCategories();
+  }, []);
   const checkAvailableSlug = async () => {
     seErr(null);
     setMsg(null);
@@ -238,7 +247,7 @@ export default function AddProduct() {
       </Form.Item>
 
       {/* Category */}
-      {/* <Form.Item
+      <Form.Item
         className="mb-0"
         name="categoryId"
         label="Category"
@@ -250,16 +259,15 @@ export default function AddProduct() {
           style={{ width: "100%" }}
           options={categories}
         />
-      </Form.Item> */}
+      </Form.Item>
 
       {/* Subcategories */}
-      <Form.Item className="mb-0" name="subCategories" label="Subcategories">
+      <Form.Item className="mb-0" name="subCategoryId" label="Subcategories">
         <Select
           className="form-select"
-          mode="multiple"
           placeholder="Select subcategories"
           style={{ width: "100%" }}
-          options={[]}
+          options={subCategories}
         />
       </Form.Item>
 
@@ -275,9 +283,13 @@ export default function AddProduct() {
       {err && <p style={{ color: "red", textAlign: "center" }}>{err}</p>}
       {msg && <p style={{ color: "black", textAlign: "center" }}>{msg}</p>}
       <Form.Item label="Check Slug" className="mb-0">
-        <Button  onClick={() => {
+        <Button
+          onClick={() => {
             checkAvailableSlug();
-          }}>Check Availability</Button>
+          }}
+        >
+          Check Availability
+        </Button>
       </Form.Item>
 
       {/* Image Upload */}

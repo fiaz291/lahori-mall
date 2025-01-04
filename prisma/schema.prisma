@@ -7,6 +7,52 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Vendor {
+  id          Int      @id @default(autoincrement()) // Unique identifier for the vendor
+  name        String   @unique                      // Vendor name
+  email       String   @unique                      // Vendor's email (unique)
+  phoneNumber String                                // Vendor's contact phone number
+  address     String?                               // Vendor's address
+  city        String?                               // City where the vendor operates
+  state       String?                               // State where the vendor operates
+  zipCode     String?                               // ZIP/Postal code
+  country     String?                               // Country of the vendor
+  companyName String?                               // Optional: Vendor's company name
+  taxId       String?                               // Vendor's Tax ID or VAT number
+  rating      Float    @default(0.0)                // Vendor's rating (from reviews)
+  isActive    Boolean  @default(true)               // Vendor status: active/inactive
+  createdAt   DateTime @default(now())              // Creation timestamp
+  updatedAt   DateTime @updatedAt                   // Last update timestamp
+  images            String[]
+}
+
+model Admin {
+  id             Int       @id @default(autoincrement())
+  username       String    @unique
+  email          String    @unique
+  password       String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  firstName      String?
+  lastName       String?
+  phoneNumber    String
+  address        String?
+  city           String?
+  state          String?
+  zipCode        String?
+  country        String?
+  role           String    @default("Admin")
+  isVerified     Boolean   @default(false)
+  lastLogin      DateTime?
+  profilePicture String?
+  dateOfBirth    DateTime?
+  isActive       Boolean   @default(true)
+
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
+  token       String?
+}
+
 model User {
   id             Int       @id @default(autoincrement())
   username       String    @unique
@@ -34,17 +80,20 @@ model User {
   cartItems             CartItem[]
   vouchers              UserVoucher[] // Relation to user-voucher linking table
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
-
-  storeId     Int?
-  store       Store?   @relation("StoreUsers", fields: [storeId], references: [id])
+  token       String?
 }
 
 model Store {
   id          Int      @id @default(autoincrement())
   name        String
   storeSlug   String   @unique
-  users       User[]   @relation("StoreUsers")
- products    Product[] @relation("StoreProducts")
+  admins       Admin[]   
+  products    Product[]
+  oreders     Order[]
+  vouchers     Voucher[]
+  orderItems   OrderItem[]
+  financialTransactions FinancialTransaction[]
+
 }
 
 model Order {
@@ -59,6 +108,8 @@ model Order {
   orderItems            OrderItem[] // Relation to order items
   vouchers              UserVoucher[] // Vouchers applied to this order
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
 }
 
 model Voucher {
@@ -71,6 +122,8 @@ model Voucher {
   description           String? // Details about the voucher
   userVouchers          UserVoucher[] // Relation to user-voucher linking table
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
 }
 
 model UserVoucher {
@@ -108,7 +161,7 @@ model SubCategory {
   updatedAt  DateTime  @updatedAt
   categoryId Int // Foreign key to main Category
   category   Category  @relation(fields: [categoryId], references: [id])
-  products   Product[] @relation("ProductSubCategories") // Many-to-many relation with products
+  products   Product[] // Many-to-many relation with products
 }
 
 model Banner {
@@ -124,7 +177,7 @@ model Banner {
 
 model Product {
   id                Int      @id @default(autoincrement())
-  isActive          Boolean  @default(true)
+  isActive          Boolean @default(true) 
   name              String
   description       String
   price             Float
@@ -133,8 +186,7 @@ model Product {
   currency          String?
   SKU               String   @unique
   inventory         Int
-  categoryId        Int // Main category foreign key
-  category          Category @relation(fields: [categoryId], references: [id])
+  
   tags              String[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -150,13 +202,17 @@ model Product {
   relatedProductIDs Int[]
   totalSold         Int      @default(0)
 
-  subCategories SubCategory[] @relation("ProductSubCategories") // Many-to-many relation with subcategories
-
+  subCategory       SubCategory? @relation(fields: [subCategoryId], references: [id]) // One-to-One relation
+  subCategoryId     Int?         // Foreign key to SubCategory
+  
+  categoryId        Int // Main category foreign key
+  category          Category @relation(fields: [categoryId], references: [id])
+  
   orderItems OrderItem[]
   favorites  Favorite[]
   cartItems  CartItem[]
   storeId           Int?         // Store the product's associated store
-  store             Store?       @relation("StoreProducts", fields: [storeId], references: [id]) // One-to-many relation with store
+  store             Store?       @relation(fields: [storeId], references: [id]) // One-to-many relation with store
 }
 
 model OrderItem {
@@ -170,7 +226,11 @@ model OrderItem {
   order   Order   @relation(fields: [orderId], references: [id]) // Foreign key to Order
   product Product @relation(fields: [productId], references: [id]) // Foreign key to Product
 
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
+  
   @@unique([orderId, productId]) // Ensure unique combination of orderId and productId
+  
 }
 
 model Favorite {
@@ -212,4 +272,6 @@ model FinancialTransaction {
   user    User?    @relation(fields: [userId], references: [id])
   order   Order?   @relation(fields: [orderId], references: [id])
   voucher Voucher? @relation(fields: [voucherId], references: [id])
+  storeId     Int?
+  store       Store?   @relation(fields: [storeId], references: [id])
 }

@@ -3,7 +3,6 @@ import { COLORS } from "@/constants";
 import { Button, Flex } from "antd";
 import React, { useState } from "react";
 import MegaMenu from "../MegaMenu";
-import { Carousel, useCarousel } from "nuka-carousel";
 import Slider from "react-slick";
 import { MenuOutlined } from "@ant-design/icons";
 import "./styles.css";

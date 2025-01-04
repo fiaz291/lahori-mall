@@ -1,9 +1,12 @@
 "use client";
 import { Form, Input, Button, Select } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import slugify from "slugify";
+import axios from "axios";
+import config from "@/app/config";
 
-const AddSubCategoryForm = ({ categories, onSubmit }) => {
+const AddSubCategoryForm = () => {
+  const [categories, setCategories] = useState([]);
   const [form] = Form.useForm();
   const [error, setError] = useState(null);
 
@@ -11,13 +14,37 @@ const AddSubCategoryForm = ({ categories, onSubmit }) => {
   const onFinish = async (values) => {
     try {
       // Call the provided onSubmit function with form values
-      await onSubmit(values);
+      await setSubGategory(values);
       form.resetFields();
       setError(null);
     } catch (err) {
       setError("Error adding subcategory. Please try again.");
     }
   };
+  const setSubGategory = async (data) => {
+    console.log("setSubGategory", data);
+    try {
+      const response = await axios.post(
+        config.url + "/api/sub-categories",
+        data
+      );
+      if (response) {
+      } else {
+      }
+    } catch (err) {}
+  };
+  const getGategories = async () => {
+    try {
+      const response = await axios.get(config.url + "/api/category");
+      if (response) {
+        setCategories(response.data.data);
+      } else {
+      }
+    } catch (err) {}
+  };
+  useEffect(() => {
+    getGategories();
+  }, []);
 
   return (
     <Form

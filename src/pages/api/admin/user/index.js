@@ -6,10 +6,8 @@ import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   switch (req.method) {
-    case "GET":
-      return GET(req, res)
-    /* case "POST":
-      return POST(req, res); */
+    case "POST":
+      return POST(req, res);
     case "PATCH":
       return PATCH(req, res);
     default:
@@ -18,27 +16,7 @@ export default async function handler(req, res) {
   }
 }
 
-const GET = async (req, res) => {
-  const { id } = req.query;
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id:parseInt(id)
-      }
-    });
-
-    const data = { user: user, status: 200 };
-    if (user) {
-      res.status(200).json(data);
-    } else {
-      res.status(200).json(data);
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-/* const POST = async (req, res) => {
+const POST = async (req, res) => {
   const {
     username,
     email,
@@ -68,7 +46,7 @@ const GET = async (req, res) => {
   }
 
   try {
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.admin.findUnique({
       where: { email },
     });
 
@@ -82,7 +60,7 @@ const GET = async (req, res) => {
       `${password}${email.length.toString()}`,
       10
     );
-    const newUser = await prisma.user.create({
+    const newUser = await prisma.admin.create({
       data: {
         username,
         email,
@@ -109,12 +87,11 @@ const GET = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", err: error });
   }
-}; */
+};
 
 const PATCH = async (req, res) => {
   const {
     id,
-    username,
     firstName,
     lastName,
     phoneNumber,
@@ -140,7 +117,7 @@ const PATCH = async (req, res) => {
   }
 
   try {
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.admin.findUnique({
       where: { id },
     });
 
@@ -163,7 +140,7 @@ const PATCH = async (req, res) => {
     }
     if (vendorId) dataToUpdate.vendorId = vendorId
       
-    const newUser = await prisma.user.update({
+    const newUser = await prisma.admin.update({
       where: { id },
       data: dataToUpdate,
     });
