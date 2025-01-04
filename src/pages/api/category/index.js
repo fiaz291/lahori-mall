@@ -117,8 +117,13 @@ const PATCH = async (req, res) => {
 
 const GET = async (req, res) => {
   try {
-    let categories = await prisma.category.findMany();
-    if (categories.length) {
+    const { menu } = req.query;
+    let categories = await prisma.category.findMany({
+      include: {
+      subCategories: true
+      
+    }});
+    if (!menu && categories.length) {
       categories = categories.map((cat)=>({label:cat.name,value:cat.id}))
     }
     const data = { data:categories, status: 200 };

@@ -3,7 +3,7 @@
 import prisma from "@/app/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { getToken } from "../../../utilities";
+import { createResponse, getToken } from "../../../utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -35,14 +35,14 @@ const POST = async (req, res) => {
   } = req.body;
 
   // Required fields
-  const requiredFields = { username, email, password, firstName, phoneNumber };
+  const requiredFields = { email, password, firstName, lastName };
 
   // Check for missing required fields
   for (const [field, value] of Object.entries(requiredFields)) {
     if (!value) {
       return res
         .status(400)
-        .json({ error: `${field} is required`, errorCode: 1 });
+        .json(createResponse({ error: `${field} is required`, code: 1, status:false }));
     }
   }
 
@@ -54,7 +54,7 @@ const POST = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ error: "Email already in use", errorCode: 2 });
+        .json(createResponse({ error: "Email already in use", code: 2, status:false }));
     }
 
     const hashedPassword = await bcrypt.hash(
@@ -63,27 +63,17 @@ const POST = async (req, res) => {
     );
     const newUser = await prisma.user.create({
       data: {
-        username,
         email,
         password: hashedPassword,
         firstName,
-        lastName,
-        phoneNumber,
-        address,
-        city,
-        state,
-        zipCode,
-        country,
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
-        vendorId
+        lastName
       },
     });
-    
-    const token = await getToken(newUser)
-    const data = { user: newUser, token, status: 201 };
-    res.status(201).json(data);
+    delete newUser.password
+   /*  const token = await getToken(newUser) */
+    res.status(201).json(createResponse({ data: newUser, code: 201, status:true }));
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error", err: error });
+    res.status(500).json(createResponse({ error: "Internal Server Error",status:fasle }));
   }
 };
 
@@ -120,7 +110,7 @@ const PATCH = async (req, res) => {
     });
 
     if (!existingUser) {
-      return res.status(400).json({ error: "User Not found", errorCode: 2 });
+      return res.status(400).json(createResponse({ error: "User Not found", code: 2, status:false }));
     }
 
     const dataToUpdate = {};
@@ -142,9 +132,8 @@ const PATCH = async (req, res) => {
       where: { id },
       data: dataToUpdate,
     });
-    const data = { user: newUser, status: 201 };
-    res.status(201).json(data);
+    res.status(201).json(createResponse({ data: newUser, status: true }));
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error", err: error });
+    res.status(500).json(createResponse({ error: "Internal Server Error", status:false }));
   }
 };

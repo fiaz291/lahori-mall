@@ -1,6 +1,7 @@
 // import { prisma } from "../../prisma";
 
 import prisma from "@/app/prisma";
+import { createResponse } from "@/utilities";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -41,7 +42,7 @@ const POST = async (req, res) => {
     if (!value) {
       return res
         .status(400)
-        .json({ error: `${field} is required`, errorCode: 1 });
+        .json(createResponse({ error: `${field} is required`, code: 1, status:false }));
     }
   }
 
@@ -53,7 +54,7 @@ const POST = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ error: "Email already in use", errorCode: 2 });
+        .json(createResponse({ error: "Email already in use", code: 2, status:false }));
     }
 
     const hashedPassword = await bcrypt.hash(
@@ -77,15 +78,10 @@ const POST = async (req, res) => {
         vendorId
       },
     });
-    const token = jwt.sign(
-      { userId: newUser.id, email: newUser.email, role: newUser.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION_TIME }
-    );
-    const data = { user: newUser, token, status: 201 };
-    res.status(201).json(data);
+    delete newUser.password
+    res.status(201).json(createResponse({ data: {...newUser,token}, status: true }));
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error", err: error });
+    res.status(500).json(createResponse({ error: "Internal Server Error", status:false }));
   }
 };
 
@@ -112,7 +108,7 @@ const PATCH = async (req, res) => {
     if (!value) {
       return res
         .status(400)
-        .json({ error: `${field} is required`, errorCode: 1 });
+        .json(createResponse({ error: `${field} is required`, code: 1, status:fasle }));
     }
   }
 
@@ -122,7 +118,7 @@ const PATCH = async (req, res) => {
     });
 
     if (!existingUser) {
-      return res.status(400).json({ error: "User Not found", errorCode: 2 });
+      return res.status(400).json(createResponse({ error: "User Not found", code: 2, status:false }));
     }
 
     const dataToUpdate = {};
@@ -144,9 +140,8 @@ const PATCH = async (req, res) => {
       where: { id },
       data: dataToUpdate,
     });
-    const data = { user: newUser, status: 201 };
-    res.status(201).json(data);
+    res.status(201).json(createResponse({ data: newUser, status: true }));
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error", err: error });
+    res.status(500).json(createResponse({ error: "Internal Server Error",status:false }));
   }
 };

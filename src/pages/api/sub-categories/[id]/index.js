@@ -1,5 +1,4 @@
 import prisma from "@/app/prisma";
-import { createResponse } from "@/utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -24,9 +23,9 @@ async function POST(req, res) {
   if (!name || !slug || !url || !categoryId) {
     return res
       .status(400)
-      .json(createResponse({
-        error: "All fields are required: name, slug, url, categoryId",
-      }));
+      .json({
+        message: "All fields are required: name, slug, url, categoryId",
+      });
   }
 
   try {
@@ -36,7 +35,7 @@ async function POST(req, res) {
     });
 
     if (!category) {
-      return res.status(404).json(createResponse({ error: "Category not found" }));
+      return res.status(404).json({ message: "Category not found" });
     }
 
     // Create the new subcategory
@@ -51,12 +50,12 @@ async function POST(req, res) {
       },
     });
 
-    return res.status(201).json(createResponse({data:subCategory}));
+    return res.status(201).json({data:subCategory});
   } catch (error) {
     console.error("Error creating subcategory:", error);
     return res
       .status(500)
-      .json(createResponse({error: error.message }));
+      .json({ message: "Internal server error", error: error.message });
   }
 }
 // PUT: Upate a new subcategory
@@ -66,9 +65,9 @@ async function PUT(req, res) {
   if (!name || !slug || !url || !categoryId) {
     return res
       .status(400)
-      .json(createResponse({
-        error: "All fields are required: name, slug, url, categoryId",
-      }));
+      .json({
+        message: "All fields are required: name, slug, url, categoryId",
+      });
   }
 
   try {
@@ -78,7 +77,7 @@ async function PUT(req, res) {
     });
 
     if (!category) {
-      return res.status(404).json(createResponse({ error: "Category not found" }));
+      return res.status(404).json({ message: "Category not found" });
     }
 
     // Update subcategory
@@ -94,12 +93,12 @@ async function PUT(req, res) {
       },
     });
 
-    return res.status(201).json(createResponse({ data: subCategory }));
+    return res.status(201).json(subCategory);
   } catch (error) {
     console.error("Error creating subcategory:", error);
     return res
       .status(500)
-      .json(createResponse({ message: "Internal server error", error: error.message }));
+      .json({ message: "Internal server error", error: error.message });
   }
 }
 // PATCH: Update subcategory
@@ -109,9 +108,9 @@ async function PATCH(req, res) {
   if (!name || !slug || !url || !categoryId) {
     return res
       .status(400)
-      .json(createResponse({
-        error: "All fields are required: name, slug, url, categoryId",
-      }));
+      .json({
+        message: "All fields are required: name, slug, url, categoryId",
+      });
   }
 
   try {
@@ -121,7 +120,7 @@ async function PATCH(req, res) {
     });
 
     if (!category) {
-      return res.status(404).json(createResponse({ error: "Category not found" }));
+      return res.status(404).json({ message: "Category not found" });
     }
 
     // Update subcategory
@@ -137,7 +136,7 @@ async function PATCH(req, res) {
       },
     });
 
-    return res.status(201).json(createResponse({data:subCategory}));
+    return res.status(201).json(subCategory);
   } catch (error) {
     console.error("Error creating subcategory:", error);
     return res
@@ -148,16 +147,17 @@ async function PATCH(req, res) {
 
 // GET: Fetch all subcategories (optional implementation)
 async function GET(req, res) {
+  let { id } =  req.query
   try {
-    let subCategories = await prisma.subCategory.findMany();
-    if (subCategories.length) {
+    let subCategories = await prisma.subCategory.findMany({where:{categoryId:parseInt(id)}});
+    if (subCategories) {
       subCategories = subCategories.map((sub)=>({label:sub.name,value:sub.id}))
     }
-    return res.status(200).json(createResponse({data:subCategories}));
+    return res.status(200).json({data:subCategories});
   } catch (error) {
     console.error("Error fetching subcategories:", error);
     return res
       .status(500)
-      .json(createResponse({ message: "Internal server error", error: error.message }));
+      .json({ message: "Internal server error", error: error.message });
   }
 }

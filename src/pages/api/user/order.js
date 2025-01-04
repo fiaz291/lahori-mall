@@ -1,5 +1,6 @@
 import prisma from "@/app/prisma";
 import { orderStatuses } from "@/app/utils";
+import { createResponse } from "@/utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -17,7 +18,7 @@ const handlePost = async (req, res) => {
   const { userId, orderItems } = req.body;
 
   if (!userId || !Array.isArray(orderItems) || orderItems.length === 0) {
-    return res.status(400).json({ message: "Invalid input" });
+    return res.status(400).json(createResponse({ error: "Invalid input" }));
   }
 
   try {
@@ -60,7 +61,7 @@ const handlePost = async (req, res) => {
 
     }));
 
-    return res.status(201).json(order);
+    return res.status(201).json(createResponse({data:order}));
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -114,9 +115,9 @@ const handleGet = async (req, res) => {
       take: orderLimit,
     });
 
-    return res.status(200).json({ orders, totalPages });
+    return res.status(200).json(createResponse({ data:{orders,totalPages},status:true }));
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json(createResponse({ error: "Internal Server Error" }));
   }
 };

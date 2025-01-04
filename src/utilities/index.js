@@ -17,3 +17,14 @@ const token = jwt.sign(payload, secret, { expiresIn: '1h' }); */
  /*  console.log('Generated Token:', token);
   return token */
 }
+
+export const createResponse = ({ code = 200, status = true, message = "", data = null, error = null }) => {
+  status = error? false:status
+  return {
+    code,
+    status,
+    message,
+    data,
+    error
+  };
+};

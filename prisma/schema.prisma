@@ -44,7 +44,7 @@ model Admin {
   role           String    @default("Admin")
   isVerified     Boolean   @default(false)
   lastLogin      DateTime?
-  profilePicture String?
+  profilePicture Json?
   dateOfBirth    DateTime?
   isActive       Boolean   @default(true)
 
@@ -55,14 +55,14 @@ model Admin {
 
 model User {
   id             Int       @id @default(autoincrement())
-  username       String    @unique
+  username       String?    
   email          String    @unique
   password       String
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  firstName      String?
-  lastName       String?
-  phoneNumber    String
+  firstName      String
+  lastName       String
+  phoneNumber    String?
   address        String?
   city           String?
   state          String?
@@ -71,7 +71,7 @@ model User {
   role           String    @default("customer")
   isVerified     Boolean   @default(false)
   lastLogin      DateTime?
-  profilePicture String?
+  profilePicture Json?
   dateOfBirth    DateTime?
   isActive       Boolean   @default(true)
 
@@ -145,7 +145,7 @@ model Category {
   id            Int           @id @default(autoincrement())
   name          String        @unique
   slug          String        @unique
-  url           String        @unique
+  url           String        
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   products      Product[] // Relation to products
@@ -156,7 +156,7 @@ model SubCategory {
   id         Int       @id @default(autoincrement())
   name       String    @unique
   slug       String    @unique
-  url        String    @unique
+  url        String    
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   categoryId Int // Foreign key to main Category
@@ -201,7 +201,7 @@ model Product {
   freebieProductIDs Int[]
   relatedProductIDs Int[]
   totalSold         Int      @default(0)
-
+  freeDelivery      Boolean? @default(false)
   subCategory       SubCategory? @relation(fields: [subCategoryId], references: [id]) // One-to-One relation
   subCategoryId     Int?         // Foreign key to SubCategory
   

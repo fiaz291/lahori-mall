@@ -1,6 +1,6 @@
 import prisma from "@/app/prisma";
 import bcrypt from "bcrypt";
-import { getToken } from "../../../utilities";
+import { createResponse, getToken } from "../../../utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -17,7 +17,7 @@ const POST = async (req, res) => {
 
   // Check if email and password are provided
   if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required" });
+    return res.status(400).json(createResponse({ error: "Email and password are required" , status:false }));
   }
 
   try {
@@ -26,7 +26,7 @@ const POST = async (req, res) => {
     });
     // Check if the user exists
     if (!user) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      return res.status(401).json(createResponse({ error: "Invalid email or password", status:false }));
     }
 
      // Reconstruct the input string used during hashing
@@ -35,7 +35,7 @@ const POST = async (req, res) => {
   // Compare the provided plain password (after hashing) with the stored hash
   const isMatch = await bcrypt.compare(inputToHash, user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      return res.status(401).json(createResponse({ error: "Invalid email or password", status:false }));
     }
 
     // Generate a JWT token
@@ -45,13 +45,13 @@ const POST = async (req, res) => {
       where: { id:user.id },
       data: {token},
     });
-
+    delete user.password
     // Return the token
-    res.status(200).json({ user: { ...user,token } });
+    res.status(200).json(createResponse({ data: { ...user,token }, status:true }));
   } catch (error) {
     if (error.name === "TokenExpiredError") {
         return res.status(401).json({ error: "Token has expired" });
       }
-    return res.status(500).json({ error: error });
+    return res.status(500).json(createResponse({ error: error, status:false }));
   }
 };

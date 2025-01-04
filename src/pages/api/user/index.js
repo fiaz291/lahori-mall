@@ -1,6 +1,7 @@
 // import { prisma } from "../../prisma";
 
 import prisma from "@/app/prisma";
+import { createResponse } from "@/utilities";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -27,14 +28,14 @@ const GET = async (req, res) => {
       }
     });
 
-    const data = { user: user, status: 200 };
+    const data = { data: user, code: 200,status:true };
     if (user) {
-      res.status(200).json(data);
+      res.status(200).json(createResponse(data));
     } else {
-      res.status(200).json(data);
+      res.status(200).json(createResponse(data));
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json(createResponse({error: "Internal Server Error"}));
   }
 };
 
@@ -167,8 +168,7 @@ const PATCH = async (req, res) => {
       where: { id },
       data: dataToUpdate,
     });
-    const data = { user: newUser, status: 201 };
-    res.status(201).json(data);
+    res.status(201).json(createResponse({ data: newUser, code: 201, status:true }));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", err: error });
   }

@@ -1,5 +1,6 @@
 import prisma from "@/app/prisma";
 import { orderStatuses } from "@/app/utils";
+import { createResponse } from "@/utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -87,7 +88,7 @@ export default async function handler(req, res) {
   }
 } */
 const handleGet = async (req, res) => {
-  const { userId, limit = 20, page = 1 } = req.query;
+  const { userId, limit = 5, page = 1 } = req.query;
   const orderLimit = Number(limit);
   const orderPage = Number(page);
   const skip = (orderPage - 1) * orderLimit;
@@ -110,10 +111,10 @@ const handleGet = async (req, res) => {
       take: orderLimit,
     });
 
-    return res.status(200).json({ data:orders, totalPages });
+    return res.status(200).json(createResponse({ data:{orders,totalPages},status:true }));
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json(createResponse({ error: "Internal Server Error", status:false }));
   }
 };
 async function handlePatch(req, res) {
@@ -127,7 +128,7 @@ async function handlePatch(req, res) {
   } = req.body;
 
   if (!id) {
-    return res.status(400).json({ error: "Order ID is required" });
+    return res.status(400).json(createResponse({ error: "Order ID is required",status:false }));
   }
 
   try {
@@ -137,7 +138,7 @@ async function handlePatch(req, res) {
     });
 
     if (!existingOrder) {
-      return res.status(404).json({ error: "Order not found" });
+      return res.status(404).json(createResponse({ error: "Order not found", stauts: false }));
     }
 
     // Update the order
@@ -152,11 +153,11 @@ async function handlePatch(req, res) {
       },
     });
 
-    return res.status(200).json({ message: "Order updated successfully", order: updatedOrder });
+    return res.status(200).json(createResponse({ message: "Order updated successfully", data: updatedOrder, status:true }));
   } catch (error) {
     console.error("Error updating order:", error);
     return res
       .status(500)
-      .json({ error: "Internal Server Error", details: error.message });
+      .json(createResponse({ error: "Internal Server Error", status:false }));
   }
 }
