@@ -1,5 +1,6 @@
 import { FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Flex, Input, Row } from "antd";
+import Link from "next/link";
 import React from "react";
 
 

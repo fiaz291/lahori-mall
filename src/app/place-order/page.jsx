@@ -114,7 +114,7 @@ export default function PlaceOrder() {
   if (!cartItems || (isArray(cartItems) && cartItems.length < 1)) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        <Navbar hideSlider />
         <div className="flex flex-1 justify-center items-center">
           <div className="flex flex-col max-w-[1200px] mt-10 p-10">
             <p className="font-bold text-xl border border-black p-10 rounded">
@@ -128,7 +128,7 @@ export default function PlaceOrder() {
   }
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar hideSlider />
       <div className="flex flex-1 justify-center items-center">
         <div className="flex flex-col w-full max-w-[1200px] mt-10 p-10 gap-5 bg-[rgba(255,255,255,0.4)]">
           <p className="font-bold text-xl">

@@ -33,7 +33,6 @@ export default function TKSHomePageProducts({ title }) {
           {[...Array(12)].map((_, index) => (
             <Col
               key={index}
-              xs={12}  // 1 box on extra small screens
               sm={12} // 2 boxes on small screens
               md={8}  // 3 boxes on medium screens
               lg={6}  // 4 boxes on large screens and above

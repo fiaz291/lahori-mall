@@ -32,7 +32,7 @@ export default function Page() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar hideSlider />
       <div className="flex justify-center">
         <div className="flex flex-col w-full max-w-[1200px] mt-10 mx-14 gap-14 ">
           <RecentOrders orders={ordersData?.orders} loading={ordersLoading} />

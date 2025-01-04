@@ -36,13 +36,11 @@ export default function HomeTabsProducts() {
     };
     return (
         <div className='outer pt-[20px] pb-[20px] outer-background-2'>
-            <div className='inner inner-background'>
-                <Flex>
-                    <Row className='w-full' gutter={20}>
-                        <Col xs={12} sm={6}><Tabs defaultActiveKey="1" className='tabs-products' items={items} onChange={onChange} /></Col>
-                        <Col xs={12} sm={6}><Tabs defaultActiveKey="1" items={items2} onChange={onChange} /></Col>
+            <div className='inner inner-background flex justify-center w-100'>
+                    <Row gutter={20}>
+                        <Col className='prods-columns'><Tabs defaultActiveKey="1" className='tabs-products' items={items} onChange={onChange} /></Col>
+                        <Col className='prods-columns'><Tabs defaultActiveKey="1" items={items2} onChange={onChange} /></Col>
                     </Row>
-                </Flex>
             </div>
         </div>
     )

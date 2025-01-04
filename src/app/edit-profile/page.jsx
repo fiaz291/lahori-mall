@@ -10,7 +10,7 @@ export default function UserProfile() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar hideSlider />
       <div className="flex flex-1 justify-center items-center">
         <div className="flex flex-col w-full max-w-[1200px] mt-10 p-10 gap-5">
           <p className="font-bold text-xl">Edit Profile</p>
