@@ -18,7 +18,7 @@ export const GET = async (req, res) => {
     if (days) daysAgo.setDate(daysAgo.getDate() - parseInt(days));
     
   
-  const products = await prisma.product.findMany({
+  let products = await prisma.product.findMany({
     where: {
       isActive: true,
       inventory: {

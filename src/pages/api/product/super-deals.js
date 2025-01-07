@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 export const GET = async (req, res) => {
   try {
     let {limit = 20, page=1} = req.query
-    const products = await prisma.product.findMany({
+    let products = await prisma.product.findMany({
       where: {
       isActive: true,
       inventory: {

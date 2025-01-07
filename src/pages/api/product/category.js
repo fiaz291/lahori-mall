@@ -2,6 +2,7 @@
 
 import { ENUMS } from "@/app/utils";
 import prisma from "@/app/prisma";
+import { createResponse } from "@/utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -18,7 +19,7 @@ export const GET = async (req, res) => {
   try {
   const {query} = req.query;
 
-    const products = await prisma.product.findMany({
+    let products = await prisma.product.findMany({
       where: {
        categoryId: query.categoryId
       },
@@ -27,8 +28,8 @@ export const GET = async (req, res) => {
       },
     });
 
-    const data = { products, status: 200 };
-    res.status(200).json(data);
+    const data = { data:products, status: 200 };
+    res.status(200).json(createResponse(data));
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error });
