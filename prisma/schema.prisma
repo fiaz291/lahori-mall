@@ -201,7 +201,7 @@ model Product {
   freebieProductIDs Int[]
   relatedProductIDs Int[]
   totalSold         Int      @default(0)
-  freeDelivery      Boolean? @default(false)
+  freeDelivery      Boolean? 
   subCategory       SubCategory? @relation(fields: [subCategoryId], references: [id]) // One-to-One relation
   subCategoryId     Int?         // Foreign key to SubCategory
   
