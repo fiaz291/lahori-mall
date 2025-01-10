@@ -33,7 +33,7 @@ export function middleware(req) {
   }
 
   // Reject requests from disallowed origins
-  return new NextResponse('CORS not allowed for this origin', { status: 403 });
+  return new NextResponse('CORS not allowed for this origin', { status: 405 });
 }
 // export const verifyToken = async (token, secret) => {
 //   const secretKey = new TextEncoder().encode(secret);
