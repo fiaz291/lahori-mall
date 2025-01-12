@@ -47,10 +47,13 @@ model Admin {
   profilePicture Json?
   dateOfBirth    DateTime?
   isActive       Boolean   @default(true)
+  verificationCode String?
 
   storeId     Int?
   store       Store?   @relation(fields: [storeId], references: [id])
   token       String?
+
+  
 }
 
 model User {
