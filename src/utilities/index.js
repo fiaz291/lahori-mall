@@ -40,3 +40,19 @@ export const cordMiddleware = (middleware)=> {
       });
     });
 }
+export const runMiddleware = (req,res , middlewares)=> {
+  return middlewares.reduce((promise, middleware) => {
+    return promise.then(() => new Promise((resolve, reject) => {
+      try{
+        middleware(req,res,(result) => {
+          if (result instanceof Error) {
+            return reject(result);
+          }
+          return resolve(result);
+        });
+      }catch(error){
+        return reject(error);
+      }
+    }));
+  }, Promise.resolve());
+}
