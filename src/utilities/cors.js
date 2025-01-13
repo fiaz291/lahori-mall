@@ -21,7 +21,6 @@ const cors = (req,res,next)=>{
             status: 204,
           })
             next(re)
-          
         }
     
         // For other methods, attach CORS headers

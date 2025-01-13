@@ -45,7 +45,7 @@ export const runMiddleware = (req,res , middlewares)=> {
     return promise.then(() => new Promise((resolve, reject) => {
       try{
         middleware(req,res,(result) => {
-          if (result instanceof Error || req.method === 'OPTIONS') {
+          if (result instanceof Error) {
             return reject(result);
           }
           return resolve(result);
