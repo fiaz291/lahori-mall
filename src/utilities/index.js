@@ -28,3 +28,15 @@ export const createResponse = ({ code = 200, status = true, message = "", data =
     error
   };
 };
+
+export const cordMiddleware = (middleware)=> {
+  return (req, res) =>
+    new Promise((resolve, reject) => {
+      middleware(req, res, (result) => {
+        if (result instanceof Error) {
+          return reject(result);
+        }
+        return resolve(result);
+      });
+    });
+}

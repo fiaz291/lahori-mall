@@ -1,8 +1,16 @@
 import prisma from "@/app/prisma";
 import bcrypt from "bcrypt";
-import { createResponse, getToken } from "../../../utilities";
+import Cors from 'cors';
+import { createResponse, getToken, cordMiddleware } from "../../../utilities";
 
+const cors = cordMiddleware(
+  Cors({
+    methods: ['GET', 'POST', 'OPTIONS'], // Allowed methods
+    origin: '*', // Allow all origins. Replace with a specific origin in production.
+  })
+);
 export default async function handler(req, res) {
+  await cors(req, res); // Run the CORS middleware
   switch (req.method) {
     case "POST":
       return POST(req, res);
