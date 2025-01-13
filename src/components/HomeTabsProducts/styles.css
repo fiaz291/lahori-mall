@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
 }
+
 .ant-tabs-tab-btn {
     width: 100%;
     height: 36px;
@@ -15,17 +16,19 @@
 .ant-tabs-tab-active {
     color: white !important;
 }
+
 .ant-tabs-tab-btn:hover {
     background: #0047A0;
     color: white;
     border-radius: 16px;
     opacity: 0.5;
 }
+
 .ant-tabs-nav-list {
     width: 100%;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+:where(.css-dev-only-do-not-override-m4timi).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     color: white !important;
     background: #0047A0;
     border-radius: 16px;
@@ -40,9 +43,22 @@
         linear-gradient(to bottom, #CD2E3A 250px, transparent 0);
   } */
 
-  .inner-background {
+.inner-background {
     /* background-color: rgba(0,0,0,0.1); */
     padding-top: 20px;
     padding-bottom: 20px;
     border-radius: 4px;
-  }
+}
+
+.prods-columns {
+    width: 50%;
+}
+
+@media screen and (max-width: 484px) {
+    .control-display {
+        display: none;
+    }
+    .prods-columns {
+        width: 100%;
+    }
+}

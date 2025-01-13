@@ -18,21 +18,16 @@ import React, { useEffect, useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css"; // Add css for snow theme
-import {
-  cookingMethodTags,
-  generalKitchenTags,
-  materialTags,
-  occasionTags,
-  priceQualityTags,
-} from "@/app/utils";
 import Loader from "@/components/Loader";
 import slugify from "slugify";
+import { API_URLS } from "@/app/apiUrls";
 
 export default function AddProduct() {
   const [err, seErr] = useState(null);
   const [msg, setMsg] = useState(null);
   const [categories, setCatgories] = useState([]);
   const [subCategories, setSubCatgories] = useState([]);
+  const [catId, setCatId] = useState(null);
   const [uploadProgress, setUploadProgress] = useState([]);
   const { quill, quillRef } = useQuill();
   const [files, setFiles] = useState([]);
@@ -43,18 +38,27 @@ export default function AddProduct() {
 
   const getAllCategories = async () => {
     setLoading(true);
-    const response = await axios.get(config.url + "/api/category");
-    if (response && response.data.data && response.data.data.length > 0) {
-      /* const cats = response.data.categories.map((cat) => {
+    try {
+      const response = await axios.get(config.url + API_URLS.GET_CATEGORIES, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response && response.data.data && response.data.data.length > 0) {
+        /* const cats = response.data.categories.map((cat) => {
           return { value: cat.id, label: cat.name };
-        }); */
-      setCatgories(response.data.data);
+          }); */
+        setCatgories(response.data.data);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log({ err })
     }
-    setLoading(false);
   };
-  const getSubCategories = async () => {
+  const getSubCategories = async (catId) => {
     setLoading(true);
-    const response = await axios.get(config.url + "/api/sub-categories");
+    const response = await axios.get(`${config.url + API_URLS.GET_SUB_CATEGORIES}/${catId}`);
+    console.log({response})
     if (response && response.data.data && response.data.data.length > 0) {
       /* const cats = response.data.categories.map((cat) => {
           return { value: cat.id, label: cat.name };
@@ -64,7 +68,11 @@ export default function AddProduct() {
     setLoading(false);
   };
   useEffect(() => {
-    getSubCategories();
+    if (catId) {
+      getSubCategories(catId);
+    }
+  }, [catId])
+  useEffect(() => {
     getAllCategories();
   }, []);
   const checkAvailableSlug = async () => {
@@ -74,7 +82,7 @@ export default function AddProduct() {
     if (val) {
       try {
         const response = await axios.post(
-          config.url + "/api/product/slug-checker",
+          config.url + PRODUCT_SLUG_CHECKER,
           {
             slug: val,
           }
@@ -99,21 +107,21 @@ export default function AddProduct() {
   };
   const onFinish = async (values) => {
     const data = { ...values };
-    const images = files.map((file) => {
-      if (file.url) return file.url;
-    });
+    // const images = files.map((file) => {
+    //   if (file.url) return file.url;
+    // });
     const description = quill.root.innerHTML; // Get innerHTML using quill
     data.description = description;
     data.tags = selectedTags;
     data.price = parseFloat(data.price);
     data.discountPrice = parseFloat(data.discountPrice);
     data.inventory = parseInt(data.inventory, 10);
-    data.images = images;
+    data.images = ['images.com'];
     seErr(null);
     setMsg(null);
 
     try {
-      const response = await axios.post(config.url + "/api/product", data);
+      const response = await axios.post(config.url + API_URLS.PRODUCT, data);
       if (response.status === 200 && response.data.error) {
         seErr(response.data.error);
         message.error(response.data.error);
@@ -134,11 +142,11 @@ export default function AddProduct() {
 
   React.useEffect(() => {
     if (quill) {
-      quill.on("text-change", (delta, oldDelta, source) => {});
+      quill.on("text-change", (delta, oldDelta, source) => { });
     }
   }, [quill]);
 
-  const onFinishFailed = (errorInfo) => {};
+  const onFinishFailed = (errorInfo) => { };
   // const handleUpload = (file) => {
   //   const storageRef = ref(storage, `uploads/${file.name}`);
   //   const token = "admin";
@@ -258,6 +266,7 @@ export default function AddProduct() {
           placeholder="Add Category for the Product"
           style={{ width: "100%" }}
           options={categories}
+          onChange={(e) => { setCatId(e) }}
         />
       </Form.Item>
 

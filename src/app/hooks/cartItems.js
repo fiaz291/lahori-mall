@@ -44,7 +44,7 @@ export default function useCartItems() {
       setCartLoading(false);
     }
     if (user) {
-      getCartItems();
+      // getCartItems();
     }
   }, [user]);
 

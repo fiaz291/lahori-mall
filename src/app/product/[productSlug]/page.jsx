@@ -36,7 +36,7 @@ export default function Page({ params }) {
     <div className="outer">
       <div className="inner">
 
-        <Navbar />
+        <Navbar hideSlider />
         <div className="flex justify-center">
           <div className="flex flex-col w-full max-w-[1200px] mt-10 mx-4 px-4 gap-8">
             {/* <Product_Route prod={data} /> */}

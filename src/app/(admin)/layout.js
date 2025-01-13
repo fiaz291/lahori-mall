@@ -40,6 +40,13 @@ const Routes = [
     breadcrumb: "Add Product",
   },
   {
+    label: "Orders",
+    //   icon: <HomeIcon width="2" />,
+    key: "/admin/orders",
+    url: "/admin/orders",
+    breadcrumb: "Update Orders",
+  },
+  {
     label: "Property",
     //   icon: <BuildingOffice2Icon width={2} />,
     key: "/board",
@@ -67,31 +74,31 @@ const AdminLayout = ({ children }) => {
     router.push(key);
   };
 
-  // useEffect(() => {
-  //   async function checkAdmin() {
-  //     const token = getCookie("token");
-  //     if (!token) {
-  //       router.push("/login");
-  //       return;
-  //     }
-  //     const decodedUser = jwt.decode(token);
-  //     if (!decodedUser || decodedUser.role !== "admin") {
-  //       router.push("/");
-  //       return;
-  //     }
+  useEffect(() => {
+    async function checkAdmin() {
+      const token = getCookie("token");
+      const user = getCookie("user");
+      const parsedUser = JSON.parse(user);
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+      if (!parsedUser || parsedUser.data.role.toLowerCase() !== "admin") {
+        router.push("/");
+        return;
+      }
+      setLoading(false);
+    }
+    checkAdmin();
+  }, []);
 
-  //     setLoading(false);
-  //   }
-  //   checkAdmin();
-  // }, []);
-
-  // if (loading) {
-  //   return (
-  //     <div className="h-[100vh] width-[100vw] flex justify-center items-center">
-  //       <Loader />
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="h-[100vh] width-[100vw] flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <Layout>

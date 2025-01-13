@@ -11,7 +11,7 @@ const SmallProductCard = ({title}) => {
       hoverable
       className="small-product-card"
       style={{
-        width: 250,
+        width: "100%",
         display: "flex",
         flexDirection: "row",
         height: "auto",

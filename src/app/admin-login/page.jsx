@@ -1,37 +1,42 @@
-'use client'
-import { FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
-import { Button, Col, Divider, Flex, Form, Input, message, Row } from "antd";
+"use client"
+import { Button, Flex, Form, Input, message } from "antd";
+import axios from "axios";
 import Link from "next/link";
 import React from "react";
-import './styles.css'
-import { API_URLS } from "../apiUrls";
-import axios from "axios";
+import { store } from "@/app/store";
 import config from "../config";
 import { setCookie } from "cookies-next";
-import { store } from "../store";
-import SocialLogin from "@/components/SocialLogin";
+import { API_URLS } from "../apiUrls";
+import { useRouter } from "next/navigation";
 
 
-export default function Login() {
+
+
+export default function AdminLogin() {
   const [form] = Form.useForm();
-
+  const router = useRouter();
   const onFinish = async (values) => {
     const data = { ...values };
     try {
-      const response = await axios.post(config.url + API_URLS.USER_LOGIN, data);
-      return;
-      setCookie("user", response.data.user);
-      setCookie("token", response.data.token);
-      store.setState(() => {
-        return {
-          user: response.data.user,
-        };
+      const response = await axios.post(config.url + API_URLS.ADMIN_LOGIN, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-      message.success("Welcome");
-      // form.resetFields();
-      // setOpenModal(false);
+      // console.log({response})
+      if(response?.data?.data){
+        setCookie("user", response.data?.data);
+        setCookie("token", response.data?.data?.token);
+        store.setState(() => {
+          return {
+            user: response?.data?.data,
+          };
+        });
+        message.success("Welcome");
+        router.push('/admin/dashboard')
+      }
+        // form.resetFields();
     } catch (error) {
-      console.log({ error })
       if (error.response && error.response.data) {
         message.error(error.response.data.error);
       } else {
@@ -40,9 +45,7 @@ export default function Login() {
     }
   };
 
-  const onFinishFailed = () => {
-    console.log('Failed')
-  }
+  const onFinishFailed = (errorInfo) => { };
   return (
     <Flex vertical align="center" className="p-16">
       <Link href="/">
@@ -66,24 +69,25 @@ export default function Login() {
           form={form}
         >
           <Form.Item
-            className="mb-0 w-full login-input"
+            className="mb-0"
             name="email"
+            label={<span className="">Email</span>}
             rules={[
               {
                 required: true,
                 message: "Email is Required",
               },
-              {
-                type: "email",
-                message: "Please enter a valid email address",
-              },
             ]}
           >
-            <Input placeholder="Email" className="h-[60px] w-full" />
+            <Input
+              className="form-control bg-white"
+              placeholder="Enter your Email"
+            />
           </Form.Item>
           <Form.Item
-            className="mb-0 w-full login-input"
+            className="mb-0"
             name="password"
+            label={<div className="">Password</div>}
             rules={[
               {
                 required: true,
@@ -91,22 +95,19 @@ export default function Login() {
               },
             ]}
           >
-            <Input.Password
-              placeholder="Password"
-              className="h-[60px]"
-              visibilityToggle
+            <Input
+              type="password"
+              className="form-control bg-white"
+              placeholder="Enter your Password"
             />
           </Form.Item>
-
-          <Flex align="flex-end" vertical className="">
-            <button type="submit" className="w-[124px] mt-2 h-[42px] bg-[#0047A0] hover:border-none hover:opacity-60 text-white rounded-md">
+          <Flex justify="flex-end" gap={10} className="mt-[10px]">
+            <Button type="primary" htmlType="submit">
               Login
-            </button>
-            <Link href="/signup"><p className="mt-2">Don't have account? Register now!</p></Link>
+            </Button>
           </Flex>
         </Form>
       </Flex>
-      <SocialLogin />
     </Flex>
   );
 }

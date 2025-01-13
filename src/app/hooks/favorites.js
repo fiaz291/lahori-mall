@@ -14,25 +14,25 @@ export default function useFavorites() {
 
   const [favLoading, setFavoritesLoading] = useState(true);
 
-  useEffect(() => {
-    async function getFavoriteItems() {
-      const response = await axios.get(
-        config.url + "/api/favorites" + "?userId=" + user.id
-      );
-      if (response.data) {
-        store.setState((state) => {
-          return {
-            ...state,
-            favorites: response.data,
-          };
-        });
-      }
-      setFavoritesLoading(false);
-    }
-    if (user) {
-      getFavoriteItems();
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   async function getFavoriteItems() {
+  //     const response = await axios.get(
+  //       config.url + "/api/favorites" + "?userId=" + user.id
+  //     );
+  //     if (response.data) {
+  //       store.setState((state) => {
+  //         return {
+  //           ...state,
+  //           favorites: response.data,
+  //         };
+  //       });
+  //     }
+  //     setFavoritesLoading(false);
+  //   }
+  //   if (user) {
+  //     getFavoriteItems();
+  //   }
+  // }, [user]);
 
   return { favorites, favLoading };
 }

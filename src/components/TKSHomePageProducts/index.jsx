@@ -3,8 +3,18 @@ import React from "react";
 import './styles.css'
 import { Col, Flex, Row } from "antd";
 import MediumProductCard from "../TKS/MediumProductCard";
+import { useQuery } from "@tanstack/react-query";
+import { API_URLS } from "@/app/apiUrls";
 
 export default function TKSHomePageProducts({ title }) {
+  const { isPending, error, data } = useQuery({
+    queryKey: [`list_products apiUrl`],
+    queryFn: () => fetch(config.url + API_URLS.PRODUCT_SUPER_DEALS).then((res) => res.json()),
+    cacheTime: 0,
+    staleTime: 0,
+});
+console.log({ data })
+
   const array = new Array(30).fill(0);
 
   return (
@@ -33,7 +43,6 @@ export default function TKSHomePageProducts({ title }) {
           {[...Array(12)].map((_, index) => (
             <Col
               key={index}
-              xs={12}  // 1 box on extra small screens
               sm={12} // 2 boxes on small screens
               md={8}  // 3 boxes on medium screens
               lg={6}  // 4 boxes on large screens and above

@@ -10,7 +10,7 @@ import {
 import { Col, Row, Skeleton } from "antd";
 import { isArray } from "lodash";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 function RecentOrders({ orders, loading }) {
   return (
@@ -43,10 +43,10 @@ function RecentOrders({ orders, loading }) {
                     <Col md={6}>
                       <p
                         className="font-semibold  flex items-center gap-2"
-                        style={{ color: orderStatuses[order.status].color }}
+                        style={{ color: orderStatuses?.[order.status]?.color }}
                       >
                         <InfoCircleOutlined /> Status :{" "}
-                        {orderStatuses[order.status].name}
+                        {orderStatuses?.[order.status]?.name}
                       </p>
                     </Col>
                   </Row>
@@ -71,7 +71,7 @@ function RecentOrders({ orders, loading }) {
                       >
                         Price: {item.price}
                       </Col>
-                      {item.product.isDiscount && (
+                      {item?.product?.isDiscount && (
                         <Col span={4} md={4} sm={8} xs={8}>
                           <Link href={`/product/${item.slug}`}>
                             <p
