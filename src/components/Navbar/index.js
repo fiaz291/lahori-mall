@@ -12,7 +12,7 @@ import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import useAuthUser from "@/app/hooks/authUser";
-import { Badge, Drawer, Flex } from "antd";
+import { Badge, Drawer, Dropdown, Flex } from "antd";
 import Link from "next/link";
 import useCartItems from "@/app/hooks/cartItems";
 import { useRouter } from "next/navigation";
@@ -31,6 +31,41 @@ const linkMap = {
 const loggedInButtons = ["PROFILE", "ORDERS"];
 
 export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
+  const items = [
+    {
+      key: '1',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+          1st menu item
+        </a>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+          1st menu item
+        </a>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+          1st menu item
+        </a>
+      ),
+    },
+    {
+      key: '4',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+          1st menu item
+        </a>
+      ),
+    },
+  ];
+
   const [openModal, setOpenModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const { user, userLoading, logout } = useAuthUser();
@@ -246,7 +281,11 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
                   <img src="/icons/userIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
                 </div>
                 <div>
-                  <img src="/icons/recentProductsIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                  <Dropdown menu={{ items }}>
+                    <a onClick={(e) => e.preventDefault()}>
+                      <img src="/icons/recentProductsIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                    </a>
+                  </Dropdown>
                 </div>
                 <div>
                   <Link href="/cart">

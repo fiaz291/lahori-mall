@@ -10,6 +10,7 @@ import { generalKitchenTags } from "@/app/utils";
 import Link from "next/link";
 import { COLORS } from "@/constants";
 import TopSellingProductCard from "../TopSellingProductCard";
+import { API_URLS } from "@/app/apiUrls";
 
 const responsive = {
   superLargeDesktop: {
@@ -96,15 +97,15 @@ const products = [
 ];
 
 export default function BestSellingSlider({ title }) {
-  
+
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => fetch(config.url + "/api/product").then((res) => res.json()),
+    queryKey: ["products_best_selling"],
+    queryFn: () => fetch(config.url + API_URLS.PRODUCT_BEST_SELLING).then((res) => res.json()),
     cacheTime: 0, // Disable caching
     staleTime: 0,
   });
-
+  console.log({ data })
   if (isPending) {
     // return (
     //   <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
@@ -171,7 +172,7 @@ export default function BestSellingSlider({ title }) {
             </Carousel>
           </>
         </div>
-        <div className="h-[2px] width-full bg-[#CD2E3A] mt-[20px]"/>
+        <div className="h-[2px] width-full bg-[#CD2E3A] mt-[20px]" />
       </div>
     </>
   );

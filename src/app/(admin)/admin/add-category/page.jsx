@@ -1,4 +1,5 @@
 "use client";
+import { API_URLS } from "@/app/apiUrls";
 import config from "@/app/config";
 // import { storage } from "@/firebase";
 import { UploadOutlined } from "@ant-design/icons";
@@ -57,7 +58,7 @@ export default function AddCategory() {
     setMsg(null);
     console.log({ data });
     try {
-      const response = await axios.post(config.url + "/api/category", data);
+      const response = await axios.post(config.url + API_URLS.GET_CATEGORIES, data);
       if (response.status === 200 && response.data.error) {
         seErr(response.data.error);
         message.error(response.data.error);

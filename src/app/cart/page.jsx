@@ -10,7 +10,7 @@ import Loader from "@/components/Loader";
 import { store } from "../store";
 import axios from "axios";
 import IncDecCounter from "@/components/IncrementDecrementCounter";
-import { Col, Divider, Flex, Row, Tooltip } from "antd";
+import { Button, Col, Divider, Flex, Row, Tooltip } from "antd";
 import { COLORS } from "@/constants";
 import { DeleteOutlined, PushpinOutlined } from "@ant-design/icons";
 import EditProfileModal from "@/components/EditProdileModal";
@@ -104,7 +104,7 @@ export default function Cart() {
   //     </div>
   //   );
   // }
-
+  console.log({cartItems})
   if (!cartItems || (isArray(cartItems) && cartItems.length < 1)) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -147,7 +147,7 @@ export default function Cart() {
                           <tr className="gap-4 flex justify-between">
                             <td>
                               <img
-                                src={item.product.images[0]}
+                                src={item?.product?.images?.[0]}
                                 className="w-[100px] h-[100px] object-cover min-w-[100px] max-w-[100px]"
                               />
                             </td>
@@ -176,7 +176,7 @@ export default function Cart() {
                                     className="text-[16px]  font-semibold"
                                     style={{ color: COLORS.red }}
                                   >
-                                    {item.product?.price} PKR
+                                    {item.product?.price} AED
                                   </p>
                                 )}
                                 {item.product?.isDiscount && (
@@ -185,13 +185,13 @@ export default function Cart() {
                                       className="text-[16px]  font-semibold"
                                       style={{ color: COLORS.red }}
                                     >
-                                      {item.product?.discountPrice} PKR
+                                      {item.product?.discountPrice} AED
                                     </p>
                                     <p
                                       className="text-[12px] font-semibold line-through"
                                       style={{ color: COLORS.gray }}
                                     >
-                                      {item.product?.price} PKR
+                                      {item.product?.price} AED
                                     </p>
                                   </div>
                                 )}
@@ -234,7 +234,7 @@ export default function Cart() {
                         >
                           <td>
                             <img
-                              src={item.product.images[0]}
+                              src={item?.product?.images?.[0]}
                               className="w-[100px] h-[100px] object-cover min-w-[100px] max-w-[100px]"
                             />
                           </td>
@@ -262,7 +262,7 @@ export default function Cart() {
                                   className="text-[16px]  font-semibold"
                                   style={{ color: COLORS.red }}
                                 >
-                                  {item.product?.price} PKR
+                                  {item.product?.price} AED
                                 </p>
                               )}
                               {item.product?.isDiscount && (
@@ -271,13 +271,13 @@ export default function Cart() {
                                     className="text-[16px]  font-semibold"
                                     style={{ color: COLORS.red }}
                                   >
-                                    {item.product?.discountPrice} PKR
+                                    {item.product?.discountPrice} AED
                                   </p>
                                   <p
                                     className="text-[12px] font-semibold line-through"
                                     style={{ color: COLORS.gray }}
                                   >
-                                    {item.product?.price} PKR
+                                    {item.product?.price} AED
                                   </p>
                                 </div>
                               )}
@@ -346,11 +346,26 @@ export default function Cart() {
                   <tbody>
                     <tr className="mt-[10px]">
                       <td>Subtotal ({getCartCount()} items)</td>
-                      <td>{getCartPrice()} PKR</td>
+                      <td>{getCartPrice()} AED</td>
                     </tr>
                     <tr className="mt-[10px]">
                       <td>Delivery Charges</td>
-                      <td>{getCartPrice() > 4999 ? "Free" : "400PKR"}</td>
+                      <td>{getCartPrice() > 4999 ? "Free" : "400AED"}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <Divider style={{ background: "rgba(0,0,0,0.2)" }} />
+                <table>
+                  <thead></thead>
+                  <tbody>
+                    <tr className="mt-[10px]">
+                      <td>Add Coupon</td>
+                    </tr>
+                    <tr className="mt-[10px]">
+                      <td><input className="w-full p-2" style={{border: '1px solid rgba(0,0,0,0.8)', outline: 'none'}}/></td>
+                      <td><button  className="w-full text-white h-[40px] font-semibold disabled:opacity-50"
+                  style={{ background: '#0047A0' }}>Apply</button></td>
+
                     </tr>
                   </tbody>
                 </table>
@@ -371,7 +386,7 @@ export default function Cart() {
                 <button
                   disabled={!user?.address}
                   className="w-full mt-[40px] text-white h-[40px] font-semibold disabled:opacity-50"
-                  style={{ background: COLORS.green }}
+                  style={{ background: '#0047A0' }}
                   onClick={() => {
                     router.push("/place-order");
                   }}

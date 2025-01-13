@@ -1,7 +1,6 @@
 'use client'
 import React from "react";
 import OrdersToDispatch from "./components/OrdersToDispatch";
-import MonthlyFinanceReport from "./components/MonthlyFinanceReport";
 
 export default function Dashboard() {
   return (
@@ -11,7 +10,6 @@ export default function Dashboard() {
         <p className="text-[18px] text-[#89CFF0]">View All</p>
       </div>
       <OrdersToDispatch />
-      <MonthlyFinanceReport />
     </div>
   );
 }

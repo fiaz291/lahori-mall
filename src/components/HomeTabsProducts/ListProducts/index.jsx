@@ -1,9 +1,18 @@
+import config from '@/app/config';
 import SmallProductCard from '@/components/TKS/SmallProductCad';
 import { ArrowRightOutlined } from '@ant-design/icons';
+import { useQuery } from '@tanstack/react-query';
 import { Button, Col, Row } from 'antd';
 import React from 'react';
 
-export default function ListProducts() {
+export default function ListProducts({ apiUrl }) {
+
+    const { isPending, error, data } = useQuery({
+        queryKey: [`list_products ${apiUrl}`],
+        queryFn: () => fetch(config.url + apiUrl).then((res) => res.json()),
+        cacheTime: 0,
+        staleTime: 0,
+    });
     return (
         <div>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>

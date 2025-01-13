@@ -17,7 +17,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./styles.css";
 import Product_Route from "./components";
-import { useRouter } from "next/router";
 import TKSHomePageProducts from "@/components/TKSHomePageProducts";
 
 export default function Page({ params }) {

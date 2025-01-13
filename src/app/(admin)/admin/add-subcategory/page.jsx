@@ -15,7 +15,7 @@ const AddSubCategoryForm = () => {
     try {
       // Call the provided onSubmit function with form values
       await setSubGategory(values);
-      form.resetFields();
+      // form.resetFields();
       setError(null);
     } catch (err) {
       setError("Error adding subcategory. Please try again.");
@@ -56,6 +56,18 @@ const AddSubCategoryForm = () => {
       onFinish={onFinish}
       autoComplete="off"
     >
+       {/* Category Field */}
+       <Form.Item
+        name="categoryId"
+        label="Category"
+        rules={[{ required: true, message: "Category is required" }]}
+      >
+        <Select
+          placeholder="Select Category"
+          options={categories}
+          style={{ width: "100%" }}
+        />
+      </Form.Item>
       {/* Name Field */}
       <Form.Item
         name="name"
@@ -91,23 +103,12 @@ const AddSubCategoryForm = () => {
       <Form.Item
         name="url"
         label="URL"
-        rules={[{ required: true, message: "URL is required" }]}
+        // rules={[{ required: true, message: "URL is required" }]}
       >
         <Input placeholder="Enter URL" />
       </Form.Item>
 
-      {/* Category Field */}
-      <Form.Item
-        name="categoryId"
-        label="Category"
-        rules={[{ required: true, message: "Category is required" }]}
-      >
-        <Select
-          placeholder="Select Category"
-          options={categories}
-          style={{ width: "100%" }}
-        />
-      </Form.Item>
+     
 
       {/* Error Message Display */}
       {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
