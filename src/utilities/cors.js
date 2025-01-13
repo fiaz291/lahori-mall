@@ -11,15 +11,16 @@ const cors = (req,res,next)=>{
       if (allowedOrigins.includes('*') || allowedOrigins.includes(origin) || !origin) {
         // Handle Preflight Request (OPTIONS)
         if (req.method === 'OPTIONS') {
-            next(new Response(null, {
-                headers: {
-                  'Access-Control-Allow-Origin': origin || '*',
-                  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-                  'Access-Control-Max-Age': '86400', // Cache preflight response for 1 day
-                },
-                status: 204,
-              }))
+          const re = new Response(null, {
+            headers: {
+              'Access-Control-Allow-Origin': origin || '*',
+              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+              'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+              'Access-Control-Max-Age': '86400', // Cache preflight response for 1 day
+            },
+            status: 204,
+          })
+            next(re)
           
         }
     
