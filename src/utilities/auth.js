@@ -45,11 +45,11 @@ export default function auth(req,res,next) {
     next(NextResponse.next());
 
   if (!token) {
-    return next(NextResponse.next());
-    return new NextResponse(JSON.stringify({ error: 'Authentication token is missing.' }), {
+    /* return next(NextResponse.next()); */
+    return next(new NextResponse(JSON.stringify({ error: 'Authentication token is missing.' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
-    });
+    }));
   }
 
   try {
