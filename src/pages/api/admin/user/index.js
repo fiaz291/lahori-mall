@@ -35,7 +35,7 @@ const POST = async (req, res) => {
   } = req.body;
 
   // Required fields
-  const requiredFields = { username, email, password, firstName, phoneNumber };
+  const requiredFields = { email, password, firstName };
 
   // Check for missing required fields
   for (const [field, value] of Object.entries(requiredFields)) {

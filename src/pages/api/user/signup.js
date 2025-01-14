@@ -32,6 +32,7 @@ const POST = async (req, res) => {
     password,
     firstName,
     lastName,
+    socialToken,
     phoneNumber,
     address,
     city,
@@ -74,7 +75,8 @@ const POST = async (req, res) => {
         email,
         password: hashedPassword,
         firstName,
-        lastName
+        lastName,
+        socialToken
       },
     });
     delete newUser.password
