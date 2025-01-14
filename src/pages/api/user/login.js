@@ -1,6 +1,6 @@
 import prisma from "@/app/prisma";
 import bcrypt from "bcrypt";
-import Cors from 'cors';
+/* import Cors from 'cors'; */
 import { createResponse, getToken, cordMiddleware } from "../../../utilities";
 
 /* const cors = cordMiddleware(

@@ -2,8 +2,6 @@
 
 import prisma from "@/app/prisma";
 import { createResponse } from "@/utilities";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   switch (req.method) {
