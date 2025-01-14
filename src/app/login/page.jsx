@@ -1,16 +1,19 @@
-'use client'
+"use client";
 import { FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Flex, Form, Input, message, Row } from "antd";
 import Link from "next/link";
 import React from "react";
-import './styles.css'
+import "./styles.css";
 import { API_URLS } from "../apiUrls";
 import axios from "axios";
 import config from "../config";
 import { setCookie } from "cookies-next";
 import { store } from "../store";
-import SocialLogin from "@/components/SocialLogin";
+import dynamic from "next/dynamic";
 
+const SocialLogin = dynamic(() => import("@/components/SocialLogin"), {
+  ssr: false,
+});
 
 export default function Login() {
   const [form] = Form.useForm();
@@ -31,7 +34,7 @@ export default function Login() {
       // form.resetFields();
       // setOpenModal(false);
     } catch (error) {
-      console.log({ error })
+      console.log({ error });
       if (error.response && error.response.data) {
         message.error(error.response.data.error);
       } else {
@@ -41,72 +44,79 @@ export default function Login() {
   };
 
   const onFinishFailed = () => {
-    console.log('Failed')
-  }
+    console.log("Failed");
+  };
   return (
-    <Flex vertical align="center" className="p-16">
-      <Link href="/">
-        <img src="/logo-dark.png" className="w-[270px] h-[120px] mb-4" />
-      </Link>
-      <Flex
-        vertical
-        className="w-[420px] rounded-xl p-4"
-        style={{ border: "1px solid #a8a8a8" }}
-        gap={12}
-      >
-        <Form
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-          form={form}
+    <div>
+      <Flex vertical align="center" className="p-16">
+        <Link href="/">
+          <img src="/logo-dark.png" className="w-[270px] h-[120px] mb-4" />
+        </Link>
+        <Flex
+          vertical
+          className="w-[420px] rounded-xl p-4"
+          style={{ border: "1px solid #a8a8a8" }}
+          gap={12}
         >
-          <Form.Item
-            className="mb-0 w-full login-input"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Email is Required",
-              },
-              {
-                type: "email",
-                message: "Please enter a valid email address",
-              },
-            ]}
+          <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            form={form}
           >
-            <Input placeholder="Email" className="h-[60px] w-full" />
-          </Form.Item>
-          <Form.Item
-            className="mb-0 w-full login-input"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Password is required",
-              },
-            ]}
-          >
-            <Input.Password
-              placeholder="Password"
-              className="h-[60px]"
-              visibilityToggle
-            />
-          </Form.Item>
+            <Form.Item
+              className="mb-0 w-full login-input"
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Email is Required",
+                },
+                {
+                  type: "email",
+                  message: "Please enter a valid email address",
+                },
+              ]}
+            >
+              <Input placeholder="Email" className="h-[60px] w-full" />
+            </Form.Item>
+            <Form.Item
+              className="mb-0 w-full login-input"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Password is required",
+                },
+              ]}
+            >
+              <Input.Password
+                placeholder="Password"
+                className="h-[60px]"
+                visibilityToggle
+              />
+            </Form.Item>
 
-          <Flex align="flex-end" vertical className="">
-            <button type="submit" className="w-[124px] mt-2 h-[42px] bg-[#0047A0] hover:border-none hover:opacity-60 text-white rounded-md">
-              Login
-            </button>
-            <Link href="/signup"><p className="mt-2">Don't have account? Register now!</p></Link>
-          </Flex>
-        </Form>
+            <Flex align="flex-end" vertical className="">
+              <button
+                type="submit"
+                className="w-[124px] mt-2 h-[42px] bg-[#0047A0] hover:border-none hover:opacity-60 text-white rounded-md"
+              >
+                Login
+              </button>
+              <Link href="/signup">
+                <p className="mt-2">Don't have account? Register now!</p>
+              </Link>
+            </Flex>
+          </Form>
+        </Flex>
+        <SocialLogin />
       </Flex>
-      <SocialLogin />
-    </Flex>
+    </div>
   );
 }

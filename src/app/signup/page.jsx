@@ -1,18 +1,19 @@
-'use client'
+"use client";
 import { FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Flex, Form, Input, message, Row } from "antd";
 import Link from "next/link";
 import React, { useCallback, useState } from "react";
-import './styles.css'
+import "./styles.css";
 import { API_URLS } from "../apiUrls";
 import axios from "axios";
 import config from "../config";
 import { setCookie } from "cookies-next";
 import { store } from "../store";
-import SocialLogin from "@/components/SocialLogin";
+import dynamic from "next/dynamic";
 
-
-
+const SocialLogin = dynamic(() => import("@/components/SocialLogin"), {
+  ssr: false,
+});
 
 export default function Signup() {
   const [form] = Form.useForm();
@@ -34,7 +35,7 @@ export default function Signup() {
       // form.resetFields();
       // setOpenModal(false);
     } catch (error) {
-      console.log({ error })
+      console.log({ error });
       if (error.response && error.response.data) {
         message.error(error.response.data.error);
       } else {
@@ -44,8 +45,8 @@ export default function Signup() {
   };
 
   const onFinishFailed = () => {
-    console.log('Failed')
-  }
+    console.log("Failed");
+  };
   return (
     <Flex vertical align="center" className="p-16">
       <Link href="/">
@@ -119,7 +120,7 @@ export default function Signup() {
           <Form.Item
             className="mb-0 w-full login-input"
             name="confirmPassword"
-            dependencies={['password']}
+            dependencies={["password"]}
             rules={[
               {
                 required: true,
@@ -127,7 +128,7 @@ export default function Signup() {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
+                  if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
@@ -145,10 +146,15 @@ export default function Signup() {
           </Form.Item>
 
           <Flex align="flex-end" vertical className="mt-2">
-            <button type="submit" className="w-[124px] h-[42px] bg-[#0047A0] hover:border-none hover:opacity-60 text-white rounded-md">
+            <button
+              type="submit"
+              className="w-[124px] h-[42px] bg-[#0047A0] hover:border-none hover:opacity-60 text-white rounded-md"
+            >
               Signup
             </button>
-            <Link href="/login"><p className="mt-2">Already have an account? Login now!</p></Link>
+            <Link href="/login">
+              <p className="mt-2">Already have an account? Login now!</p>
+            </Link>
           </Flex>
         </Form>
       </Flex>
