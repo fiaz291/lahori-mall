@@ -13,6 +13,7 @@ export default function ListProducts({ apiUrl }) {
         cacheTime: 0,
         staleTime: 0,
     });
+    console.log({data})
     return (
         <div>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>

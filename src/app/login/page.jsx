@@ -10,24 +10,29 @@ import config from "../config";
 import { setCookie } from "cookies-next";
 import { store } from "../store";
 import SocialLogin from "@/components/SocialLogin";
+import { useRouter } from "next/navigation";
 
 
 export default function Login() {
   const [form] = Form.useForm();
-
+  const router = useRouter();
   const onFinish = async (values) => {
     const data = { ...values };
     try {
       const response = await axios.post(config.url + API_URLS.USER_LOGIN, data);
-      return;
-      setCookie("user", response.data.user);
-      setCookie("token", response.data.token);
+      console.log({response})
+      // return;
+      const user = response.data.data;
+      delete user.token;
+      setCookie("user", user);
+      setCookie("token", response.data.data.token);
       store.setState(() => {
         return {
-          user: response.data.user,
+          user: user,
         };
       });
       message.success("Welcome");
+      router.push('/')
       // form.resetFields();
       // setOpenModal(false);
     } catch (error) {

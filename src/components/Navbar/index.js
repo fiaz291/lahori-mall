@@ -66,6 +66,14 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
     },
   ];
 
+  const navItems = [
+    { name: "Help", link: "/help" },
+    { name: "Cart", link: "/cart" },
+    { name: "Wishlist", link: "/wishlist" },
+    { name: "My TKS", link: "/user-profile" },
+  ];
+
+
   const [openModal, setOpenModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const { user, userLoading, logout } = useAuthUser();
@@ -91,6 +99,13 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
     router.push(redirectTo);
   };
 
+  const getUserName = useCallback(() => {
+    if (user) {
+      return user.firstName;
+    }
+    return "Sign In"
+  }, [user])
+
   return (
     <>
       <div className="outer border-b-2 border-[#e3e3e3]">
@@ -102,11 +117,10 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Korean</div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="border-r-2 border-[#e3e3e3] pr-2"><Link href="/login"><span className="text-[#005ed4] clickable">Hi! Sign In</span></Link> or <Link href="/signup"><span className="text-[#005ed4] clickable">Register</span></Link></div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Help</div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Cart</div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Wishlist</div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">My TKS</div>
+              <div className="border-r-2 border-[#e3e3e3] pr-2"><Link href={!!user ? "/user-profile" : "/login"}><span className="text-[#005ed4] clickable">Hi! {getUserName()}</span></Link> {!user ? <span>or <Link href="/signup"><span className="text-[#005ed4] clickable">Register</span></Link></span> : <span>| <span className="text-[#CD2E3A] clickable" onClick={() => { logout() }}>Logout</span></span>}</div>
+             {navItems.map((item)=>(
+               <div className="border-r-2 border-[#e3e3e3] clickable pr-2"><Link href={item.link}>{item.name}</Link></div>
+             ))}
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Ship To</div>
               <div className="clickable">Currency</div>
             </div>
