@@ -43,6 +43,7 @@ export const GET = async (req, res) => {
     },
     take: limit,
   });
+
       // Calculate the total quantity sold for each product
   const productsWithSales = products.map((product) => {
     const totalQuantitySold = product.orderItems.reduce(
@@ -54,6 +55,17 @@ export const GET = async (req, res) => {
 
   productsWithSales.sort((a, b) => b.totalQuantitySold - a.totalQuantitySold);
   products = productsWithSales.slice(0, 20);
+  if(!products.length){
+    products = await prisma.product.findMany({
+      where: {
+        isActive: true,
+        inventory: {
+          gt: 1,
+        }
+      },
+      take: limit,
+    });
+  }
     res.status(200).json(createResponse({ data:products,status:true }));
   } catch (error) {
     console.error(error);
