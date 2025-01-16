@@ -30,7 +30,18 @@ export const GET = async (req, res) => {
     },
     take: limit,
   });
-
+  
+  if(!products.length){
+    products = await prisma.product.findMany({
+      where: {
+        isActive: true,
+        inventory: {
+          gt: 1,
+        }
+      },
+      take: limit,
+    });
+  }
 
     res.status(200).json(createResponse({ data:products, status: 200 }));
   } catch (error) {
