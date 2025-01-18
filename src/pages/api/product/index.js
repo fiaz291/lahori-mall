@@ -54,6 +54,7 @@ const POST = async (req, res) => {
     inventory,
     categoryId,
     tags,
+    storeId
   };
 
   for (const [field, value] of Object.entries(requiredFields)) {

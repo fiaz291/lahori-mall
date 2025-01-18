@@ -7,8 +7,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Vendor {
-  id          Int      @id @default(autoincrement()) // Unique identifier for the vendor
+model Store {
+  id          Int      @id @default(autoincrement())
   name        String   @unique                      // Vendor name
   email       String   @unique                      // Vendor's email (unique)
   phoneNumber String                                // Vendor's contact phone number
@@ -24,7 +24,14 @@ model Vendor {
   createdAt   DateTime @default(now())              // Creation timestamp
   updatedAt   DateTime @updatedAt                   // Last update timestamp
   images            String[]
+  admins       Admin[]   
+  products    Product[]
+  oreders     Order[]
+  vouchers     Voucher[]
+  orderItems   OrderItem[]
+  financialTransactions FinancialTransaction[]
 }
+
 
 model Admin {
   id             Int       @id @default(autoincrement())
@@ -87,18 +94,7 @@ model User {
   token       String?
 }
 
-model Store {
-  id          Int      @id @default(autoincrement())
-  name        String
-  storeSlug   String   @unique
-  admins       Admin[]   
-  products    Product[]
-  oreders     Order[]
-  vouchers     Voucher[]
-  orderItems   OrderItem[]
-  financialTransactions FinancialTransaction[]
 
-}
 
 model Order {
   id          Int      @id @default(autoincrement())
