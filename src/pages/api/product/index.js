@@ -2,6 +2,7 @@
 
 import { ENUMS } from "@/app/utils";
 import prisma from "@/app/prisma";
+import { createResponse } from "@/utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -54,6 +55,7 @@ const POST = async (req, res) => {
     inventory,
     categoryId,
     tags,
+    storeId
   };
 
   for (const [field, value] of Object.entries(requiredFields)) {
@@ -230,14 +232,58 @@ const PATCH = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 export const GET = async (req, res) => {
+  try {
+    const {categoryId,subCategoryId,limit = 20, page=1,} = req.query;     // Convert query parameters to integers
+     const pageNum = parseInt(page, 10);
+     const limitNum = parseInt(limit, 10);
+   
+     // Calculate the number of items to skip
+     const skip = (pageNum - 1) * limitNum;
+  
+  let query = {}
+  if(categoryId)
+    query={categoryId}
+  if(subCategoryId)
+    query={...query,subCategoryId}
+
+    const products = await prisma.product.findMany({
+      where:query,
+      orderBy: {
+        createdAt: "desc", // Order by createdAt in descending order
+      },
+      take: limitNum,
+      skip, // Skip the first (pageNum - 1) * limitNum items
+    });
+    
+  // Get total count of items (for pagination metadata)
+  const totalCount = await prisma.product.count({
+    where: query
+  });
+  // Calculate total pages
+  const totalPages = Math.ceil(totalCount / limitNum);
+
+    res.status(200).json( createResponse({data:{
+      // Send the response with pagination metadata
+      products,
+      pagination: {
+        totalItems: totalCount,
+        totalPages,
+        currentPage: pageNum,
+        pageSize: limitNum,
+      }}}));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error });
+  }
+};
+
+
+/* export const GET = async (req, res) => {
   try {
   const {query} = req.query;
     const products = {
-      new: [],
-      onSale: [],
-      topWeek: [],
+     
     };
     const allProducts = await prisma.product.findMany({
       orderBy: {
@@ -276,7 +322,7 @@ export const GET = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: error });
   }
-};
+}; */
 
 const innerHandlerForProducts = async (value) => {
   switch (value) {

@@ -7,8 +7,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Vendor {
-  id          Int      @id @default(autoincrement()) // Unique identifier for the vendor
+model Store {
+  id          Int      @id @default(autoincrement())
   name        String   @unique                      // Vendor name
   email       String   @unique                      // Vendor's email (unique)
   phoneNumber String                                // Vendor's contact phone number
@@ -24,7 +24,14 @@ model Vendor {
   createdAt   DateTime @default(now())              // Creation timestamp
   updatedAt   DateTime @updatedAt                   // Last update timestamp
   images            String[]
+  admins       Admin[]   
+  products    Product[]
+  oreders     Order[]
+  vouchers     Voucher[]
+  orderItems   OrderItem[]
+  financialTransactions FinancialTransaction[]
 }
+
 
 model Admin {
   id             Int       @id @default(autoincrement())
@@ -85,20 +92,10 @@ model User {
   vouchers              UserVoucher[] // Relation to user-voucher linking table
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
   token       String?
+  views View[]
 }
 
-model Store {
-  id          Int      @id @default(autoincrement())
-  name        String
-  storeSlug   String   @unique
-  admins       Admin[]   
-  products    Product[]
-  oreders     Order[]
-  vouchers     Voucher[]
-  orderItems   OrderItem[]
-  financialTransactions FinancialTransaction[]
 
-}
 
 model Order {
   id          Int      @id @default(autoincrement())
@@ -217,6 +214,7 @@ model Product {
   cartItems  CartItem[]
   storeId           Int?         // Store the product's associated store
   store             Store?       @relation(fields: [storeId], references: [id]) // One-to-many relation with store
+  views View[]
 }
 
 model OrderItem {
@@ -278,4 +276,17 @@ model FinancialTransaction {
   voucher Voucher? @relation(fields: [voucherId], references: [id])
   storeId     Int?
   store       Store?   @relation(fields: [storeId], references: [id])
+}
+
+model View {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  viewedAt  DateTime  @default(now())
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([userId, viewedAt])
 }

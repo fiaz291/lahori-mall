@@ -1,25 +1,26 @@
 import prisma from "@/app/prisma";
+import { createResponse } from "@/utilities";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
-      return createVendor(req, res);
+      return createStore(req, res);
     case "GET":
-      return getVendors(req, res);
+      return getStores(req, res);
     case "PATCH":
-      return updateVendor(req, res);
+      return updateStore(req, res);
     case "DELETE":
-      return deleteVendor(req, res);
+      return deleteStore(req, res);
     default:
       res.setHeader("Allow", ["POST", "GET", "PATCH", "DELETE"]);
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
 
-// Create a new vendor
-const createVendor = async (req, res) => {
+// Create a new store
+const createStore = async (req, res) => {
   const {
     name,
     email,
@@ -45,17 +46,17 @@ const createVendor = async (req, res) => {
   }
 
   try {
-    const existingVendor = await prisma.vendor.findUnique({
+    const existingstore = await prisma.store.findUnique({
       where: { email },
     });
 
-    if (existingVendor) {
+    if (existingstore) {
       return res
         .status(400)
         .json({ error: "Email already in use", errorCode: 2 });
     }
 
-    const newVendor = await prisma.vendor.create({
+    const newstore = await prisma.store.create({
       data: {
         name,
         email,
@@ -70,38 +71,38 @@ const createVendor = async (req, res) => {
       },
     });
 
-    res.status(201).json({ vendor: newVendor, status: 201 });
+    res.status(201).json(createResponse({ data:store, status: 201 }));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", details: error });
   }
 };
 
-// Get all vendors or a specific vendor by ID
-const getVendors = async (req, res) => {
+// Get all stores or a specific store by ID
+const getStores = async (req, res) => {
   const { id } = req.query;
 
   try {
     if (id) {
-      const vendor = await prisma.vendor.findUnique({
+      const store = await prisma.store.findUnique({
         where: { id: parseInt(id) },
       });
 
-      if (!vendor) {
-        return res.status(404).json({ error: "Vendor not found" });
+      if (!store) {
+        return res.status(404).json({ error: "store not found" });
       }
 
-      return res.status(200).json({ vendor });
+      return res.status(200).json(createResponse({ data:store }));
     }
 
-    const vendors = await prisma.vendor.findMany();
-    res.status(200).json({ vendors });
+    const stores = await prisma.store.findMany();
+    res.status(200).json(createResponse({ data:stores }));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", details: error });
   }
 };
 
-// Update an existing vendor
-const updateVendor = async (req, res) => {
+// Update an existing store
+const updateStore = async (req, res) => {
   const { id } = req.query;
   const {
     name,
@@ -117,19 +118,19 @@ const updateVendor = async (req, res) => {
   } = req.body;
 
   if (!id) {
-    return res.status(400).json({ error: "Vendor ID is required" });
+    return res.status(400).json({ error: "store ID is required" });
   }
 
   try {
-    const vendor = await prisma.vendor.findUnique({
+    const store = await prisma.store.findUnique({
       where: { id: parseInt(id) },
     });
 
-    if (!vendor) {
-      return res.status(404).json({ error: "Vendor not found" });
+    if (!store) {
+      return res.status(404).json({ error: "store not found" });
     }
 
-    const updatedVendor = await prisma.vendor.update({
+    const updatedstore = await prisma.store.update({
       where: { id: parseInt(id) },
       data: {
         name,
@@ -145,34 +146,34 @@ const updateVendor = async (req, res) => {
       },
     });
 
-    res.status(200).json({ vendor: updatedVendor });
+    res.status(200).json(createResponse({ store: updatedstore }));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", details: error });
   }
 };
 
-// Delete a vendor
-const deleteVendor = async (req, res) => {
+// Delete a store
+const deleteStore = async (req, res) => {
   const { id } = req.query;
 
   if (!id) {
-    return res.status(400).json({ error: "Vendor ID is required" });
+    return res.status(400).json({ error: "store ID is required" });
   }
 
   try {
-    const vendor = await prisma.vendor.findUnique({
+    const store = await prisma.store.findUnique({
       where: { id: parseInt(id) },
     });
 
-    if (!vendor) {
-      return res.status(404).json({ error: "Vendor not found" });
+    if (!store) {
+      return res.status(404).json({ error: "store not found" });
     }
 
-    await prisma.vendor.delete({
+    await prisma.store.delete({
       where: { id: parseInt(id) },
     });
 
-    res.status(200).json({ message: "Vendor deleted successfully" });
+    res.status(200).json(createResponse({ message: "store deleted successfully" }));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", details: error });
   }
