@@ -1,6 +1,7 @@
 // import { prisma } from "../../prisma";
 
 import prisma from "@/app/prisma";
+import { createResponse } from "@/utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -29,7 +30,7 @@ const POST = async (req, res) => {
     if (!value) {
       return res
         .status(400)
-        .json({ error: `${field} is required`, errorCode: 1 });
+        .json({ error: `${field} is required`, code: 1 });
     }
   }
 
@@ -41,7 +42,7 @@ const POST = async (req, res) => {
     if (existingSlug) {
       return res
         .status(200)
-        .json({ error: "Slug already in use", errorCode: 2 });
+        .json({ error: "Slug already in use", code: 2 });
     }
 
     const newCategory = await prisma.category.create({
@@ -51,8 +52,7 @@ const POST = async (req, res) => {
         url,
       },
     });
-    const data = { category: newCategory, status: 201 };
-    res.status(201).json(data);
+    res.status(201).json(createResponse( { data:newCategory}));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -68,7 +68,7 @@ const PUT = async (req, res) => {
     if (existingSlug) {
       return res
         .status(200)
-        .json({ error: "Slug already in use", errorCode: 2 });
+        .json({ error: "Slug already in use", code: 2 });
     }
 
     const newCategory = await prisma.category.update({
@@ -79,8 +79,7 @@ const PUT = async (req, res) => {
         url,
       },
     });
-    const data = { category: newCategory, status: 201 };
-    res.status(201).json(data);
+    res.status(201).json(createResponse( { data:newCategory}));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -97,7 +96,7 @@ const PATCH = async (req, res) => {
     if (existingSlug) {
       return res
         .status(200)
-        .json({ error: "Slug already in use", errorCode: 2 });
+        .json({ error: "Slug already in use", code: 2 });
     }
 
     const newCategory = await prisma.category.update({
@@ -108,8 +107,7 @@ const PATCH = async (req, res) => {
         url,
       },
     });
-    const data = { category: newCategory, status: 201 };
-    res.status(201).json(data);
+    res.status(201).json(createResponse( { data:newCategory}));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -126,8 +124,7 @@ const GET = async (req, res) => {
     if (!menu && categories.length) {
       categories = categories.map((cat)=>({label:cat.name,value:cat.id}))
     }
-    const data = { data:categories, status: 200 };
-    res.status(200).json(data);
+    res.status(200).json(createResponse( { data:categories}));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

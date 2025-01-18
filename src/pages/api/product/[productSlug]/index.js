@@ -1,4 +1,5 @@
 import prisma from "@/app/prisma";
+import { createResponse } from "@/utilities";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -42,7 +43,7 @@ async function Get(req, res, productSlug) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    return res.status(200).json(product);
+    return res.status(200).json(createResponse({data:product}));
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });

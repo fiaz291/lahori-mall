@@ -92,6 +92,7 @@ model User {
   vouchers              UserVoucher[] // Relation to user-voucher linking table
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
   token       String?
+  views View[]
 }
 
 
@@ -213,6 +214,7 @@ model Product {
   cartItems  CartItem[]
   storeId           Int?         // Store the product's associated store
   store             Store?       @relation(fields: [storeId], references: [id]) // One-to-many relation with store
+  views View[]
 }
 
 model OrderItem {
@@ -274,4 +276,17 @@ model FinancialTransaction {
   voucher Voucher? @relation(fields: [voucherId], references: [id])
   storeId     Int?
   store       Store?   @relation(fields: [storeId], references: [id])
+}
+
+model View {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  viewedAt  DateTime  @default(now())
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([userId, viewedAt])
 }

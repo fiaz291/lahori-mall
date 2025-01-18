@@ -13,12 +13,49 @@ export default async function handler(req, res) {
 }
 export const GET = async (req, res) => {
   try {
-    let {days,limit = 20, page=1} = req.query
+    let {days,limit = 20, page=1, categoryId} = req.query
+     // Convert query parameters to integers
+     const pageNum = parseInt(page, 10);
+     const limitNum = parseInt(limit, 10);
+   
+     // Calculate the number of items to skip
+     const skip = (pageNum - 1) * limitNum;
     let daysAgo = new Date();
     if (days) daysAgo.setDate(daysAgo.getDate() - parseInt(days));
+    let query = {
+      isActive: true,
+      inventory: {
+        gt: 1,
+      },
+      orderItems: {
+        some: {
+          order: {
+            createdAt: {
+              gte: daysAgo,
+            },
+          },
+        },
+      },
+    }
     
-  
+    if(categoryId){
+      query = {...query,categoryId:Number(categoryId)}
+    }
   let products = await prisma.product.findMany({
+    where: query,
+    include: {
+      orderItems: {
+        select: {
+          quantity: true,
+        },
+      },
+    },
+    take: limitNum,
+    skip, // Skip the first (pageNum - 1) * limitNum items
+  });
+
+  // Get total count of items (for pagination metadata)
+  const totalCount = await prisma.product.count({
     where: {
       isActive: true,
       inventory: {
@@ -33,16 +70,10 @@ export const GET = async (req, res) => {
           },
         },
       },
-    },
-    include: {
-      orderItems: {
-        select: {
-          quantity: true,
-        },
-      },
-    },
-    take: limit,
+    }
   });
+  // Calculate total pages
+  const totalPages = Math.ceil(totalCount / limitNum);
 
       // Calculate the total quantity sold for each product
   const productsWithSales = products.map((product) => {
@@ -66,7 +97,15 @@ export const GET = async (req, res) => {
       take: limit,
     });
   }
-    res.status(200).json(createResponse({ data:products,status:true }));
+    res.status(200).json(createResponse({ data:{
+      // Send the response with pagination metadata
+      products,
+      pagination: {
+        totalItems: totalCount,
+        totalPages,
+        currentPage: pageNum,
+        pageSize: limitNum,
+      },status:true }}));
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error });

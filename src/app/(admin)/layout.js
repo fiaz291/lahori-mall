@@ -89,7 +89,7 @@ const AdminLayout = ({ children }) => {
       }
       setLoading(false);
     }
-    checkAdmin();
+    //checkAdmin();
   }, []);
 
   if (loading) {
