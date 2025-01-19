@@ -5,7 +5,15 @@ import Link from "next/link";
 import TextComponent from "../TextComponent";
 
 
-const MediumProductCard = () => {
+const MediumProductCard = ({ item }) => {
+  function calculatePercentage(part, whole) {
+    if (whole === 0) {
+      return 0.00; // Avoid division by zero
+    }
+    const percentage = (part / whole) * 100;
+    return percentage.toFixed(2); // Limit to 2 decimal places
+  }
+
   return (
     <Card
       hoverable
@@ -18,7 +26,7 @@ const MediumProductCard = () => {
       style={{ width: 'auto' }}
     >
       <Link
-        href="/product/sample-product"
+        href={`/product/${item?.slug}`}
         className="link__item"
         data-montelena-asn="1"
         data-montelena-acode="200009652"
@@ -31,12 +39,12 @@ const MediumProductCard = () => {
               <Row gutter={8}>
                 <Col>
                   <TextComponent type="danger">
-                    Coupon applied price
+                    Original price
                   </TextComponent>
                 </Col>
                 <Col>
                   <TextComponent strike={true}>
-                    2,570,330 AED
+                    {item?.price} AED
                   </TextComponent>
                 </Col>
               </Row>
@@ -45,7 +53,7 @@ const MediumProductCard = () => {
               <Row gutter={8}>
                 <Col>
                   <TextComponent type="danger" bold size={16}>
-                    10%
+                    {(100 - calculatePercentage(item.discountPrice, item.price)).toFixed(2)}%
                   </TextComponent>
                 </Col>
                 <Col>
@@ -53,7 +61,7 @@ const MediumProductCard = () => {
                     weight={700}
                     size={16}
                   >
-                    2,299,000 AED
+                    {item.discountPrice} AED
                   </TextComponent>
                 </Col>
               </Row>
@@ -73,21 +81,22 @@ const MediumProductCard = () => {
               fontSize: "14px",
             }}
           >
-            Samsung Bespoke Grande AI One Body WF2520HCEED Detergent Automatic
-            25KG+20KG Washer Dryer Gray
+            {item.name}
           </p>
           {/* Delivery Info */}
           <Row gutter={1} style={{ marginTop: 10 }}>
             <Col>
               {/* SHIPPING PRICE */}
-              <Tag style={{ fontSize: 12 }} color="green">
-                Free Shipping
-              </Tag>
+              {item?.freeDelivery &&
+                <Tag style={{ fontSize: 12 }} color="green">
+                  Free Shipping
+                </Tag>
+              }
             </Col>
             <Col>
               {/* SOLD COUNT */}
               <Tag style={{ fontSize: 12 }} color="orange">
-                Purchase 119
+                Purchase {item.totalSold}
               </Tag>
             </Col>
           </Row>
@@ -98,7 +107,7 @@ const MediumProductCard = () => {
           >
             <TextComponent type="success" bold size={16}>
               <CheckCircleOutlined style={{ marginRight: 4 }} />
-              7% discount on payment
+              Limited Time Offer
             </TextComponent>
           </div>
         </div>

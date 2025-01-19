@@ -7,6 +7,7 @@ import { useStore } from "@tanstack/react-store";
 import axios from "axios";
 import config from "../config";
 import useAuthUser from "./authUser";
+import { API_URLS } from "../apiUrls";
 
 export default function useFavorites() {
   const favorites = useStore(store, (state) => state.favorites);
@@ -14,25 +15,25 @@ export default function useFavorites() {
 
   const [favLoading, setFavoritesLoading] = useState(true);
 
-  // useEffect(() => {
-  //   async function getFavoriteItems() {
-  //     const response = await axios.get(
-  //       config.url + "/api/favorites" + "?userId=" + user.id
-  //     );
-  //     if (response.data) {
-  //       store.setState((state) => {
-  //         return {
-  //           ...state,
-  //           favorites: response.data,
-  //         };
-  //       });
-  //     }
-  //     setFavoritesLoading(false);
-  //   }
-  //   if (user) {
-  //     getFavoriteItems();
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    async function getFavoriteItems() {
+      const response = await axios.get(
+        config.url + API_URLS.FAVORITS + "?userId=" + user.id
+      );
+      if (response.data) {
+        store.setState((state) => {
+          return {
+            ...state,
+            favorites: response.data,
+          };
+        });
+      }
+      setFavoritesLoading(false);
+    }
+    if (user) {
+      // getFavoriteItems();
+    }
+  }, [user]);
 
   return { favorites, favLoading };
 }

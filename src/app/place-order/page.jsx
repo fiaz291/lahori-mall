@@ -182,7 +182,7 @@ export default function PlaceOrder() {
                                     className="text-[16px]  font-semibold"
                                     style={{ color: COLORS.red }}
                                   >
-                                    {item.product?.price} PKR
+                                    {item.product?.price} AED
                                   </p>
                                 )}
                                 {item.product?.isDiscount && (
@@ -191,13 +191,13 @@ export default function PlaceOrder() {
                                       className="text-[16px]  font-semibold"
                                       style={{ color: COLORS.red }}
                                     >
-                                      {item.product?.discountPrice} PKR
+                                      {item.product?.discountPrice} AED
                                     </p>
                                     <p
                                       className="text-[12px] font-semibold line-through"
                                       style={{ color: COLORS.gray }}
                                     >
-                                      {item.product?.price} PKR
+                                      {item.product?.price} AED
                                     </p>
                                   </div>
                                 )}
@@ -258,7 +258,7 @@ export default function PlaceOrder() {
                                   className="text-[16px]  font-semibold"
                                   style={{ color: COLORS.red }}
                                 >
-                                  {item.product?.price} PKR
+                                  {item.product?.price} AED
                                 </p>
                               )}
                               {item.product?.isDiscount && (
@@ -267,13 +267,13 @@ export default function PlaceOrder() {
                                     className="text-[16px]  font-semibold"
                                     style={{ color: COLORS.red }}
                                   >
-                                    {item.product?.discountPrice} PKR
+                                    {item.product?.discountPrice} AED
                                   </p>
                                   <p
                                     className="text-[12px] font-semibold line-through"
                                     style={{ color: COLORS.gray }}
                                   >
-                                    {item.product?.price} PKR
+                                    {item.product?.price} AED
                                   </p>
                                 </div>
                               )}
@@ -332,7 +332,7 @@ export default function PlaceOrder() {
                   <tbody>
                     <tr className="mt-[10px]">
                       <td>Subtotal ({getCartCount()} items)</td>
-                      <td>{getCartPrice()} PKR</td>
+                      <td>{getCartPrice()} AED</td>
                     </tr>
                     <tr className="mt-[10px]">
                       <td>Delivery Charges</td>
@@ -357,7 +357,7 @@ export default function PlaceOrder() {
                 <button
                   disabled={!user?.address}
                   className="w-full mt-[40px] text-white h-[40px] font-semibold disabled:opacity-50"
-                  style={{ background: COLORS.green }}
+                  style={{ background: "#0047A0" }}
                   onClick={() => debouncedHandlePlaceOrder()}
                 >
                   Place Order

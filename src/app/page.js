@@ -19,15 +19,12 @@ export default function Home() {
     >
       <div className="w-full">
         <Navbar defaultOpenMegaMenu />
-        {/* <HomePageSlider /> */}
         <div className="outer">
           <div className="inner">
             <div className="w-full h-[100px] mt-[26px]" style={{ borderRadius: 20, background: "linear-gradient(to right, #f953c6, #b91d73, #ff0066)" }} />
           </div>
         </div>
-        {/* <HomePageServicesIcons /> */}
         <BestSellingSlider />
-
         <HomeTabsProducts />
         <div className="outer">
           <div className="inner">
@@ -36,9 +33,7 @@ export default function Home() {
         </div>
         <TKSServices />
         <TKSHomePageProducts />
-        {/* <HomeProducts /> */}
         <AppBanner />
-        {/* <NewTrending /> */}
         <Footer />
       </div>
     </main>

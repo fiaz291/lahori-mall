@@ -23,7 +23,6 @@ export default function AdminLogin() {
           'Content-Type': 'application/json',
         },
       });
-      // console.log({response})
       if(response?.data?.data){
         setCookie("user", response.data?.data);
         setCookie("token", response.data?.data?.token);

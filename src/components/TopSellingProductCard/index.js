@@ -31,48 +31,16 @@ export default function TopSellingProductCard({ product, image }) {
               style={{borderRadius: "50%"}}
             />
           </div>
-          {/* <div className="flex justify-between p-[6px] gap-[4px]">
-            <div className="truncate ...">{name}</div>
-            {isProductIsFavorite() ? (
-              <div style={{ color: COLORS.red }}>
-                {" "}
-                <HeartFilled />
-              </div>
-            ) : (
-              <div style={{ color: COLORS.red }}>
-                {" "}
-                <HeartOutlined />
-              </div>
-            )}
-          </div> */}
-          {/* {!product?.isDiscount && ( */}
             <p
-              className="text-[16px] text-center md:text-[14px] p-[6px]"
+              className="text-[16px] text-center md:text-[14px] p-[6px] whitespace-nowrap overflow-hidden text-ellipsis"
             >
               {product?.name}
             </p>
             <p
               className="text-[16px] text-center md:text-[14px] mt-[4px]"
             >
-              <span className="font-semibold text-[32px]">{product?.price}</span> PKR
+              <span className="font-semibold text-[32px]">{product?.price}</span> AED
             </p>
-          {/* )} */}
-          {/* {product?.isDiscount && (
-            <div className="p-[6px]">
-              <p
-                className="text-[16px] md:text-[14px] font-semibold"
-                style={{ color: COLORS.red }}
-              >
-                {product?.discountPrice} PKR
-              </p>
-              <p
-                className="text-[12px] md:text-[12px] font-semibold line-through"
-                style={{ color: COLORS.gray }}
-              >
-                {product?.price} PKR
-              </p>
-            </div>
-          )} */}
         </div>
       </Link>
     </Tooltip>

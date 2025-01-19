@@ -18,7 +18,7 @@ import './styles.css';
 
 export default function SocialLogin() {
     const REDIRECT_URI =
-        'https://plenty-planets-beam-42-118-51-2.loca.lt/account/login';
+        'https://localhost:3000/login';
     // const REDIRECT_URI = 'http://localhost:3000/account/login'
 
     const [provider, setProvider] = useState('');

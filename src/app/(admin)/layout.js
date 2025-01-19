@@ -67,7 +67,7 @@ const AdminLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const path = usePathname();
   const [selectedKey, setSelectedKey] = useState(path);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const setKeyClick = (key, pathCheck = true) => {
     setSelectedKey(key);

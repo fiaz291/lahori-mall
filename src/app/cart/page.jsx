@@ -19,7 +19,6 @@ import { useRouter } from "next/navigation";
 
 export default function Cart() {
   const { user } = useAuthUser();
-  console.log({ user });
   const { cartItems, cartLoading, getCartPrice } = useCartItems();
   const [loading, setLoading] = useState(null);
   const [deleteLoader, setDeleteLoader] = useState(null);
@@ -38,7 +37,6 @@ export default function Cart() {
         quantity: Number(quantity),
       };
       const res = await axios.post(config.url + "/api/cart", data);
-      console.log({ res });
       const cartData = [...cartItems];
       const ifAlreadyExist = cartData.find(
         (cartProd) => cartProd.productId === prod.id
@@ -104,7 +102,6 @@ export default function Cart() {
   //     </div>
   //   );
   // }
-  console.log({cartItems})
   if (!cartItems || (isArray(cartItems) && cartItems.length < 1)) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -130,7 +127,7 @@ export default function Cart() {
           </p>
           <Row gutter={24}>
             <Col span={16} md={16} sm={24} xs={24}>
-              <table>
+              <table style={{ width: '100%' }}>
                 <thead>
                   <th>
                     <td></td>
@@ -159,11 +156,11 @@ export default function Cart() {
                             >
                               <Tooltip title={item?.product?.name}>
                                 {item?.product?.name &&
-                                item.product.name.split(" ").length > 10
+                                  item.product.name.split(" ").length > 10
                                   ? item.product.name
-                                      .split(" ")
-                                      .slice(0, 10)
-                                      .join(" ") + "..."
+                                    .split(" ")
+                                    .slice(0, 10)
+                                    .join(" ") + "..."
                                   : item?.product?.name}
                               </Tooltip>
                             </td>
@@ -173,7 +170,7 @@ export default function Cart() {
                               <div>
                                 {!item.product?.isDiscount && (
                                   <p
-                                    className="text-[16px]  font-semibold"
+                                    className="text-[14px]  font-semibold"
                                     style={{ color: COLORS.red }}
                                   >
                                     {item.product?.price} AED
@@ -182,7 +179,7 @@ export default function Cart() {
                                 {item.product?.isDiscount && (
                                   <div>
                                     <p
-                                      className="text-[16px]  font-semibold"
+                                      className="text-[14px]  font-semibold"
                                       style={{ color: COLORS.red }}
                                     >
                                       {item.product?.discountPrice} AED
@@ -246,11 +243,11 @@ export default function Cart() {
                           >
                             <Tooltip title={item?.product?.name}>
                               {item?.product?.name &&
-                              item.product.name.split(" ").length > 10
+                                item.product.name.split(" ").length > 10
                                 ? item.product.name
-                                    .split(" ")
-                                    .slice(0, 10)
-                                    .join(" ") + "..."
+                                  .split(" ")
+                                  .slice(0, 10)
+                                  .join(" ") + "..."
                                 : item?.product?.name}
                             </Tooltip>
                           </td>
@@ -259,7 +256,7 @@ export default function Cart() {
                             <div>
                               {!item.product?.isDiscount && (
                                 <p
-                                  className="text-[16px]  font-semibold"
+                                  className="text-[14px]  font-semibold"
                                   style={{ color: COLORS.red }}
                                 >
                                   {item.product?.price} AED
@@ -268,7 +265,7 @@ export default function Cart() {
                               {item.product?.isDiscount && (
                                 <div>
                                   <p
-                                    className="text-[16px]  font-semibold"
+                                    className="text-[14px]  font-semibold"
                                     style={{ color: COLORS.red }}
                                   >
                                     {item.product?.discountPrice} AED
@@ -362,9 +359,9 @@ export default function Cart() {
                       <td>Add Coupon</td>
                     </tr>
                     <tr className="mt-[10px]">
-                      <td><input className="w-full p-2" style={{border: '1px solid rgba(0,0,0,0.8)', outline: 'none'}}/></td>
-                      <td><button  className="w-full text-white h-[40px] font-semibold disabled:opacity-50"
-                  style={{ background: '#0047A0' }}>Apply</button></td>
+                      <td><input className="w-full p-2" style={{ border: '1px solid rgba(0,0,0,0.8)', outline: 'none' }} /></td>
+                      <td><button className="w-full text-white h-[40px] font-semibold disabled:opacity-50"
+                        style={{ background: '#0047A0' }}>Apply</button></td>
 
                     </tr>
                   </tbody>
@@ -384,7 +381,7 @@ export default function Cart() {
                   </tbody>
                 </table>
                 <button
-                  disabled={!user?.address}
+                  disabled={!user?.address || !user.phoneNumber}
                   className="w-full mt-[40px] text-white h-[40px] font-semibold disabled:opacity-50"
                   style={{ background: '#0047A0' }}
                   onClick={() => {

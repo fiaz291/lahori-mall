@@ -11,7 +11,6 @@ import Link from "next/link";
 export default function HomePageSlider({ hideSlider, defaultOpenMegaMenu }) {
 
   const { isMobile, isTab } = useWindowSize();
-  // console.log({isTab})
   const [open, setOpen] = useState(false);
   var settings = {
     dots: true,
@@ -38,8 +37,12 @@ export default function HomePageSlider({ hideSlider, defaultOpenMegaMenu }) {
               <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Super Deals</Button>
             </Link>
             {/* <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Super Deals</Button> */}
-            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Free Delivery</Button>
-            <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Top of Week</Button>
+            <Link href="/free-delivery">
+              <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Free Delivery</Button>
+            </Link>
+            <Link href="/top-of-week">
+              <Button style={{ border: "none", padding: "0 30px", height: 60, fontSize: 16, background: 'transparent', color: '#fff' }}>Top of Week</Button>
+            </Link>
             {/* <Button style={{ border: 'none', padding: "0 30px", height: 60, fontSize: 16 }}>asasdasd</Button> */}
           </Flex>
           {!hideSlider &&

@@ -5,7 +5,7 @@ import Link from "next/link";
 import TextComponent from "../TextComponent";
 import "./styles.css";
 
-const SmallProductCard = ({title}) => {
+const SmallProductCard = ({ title, product, tag, color, isRecent }) => {
   return (
     <Card
       hoverable
@@ -15,33 +15,32 @@ const SmallProductCard = ({title}) => {
         display: "flex",
         flexDirection: "row",
         height: "auto",
-        marginTop: 30,
-        marginBottom: 30,
+        marginTop: isRecent ? 10 : 30,
+        marginBottom: isRecent ? 10 : 30,
       }}
     >
-      {/* Image on the left */}
-      <div
-        style={{ minWidth: "100px", minHeight: "100px", maxWidth: "100px", maxHeight: "100px" }}
-      >
-        <img
-          alt="Live from 8pm to 9pm"
-          src="//image.gmarket.co.kr/hanbando/202411/144ec47d-f3fb-4543-9de3-a78313aa7e22.jpg"
-          style={{ objectFit: "cover", height: '100px' }}
-        />
-      </div>
-
-      {/* Information block on the right */}
+      {!isRecent &&
+        <div
+          style={{ minWidth: "100px", minHeight: "100px", maxWidth: "100px", maxHeight: "100px" }}
+        >
+          <img
+            alt="Live from 8pm to 9pm"
+            src="//image.gmarket.co.kr/hanbando/202411/144ec47d-f3fb-4543-9de3-a78313aa7e22.jpg"
+            style={{ objectFit: "cover", height: '100px' }}
+          />
+        </div>
+      }
       <div className="p-[8px]">
         <Link
-          href="/product/sample-product"
+          href={`product/${product?.slug}`}
           className="link__item"
           data-montelena-asn="1"
           data-montelena-acode="200009652"
           data-montelena-goodscode="3883121456"
         >
           <div className="box__information">
-            <Tag style={{ fontSize: 10 }} color="orange">
-              Purchase 119
+            <Tag style={{ fontSize: 10 }} color={color}>
+              {tag}
             </Tag>
 
             <p
@@ -57,10 +56,11 @@ const SmallProductCard = ({title}) => {
                 fontSize: "12px",
               }}
             >
-             {title}
+              {title}
             </p>
             <TextComponent size={16} weight={700}>
-              2,299,000 AED
+              {product.discountPrice || product?.price || "N/A"
+              } AED
             </TextComponent>
           </div>
         </Link>
