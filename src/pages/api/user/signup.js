@@ -4,6 +4,7 @@ import prisma from "@/app/prisma";
 import bcrypt from "bcrypt";
 /* import Cors from 'cors'; */
 import { createResponse, getToken, cordMiddleware } from "../../../utilities";
+import { verificationEmail } from "../../../utilities/email";
 /* const cors = cordMiddleware(
   Cors({
     methods: ['GET', 'POST', 'OPTIONS', 'PATCH'], // Allowed methods
@@ -40,7 +41,6 @@ const POST = async (req, res) => {
     zipCode,
     country = "PK",
     dateOfBirth,
-    vendorId
   } = req.body;
 
   // Required fields
@@ -76,9 +76,11 @@ const POST = async (req, res) => {
         password: hashedPassword,
         firstName,
         lastName,
+        isVerified:false,
         socialToken
       },
     });
+    await verificationEmail(email)
     delete newUser.password
    /*  const token = await getToken(newUser) */
     res.status(201).json(createResponse({ data: newUser, code: 201, status:true }));
@@ -99,7 +101,7 @@ const PATCH = async (req, res) => {
     zipCode,
     role,
     country = "PK",
-    vendorId
+    
   } = req.body;
 
   // Required fields
@@ -136,7 +138,7 @@ const PATCH = async (req, res) => {
       dataToUpdate.phoneNumber = phoneNumber;
       dataToUpdate.isVerified = false;
     }
-    if (vendorId) dataToUpdate.vendorId = vendorId
+   
       
     const newUser = await prisma.user.update({
       where: { id },

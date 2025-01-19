@@ -14,7 +14,7 @@ const cors = (req,res,next)=>{
           const re = new Response(null, {
             headers: {
               'Access-Control-Allow-Origin': origin || '*',
-              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+              'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
               'Access-Control-Allow-Headers': 'Content-Type, Authorization',
               'Access-Control-Max-Age': '86400', // Cache preflight response for 1 day
             },
@@ -26,7 +26,7 @@ const cors = (req,res,next)=>{
         // For other methods, attach CORS headers
         const response = NextResponse.next();
         response.headers.set('Access-Control-Allow-Origin', origin || '*');
-        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
         response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
          // Now, call the auth function to check for authentication after setting CORS headers
          next(response)
