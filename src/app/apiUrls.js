@@ -10,4 +10,9 @@ export const API_URLS ={
     PRODUCT_FREE_DELIVERY: '/api/product/free-delivery',
     PRODUCT_SUPER_DEALS: '/api/product/super-deals',
     PRODUCT_TOP_OF_WEEK: '/api/product/top-of-week',
+    FAVORITS: '/api/favorites',
+    CART: '/api/cart',
+    PRODUCT_VIEW: '/api/views',
+    USER: '/api/user',
+    USER_UPDATE_PASSWORD: '/api/user/update-password',
 }

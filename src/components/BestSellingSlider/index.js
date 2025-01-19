@@ -105,42 +105,29 @@ export default function BestSellingSlider({ title }) {
     cacheTime: 0, // Disable caching
     staleTime: 0,
   });
-  console.log({ data })
   if (isPending) {
-    // return (
-    //   <div className="flex flex-col justify-center items-center pl-[12px] pr-[12px] gap-4">
-    //     <div className="mt-[40px] flex flex-col  w-full max-w-[1200px] p-[16px]">
-    //       <>
-    //         <div
-    //           className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mt-[20px] mb-[20px]"
-    //           style={{ color: COLORS.red, fontWeight: 600 }}
-    //         >
-    //           On Sale
-    //         </div>
-    //         <Skeleton active />
-    //         {/* </div> */}
-    //       </>
-    //       <>
-    //         <div
-    //           className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px]"
-    //           style={{ fontWeight: 600 }}
-    //         >
-    //           New Product
-    //         </div>
-    //         <Skeleton active />
-    //       </>
-    //       <>
-    //         <div
-    //           className="text-[20px] cursor-pointer mr-[10px] hover:text-[rgba(0,0,0,0.7)] mt-[20px] mb-[20px]"
-    //           style={{ fontWeight: 600 }}
-    //         >
-    //           Last Month Best Seller
-    //         </div>
-    //         <Skeleton active />
-    //       </>
-    //     </div>
-    //   </div>
-    // );
+    return (
+      <>
+      <div className="outer mt-[20px] relative">
+        <div className="inner">
+          <>
+            <div
+              className="mr-[10px] hover:text-[rgba(0,0,0,0.7)] mb-[20px]"
+              style={{
+                color: "black",
+                fontWeight: 400,
+                fontSize: 30,
+              }}
+            >
+              🔥The best-selling product right now
+            </div>
+            <Skeleton active />
+          </>
+        </div>
+        <div className="h-[2px] width-full bg-[#CD2E3A] mt-[20px]" />
+      </div>
+    </>
+    );
   }
   if (error) {
     return null;
@@ -162,7 +149,7 @@ export default function BestSellingSlider({ title }) {
               🔥The best-selling product right now
             </div>
             <Carousel responsive={responsive} infinite>
-              {products.map((prod, index) => (
+              {data?.data?.products?.map((prod, index) => (
                 <TopSellingProductCard
                   key={index}
                   image={prod.images?.[0] || null}

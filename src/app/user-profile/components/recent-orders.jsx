@@ -13,10 +13,6 @@ import Link from "next/link";
 import React from "react";
 
 function RecentOrders({ orders, loading }) {
-  // const tableHeader = ["Order #", "Placed On", "Items", "Total", "Status"];
-  // const orders = [...props.orders];
-  console.log({ orders });
-
   return (
     <div className="flex flex-col gap-4">
       <Flex justify="space-between">

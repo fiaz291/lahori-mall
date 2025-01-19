@@ -9,7 +9,6 @@ import axios from "axios";
 import config from "../config";
 import { setCookie } from "cookies-next";
 import { store } from "../store";
-import SocialLogin from "@/components/SocialLogin";
 import { useRouter } from "next/navigation";
 
 
@@ -26,23 +25,10 @@ export default function Signup() {
   const onFinish = async (values) => {
     const data = { ...values };
     delete data.confirmPassword;
-    // console.log({data})
-    // return;
     try {
       const response = await axios.post(config.url + API_URLS.USER_SIGNUP, data);
-      console.log({ response });
-      // return;
-      // setCookie("user", response.data.user);
-      // setCookie("token", response.data.token);
-      // store.setState(() => {
-      //   return {
-      //     user: response.data.user,
-      //   };
-      // });
       message.success("Account created successfuly. Now you can login to continue");
       router.push('/login');
-      // form.resetFields();
-      // setOpenModal(false);
     } catch (error) {
       console.log({ error });
       if (error.response && error.response.data) {

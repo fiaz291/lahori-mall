@@ -6,4 +6,5 @@ export const store = new Store({
   cart: [],
   showLoginModal: false,
   favorites: [],
+  recentViewedItems: [],
 });

@@ -21,6 +21,7 @@ import "quill/dist/quill.snow.css"; // Add css for snow theme
 import Loader from "@/components/Loader";
 import slugify from "slugify";
 import { API_URLS } from "@/app/apiUrls";
+import useS3Upload from "@/app/hooks/uploadToS3";
 
 export default function AddProduct() {
   const [err, seErr] = useState(null);
@@ -30,11 +31,13 @@ export default function AddProduct() {
   const [catId, setCatId] = useState(null);
   const [uploadProgress, setUploadProgress] = useState([]);
   const { quill, quillRef } = useQuill();
-  const [files, setFiles] = useState([]);
+  const [file, setFile] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const { uploadToS3, uploading, error } = useS3Upload();
+
 
   const getAllCategories = async () => {
     setLoading(true);
@@ -58,7 +61,6 @@ export default function AddProduct() {
   const getSubCategories = async (catId) => {
     setLoading(true);
     const response = await axios.get(`${config.url + API_URLS.GET_SUB_CATEGORIES}/${catId}`);
-    console.log({response})
     if (response && response.data.data && response.data.data.length > 0) {
       /* const cats = response.data.categories.map((cat) => {
           return { value: cat.id, label: cat.name };
@@ -110,8 +112,8 @@ export default function AddProduct() {
     // const images = files.map((file) => {
     //   if (file.url) return file.url;
     // });
-    const description = quill.root.innerHTML; // Get innerHTML using quill
-    data.description = description;
+    // const description = quill.root.innerHTML; // Get innerHTML using quill
+    data.description = data.description;
     data.tags = selectedTags;
     data.price = parseFloat(data.price);
     data.discountPrice = parseFloat(data.discountPrice);
@@ -129,7 +131,7 @@ export default function AddProduct() {
         message.success("Product created successfully!");
         form.resetFields();
         setSelectedTags([]);
-        setFiles([]);
+        setFile([]);
       }
     } catch (error) {
       if (error.response && error.response.data) {
@@ -140,13 +142,34 @@ export default function AddProduct() {
     }
   };
 
-  React.useEffect(() => {
-    if (quill) {
-      quill.on("text-change", (delta, oldDelta, source) => { });
-    }
-  }, [quill]);
+  // React.useEffect(() => {
+  //   if (quill) {
+  //     quill.on("text-change", (delta, oldDelta, source) => { });
+  //   }
+  // }, [quill]);
 
   const onFinishFailed = (errorInfo) => { };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+
+  const handleUpload = async () => {
+    if (!file) {
+      alert("Please select a file to upload!");
+      return;
+    }
+
+    const fileUrl = await uploadToS3(file);
+    if (fileUrl) {
+      alert(`File uploaded successfully: ${fileUrl}`);
+    }
+  };
+
+
+  
+
   // const handleUpload = (file) => {
   //   const storageRef = ref(storage, `uploads/${file.name}`);
   //   const token = "admin";
@@ -230,6 +253,12 @@ export default function AddProduct() {
       autoComplete="off"
       form={form}
     >
+
+<input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload} disabled={uploading}>
+        {uploading ? "Uploading..." : "Upload"}
+      </button>
+      
       {/* Product Name */}
       <Form.Item
         className="mb-0"
@@ -307,9 +336,9 @@ export default function AddProduct() {
           <Button icon={<UploadOutlined />}>Click to Upload</Button>
         </Upload>
         <div className="flex flex-wrap gap-2 mt-4">
-          {files.map((file, index) => (
+          {/* {file.map((file, index) => ( */}
             <div key={file.name}>
-              {file.url && (
+              {file && file.url && (
                 <div className="h-[170px] w-[170px] bg-[rgba(0,0,0,0.2)] flex items-center justify-center">
                   <img
                     src={file.url}
@@ -319,7 +348,7 @@ export default function AddProduct() {
                 </div>
               )}
             </div>
-          ))}
+          {/* ))} */}
         </div>
       </Form.Item>
 
@@ -360,7 +389,8 @@ export default function AddProduct() {
 
       {/* Product Attributes */}
       <Form.Item className="mb-0" name="description" label="Description">
-        <div ref={quillRef} />
+        {/* <div ref={quillRef} /> */}
+        <Input className="form-control bg-white" placeholder="Description" TextArea />
       </Form.Item>
       <Form.Item className="mb-0" name="rating" label="Rating">
         <Input

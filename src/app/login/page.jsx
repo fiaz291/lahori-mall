@@ -9,7 +9,6 @@ import axios from "axios";
 import config from "../config";
 import { setCookie } from "cookies-next";
 import { store } from "../store";
-import SocialLogin from "@/components/SocialLogin";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 
@@ -24,12 +23,13 @@ export default function Login() {
     const data = { ...values };
     try {
       const response = await axios.post(config.url + API_URLS.USER_LOGIN, data);
-      console.log({response})
       // return;
       const user = response.data.data;
-      delete user.token;
+      console.log(user.token);
+      // return;
+      setCookie("token", user.token);
+      // delete user.token;
       setCookie("user", user);
-      setCookie("token", response.data.data.token);
       store.setState(() => {
         return {
           user: user,

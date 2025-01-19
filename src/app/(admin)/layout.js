@@ -67,30 +67,30 @@ const AdminLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const path = usePathname();
   const [selectedKey, setSelectedKey] = useState(path);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const setKeyClick = (key, pathCheck = true) => {
     setSelectedKey(key);
     router.push(key);
   };
 
-  useEffect(() => {
-    async function checkAdmin() {
-      const token = getCookie("token");
-      const user = getCookie("user");
-      const parsedUser = JSON.parse(user);
-      if (!token) {
-        router.push("/login");
-        return;
-      }
-      if (!parsedUser || parsedUser.data.role.toLowerCase() !== "admin") {
-        router.push("/");
-        return;
-      }
-      setLoading(false);
-    }
-    checkAdmin();
-  }, []);
+  // useEffect(() => {
+  //   async function checkAdmin() {
+  //     const token = getCookie("token");
+  //     const user = getCookie("user");
+  //     const parsedUser = JSON.parse(user);
+  //     if (!token) {
+  //       router.push("/login");
+  //       return;
+  //     }
+  //     if (!parsedUser || parsedUser?.data?.role?.toLowerCase() !== "admin") {
+  //       router.push("/");
+  //       return;
+  //     }
+  //     setLoading(false);
+  //   }
+  //   checkAdmin();
+  // }, []);
 
   if (loading) {
     return (

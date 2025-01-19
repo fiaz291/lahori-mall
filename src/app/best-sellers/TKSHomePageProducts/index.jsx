@@ -2,17 +2,16 @@
 import React, { useEffect } from "react";
 import './styles.css'
 import { Col, Row, Skeleton } from "antd";
-import MediumProductCard from "../TKS/MediumProductCard";
 import { useQuery } from "@tanstack/react-query";
 import { API_URLS } from "@/app/apiUrls";
 import config from "@/app/config";
+import MediumProductCard from "@/components/TKS/MediumProductCard";
 
 export default function TKSHomePageProducts({ title, categoryId, page, setPageCount }) {
   const { isPending, error, data } = useQuery({
-    queryKey: [`list_products`, categoryId, page],
+    queryKey: [`best-sellers`, categoryId, page],
     queryFn: () => {
-      // Construct the API URL with categoryId if available
-      const url = new URL(config.url + API_URLS.PRODUCT_SUPER_DEALS);
+      const url = new URL(config.url + API_URLS.PRODUCT_BEST_SELLING);
       if (categoryId) {
         url.searchParams.append("categoryId", categoryId);
       }
