@@ -243,9 +243,9 @@ export const GET = async (req, res) => {
   
   let query = {}
   if(categoryId)
-    query={categoryId}
+    query={categoryId:Number(categoryId)}
   if(subCategoryId)
-    query={...query,subCategoryId}
+    query={...query,subCategoryId:Number(subCategoryId)}
 
     const products = await prisma.product.findMany({
       where:query,

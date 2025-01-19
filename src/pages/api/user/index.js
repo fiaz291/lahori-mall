@@ -1,7 +1,7 @@
 // import { prisma } from "../../prisma";
 
 import prisma from "@/app/prisma";
-import { createResponse } from "@/utilities";
+import { createResponse,excludeFields } from "@/utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
@@ -160,12 +160,12 @@ const PATCH = async (req, res) => {
       dataToUpdate.phoneNumber = phoneNumber;
       dataToUpdate.isVerified = false;
     }
-    if (vendorId) dataToUpdate.vendorId = vendorId
       
-    const newUser = await prisma.user.update({
+    let newUser = await prisma.user.update({
       where: { id },
       data: dataToUpdate,
     });
+    newUser = excludeFields(newUser,['password'])
     res.status(201).json(createResponse({ data: newUser, code: 201, status:true }));
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", err: error });

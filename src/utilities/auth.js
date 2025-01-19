@@ -33,7 +33,7 @@ export default function auth(req,res,next) {
     console.log("Auth called")
   const { pathname } = req.nextUrl;
   const token = req.headers.get('authorization')?.split(' ')[1];
-   const excludedRoutes = ['/api/user/signup','/api/user/login'];
+   const excludedRoutes = ['/api/user/signup','/api/user/login','/api/user/verifyEmail'];
   // Check if the requested path matches any excluded route
   const isExcluded = excludedRoutes.some(route => pathname === route);
   // If the route is excluded, allow the request to proceed

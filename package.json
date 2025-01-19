@@ -29,6 +29,7 @@
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "next": "14.2.4",
+    "nodemailer": "^6.9.16",
     "nuka-carousel": "^8.1.1",
     "pg": "^8.12.0",
     "prisma": "^5.16.1",

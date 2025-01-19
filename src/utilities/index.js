@@ -6,7 +6,7 @@ const secret = process.env.JWT_SECRET;
 const token = jwt.sign(payload, secret, { expiresIn: '1h' }); */
   const secretKey = new TextEncoder().encode(process.env.JWT_SECRET);
   
-  const token = await new SignJWT(user)
+  const token = await new SignJWT({email:user.email,firstName:user.firstName,lastName:user.lastName})
     .setProtectedHeader({ alg: 'HS256' }) // Algorithm: HMAC with SHA-256
     .setIssuedAt()
     .setExpirationTime('2h') // Token expires in 2 hours
@@ -28,6 +28,12 @@ export const createResponse = ({ code = 200, status = true, message = "", data =
     error
   };
 };
+
+export const excludeFields = (data, fieldsToExclude)=> {
+  return Object.fromEntries(
+    Object.entries(data).filter(([key]) => !fieldsToExclude.includes(key))
+  );
+}
 
 export const cordMiddleware = (middleware)=> {
   return (req, res) =>

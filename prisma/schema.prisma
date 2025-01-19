@@ -80,6 +80,7 @@ model User {
   country        String?
   role           String    @default("customer")
   isVerified     Boolean   @default(false)
+  code           String?
   lastLogin      DateTime?
   profilePicture Json?
   dateOfBirth    DateTime?
