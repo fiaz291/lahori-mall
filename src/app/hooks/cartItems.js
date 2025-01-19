@@ -7,6 +7,7 @@ import { useStore } from "@tanstack/react-store";
 import axios from "axios";
 import config from "../config";
 import useAuthUser from "./authUser";
+import { API_URLS } from "../apiUrls";
 
 export default function useCartItems() {
   const cartItems = useStore(store, (state) => state.cart);
@@ -31,7 +32,7 @@ export default function useCartItems() {
   useEffect(() => {
     async function getCartItems() {
       const response = await axios.get(
-        config.url + "/api/cart" + "?userId=" + user.id
+        config.url + API_URLS.CART + "?userId=" + user.id
       );
       if (response.data) {
         store.setState((state) => {
@@ -44,7 +45,7 @@ export default function useCartItems() {
       setCartLoading(false);
     }
     if (user) {
-      // getCartItems();
+      getCartItems();
     }
   }, [user]);
 

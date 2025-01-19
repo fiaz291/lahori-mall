@@ -278,10 +278,10 @@ export default function MegaMenu({
               <List.Item
                 style={selectedLabel === item ? { background: "red" } : {}}
                 className="clickable"
-              onMouseEnter={() => {
-                setSelectedMenu(item.subCategories);
-                setSelectedLabel(item.name);
-              }}
+                onMouseEnter={() => {
+                  setSelectedMenu(item.subCategories);
+                  setSelectedLabel(item.name);
+                }}
               >
                 <Typography.Text>{item.name}</Typography.Text>
               </List.Item>
@@ -297,15 +297,15 @@ export default function MegaMenu({
         >
           <div>
 
-          {(selectedMenu || [])
-            .map((item, index) => (
-              <React.Fragment key={index}>
-                <div className="w-[300px]">
-                  <div className="text-[14px] mb-[10px]">{item?.name || ""}</div>
-                </div>
-              </React.Fragment>
-            ))}
-            </div>
+            {(selectedMenu || [])
+              .map((item, index) => (
+                <React.Fragment key={index}>
+                  <div className="w-[300px]">
+                    <div className="text-[14px] mb-[10px]">{item?.name || ""}</div>
+                  </div>
+                </React.Fragment>
+              ))}
+          </div>
         </Flex>
       )}
     </span>

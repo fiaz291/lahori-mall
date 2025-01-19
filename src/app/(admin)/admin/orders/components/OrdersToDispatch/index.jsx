@@ -47,7 +47,6 @@ export default function OrdersToDispatch() {
         config.url + "/api/admin/order?id=" + id,
         { status }
       );
-      console.log("Data posted successfully:", response.data);
       return response.data;
     } catch (error) {
       console.error("Error posting data:", error);
@@ -68,7 +67,6 @@ export default function OrdersToDispatch() {
   if (error) return "An error has occurred: " + error.message;
 
   const handlePageChange =(e)=>{
-    console.log({e})
     // setCurrentPage(page);
     // onChangePage(page, perPage);  // Pass to parent if needed
   }

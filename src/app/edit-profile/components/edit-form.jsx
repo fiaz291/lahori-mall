@@ -1,14 +1,18 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Flex, Form, Input, Upload, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
 import config from "@/app/config";
 import useAuthUser from "@/app/hooks/authUser";
+import { API_URLS } from "@/app/apiUrls";
+import { useRouter } from "next/navigation";
 
 export default function Edit_Form({ user, setOpenModal }) {
   const [form] = Form.useForm();
   const { resetUser } = useAuthUser();
+  const [verificationSent, setVerificationSent] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (user) {
@@ -17,15 +21,18 @@ export default function Edit_Form({ user, setOpenModal }) {
   }, [user, form]);
 
   const onFinish = async (values) => {
+    console.log({ values })
     values.id = user.id;
     try {
-      const res = await axios.patch(`${config.url}/api/user`, {
+      const res = await axios.patch(`${config.url}${API_URLS.USER}`, {
         ...values,
       });
-      resetUser(res?.data?.user);
+      resetUser(res?.data?.data);
       message.success("User Updated Successfully");
       if (setOpenModal) {
         setOpenModal(false);
+      } else {
+        router.push('/user-profile')
       }
     } catch (error) {
       if (error?.response?.data) {
@@ -84,32 +91,6 @@ export default function Edit_Form({ user, setOpenModal }) {
             placeholder="Enter your Last Name"
           />
         </Form.Item>
-        {/* <Form.Item
-          className="mb-0"
-          name="username"
-          label={<span className="">Username</span>}
-          rules={[
-            {
-              required: true,
-              message: "Username is Required",
-            },
-          ]}
-        >
-          <Input className="form-control bg-white" disabled />
-        </Form.Item> */}
-        {/* <Form.Item
-          className="mb-0"
-          name="email"
-          label={<span className="">Email</span>}
-          rules={[
-            {
-              required: true,
-              message: "Email is Required",
-            },
-          ]}
-        >
-          <Input className="form-control bg-white" disabled />
-        </Form.Item> */}
         <Form.Item
           className="mb-0"
           name="phoneNumber"
@@ -126,6 +107,13 @@ export default function Edit_Form({ user, setOpenModal }) {
             placeholder="Enter your Phone Number"
           />
         </Form.Item>
+        {/* {verificationSent &&
+          <Button
+            onClick={handlePhoneVerification}
+            className="form-control bg-white"
+            placeholder="Enter your Phone Number"
+          >Varify Phone Number</Button>
+        } */}
         <Form.Item
           className="mb-0"
           name="address"

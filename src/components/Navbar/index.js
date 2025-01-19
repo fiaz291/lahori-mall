@@ -17,6 +17,8 @@ import Link from "next/link";
 import useCartItems from "@/app/hooks/cartItems";
 import { useRouter } from "next/navigation";
 import HomePageSlider from "../HomePageSlider";
+import useRecentViewedItems from "@/app/hooks/recentViewedItems";
+import SmallProductCard from "../TKS/SmallProductCad";
 
 const navButtons = ["HOME", "CATEGORIES", "ABOUT US", "CONTACT"];
 
@@ -40,39 +42,22 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
         </a>
       ),
     },
-    {
-      key: '2',
-      label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-          1st menu item
-        </a>
-      ),
-    },
-    {
-      key: '3',
-      label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-          1st menu item
-        </a>
-      ),
-    },
-    {
-      key: '4',
-      label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-          1st menu item
-        </a>
-      ),
-    },
   ];
+
+  const navItems = [
+    { name: "Help", link: "/help" },
+    { name: "Cart", link: "/cart" },
+    { name: "Wishlist", link: "/wishlist" },
+    { name: "My TKS", link: "/user-profile" },
+  ];
+
 
   const [openModal, setOpenModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const { user, userLoading, logout } = useAuthUser();
   const { cartItems: ordersInCart, cartLoading } = useCartItems();
-
+  const { recentViewedItems, recentItemsLoading } = useRecentViewedItems();
   const [isOpen, setIsOpen] = useState(false);
-
   const { width, height } = useWindowSize();
   const isCollapsed = width < 900;
 
@@ -91,6 +76,29 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
     router.push(redirectTo);
   };
 
+  const getItems = useCallback(() => {
+    if (recentItemsLoading || !recentViewedItems || recentViewedItems.length < 1) {
+      return [];
+    }
+    const items = recentViewedItems.map((item, index) => {
+      return {
+        key: index + 1,
+        label: (
+          <SmallProductCard title={item?.product.name || ""} product={item.product} tag={"Recent"} color={"blue"} isRecent />
+        ),
+      }
+
+    })
+    return items
+  }, [recentViewedItems])
+
+  const getUserName = useCallback(() => {
+    if (user) {
+      return user.firstName;
+    }
+    return "Sign In"
+  }, [user])
+
   return (
     <>
       <div className="outer border-b-2 border-[#e3e3e3]">
@@ -102,11 +110,10 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Korean</div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="border-r-2 border-[#e3e3e3] pr-2"><Link href="/login"><span className="text-[#005ed4] clickable">Hi! Sign In</span></Link> or <Link href="/signup"><span className="text-[#005ed4] clickable">Register</span></Link></div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Help</div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Cart</div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Wishlist</div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">My TKS</div>
+              <div className="border-r-2 border-[#e3e3e3] pr-2"><Link href={!!user ? "/user-profile" : "/login"}><span className="text-[#005ed4] clickable">Hi! {getUserName()}</span></Link> {!user ? <span>or <Link href="/signup"><span className="text-[#005ed4] clickable">Register</span></Link></span> : <span>| <span className="text-[#CD2E3A] clickable" onClick={() => { logout() }}>Logout</span></span>}</div>
+              {navItems.map((item) => (
+                <div key={item.link} className="border-r-2 border-[#e3e3e3] clickable pr-2"><Link href={item.link}>{item.name}</Link></div>
+              ))}
               <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Ship To</div>
               <div className="clickable">Currency</div>
             </div>
@@ -278,10 +285,12 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
               </Flex>
               <Flex gap={30}>
                 <div>
-                  <img src="/icons/userIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                  <Link href="/user-profile">
+                    <img src="/icons/userIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                  </Link>
                 </div>
                 <div>
-                  <Dropdown menu={{ items }}>
+                  <Dropdown menu={{ items: getItems() }}>
                     <a onClick={(e) => e.preventDefault()}>
                       <img src="/icons/recentProductsIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
                     </a>
@@ -289,7 +298,15 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
                 </div>
                 <div>
                   <Link href="/cart">
-                    <img src="/icons/cartIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                    <Badge
+                      count={cartLoading ? 0 : getCartCount()}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        handleRedirect("/cart");
+                      }}
+                    >
+                      <img src="/icons/cartIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                    </Badge>
                   </Link>
                 </div>
               </Flex>

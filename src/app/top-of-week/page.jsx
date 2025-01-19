@@ -1,15 +1,15 @@
 'use client'
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import TKSHomePageProducts from '@/components/TKSHomePageProducts';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import config from '../config';
 import { API_URLS } from '../apiUrls';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from 'antd';
+import TKSHomePageProducts from './TKSHomePageProducts';
 
-export default function SuperDeals() {
+export default function TopOfWeek() {
     const [menu, setMenu] = useState(null);
     const [catId, setCatId] = useState(null);
     const [pageCount, setPageCount] = useState(null);
@@ -74,12 +74,10 @@ export default function SuperDeals() {
             </div>
             <TKSHomePageProducts title={returnTitle()} categoryId={catId} page={page} setPageCount={setPageCount} />
             <div className='flex gap-3 justify-center'>
-                {pageCount &&
-                    <>
-                        <Button onClick={() => { handlePageCount(false) }} size="large" color="danger" variant="outlined" disabled={!page || Number(page) < 2}>Previous</Button>
-                        <Button onClick={() => { handlePageCount(true) }} size="large" color="danger" variant="outlined" disabled={Number(page) === Number(pageCount)}>Next</Button>
-                    </>
-                }
+                <>
+                    <Button onClick={() => { handlePageCount(false) }} size="large" color="danger" variant="outlined" disabled={!page || Number(page) < 2}>Previous</Button>
+                    <Button onClick={() => { handlePageCount(true) }} size="large" color="danger" variant="outlined" disabled={Number(page) === Number(pageCount)}>Next</Button>
+                </>
             </div>
             <Footer />
         </div>

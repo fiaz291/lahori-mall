@@ -1,15 +1,15 @@
 'use client'
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import TKSHomePageProducts from '@/components/TKSHomePageProducts';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import config from '../config';
 import { API_URLS } from '../apiUrls';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from 'antd';
+import TKSHomePageProducts from './TKSHomePageProducts';
 
-export default function SuperDeals() {
+export default function FreeDelivery() {
     const [menu, setMenu] = useState(null);
     const [catId, setCatId] = useState(null);
     const [pageCount, setPageCount] = useState(null);

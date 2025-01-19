@@ -9,6 +9,7 @@ import { COLORS } from "@/constants";
 export default function Wish_List(props) {
   const { favorites } = useFavorites();
 
+  
   return (
     <div>
       <h3 className="mb-[20px]">Favorites to buy | Visit Propducts</h3>

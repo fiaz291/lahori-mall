@@ -48,7 +48,6 @@ export default function AddCategory() {
     }
   };
   const onFinish = async (values) => {
-    // console.log({ values, file });
     /* if (!file) {
       return;
     } */
@@ -56,7 +55,6 @@ export default function AddCategory() {
     data.url = "http://example.com/"; //file;
     seErr(null);
     setMsg(null);
-    console.log({ data });
     try {
       const response = await axios.post(config.url + API_URLS.GET_CATEGORIES, data);
       if (response.status === 200 && response.data.error) {

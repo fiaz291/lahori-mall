@@ -22,7 +22,6 @@ const AddSubCategoryForm = () => {
     }
   };
   const setSubGategory = async (data) => {
-    console.log("setSubGategory", data);
     try {
       const response = await axios.post(
         config.url + "/api/sub-categories",
