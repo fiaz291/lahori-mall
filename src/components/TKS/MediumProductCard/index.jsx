@@ -49,23 +49,25 @@ const MediumProductCard = ({ item }) => {
                 </Col>
               </Row>
             </span>
-            <div className="box__price--sale">
-              <Row gutter={8}>
-                <Col>
-                  <TextComponent type="danger" bold size={16}>
-                    {(100 - calculatePercentage(item.discountPrice, item.price)).toFixed(2)}%
-                  </TextComponent>
-                </Col>
-                <Col>
-                  <TextComponent
-                    weight={700}
-                    size={16}
-                  >
-                    {item.discountPrice} AED
-                  </TextComponent>
-                </Col>
-              </Row>
-            </div>
+            {item?.discountPrice &&
+              <div className="box__price--sale">
+                <Row gutter={8}>
+                  <Col>
+                    <TextComponent type="danger" bold size={16}>
+                      {(100 - calculatePercentage(item.discountPrice, item.price)).toFixed(2)}%
+                    </TextComponent>
+                  </Col>
+                  <Col>
+                    <TextComponent
+                      weight={700}
+                      size={16}
+                    >
+                      {item.discountPrice} AED
+                    </TextComponent>
+                  </Col>
+                </Row>
+              </div>
+            }
           </div>
           {/* Product Title */}
           <p
