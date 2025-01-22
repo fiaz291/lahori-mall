@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
 // POST: Add a new banner
 async function POST(req, res) {
-  const { name, slug, url, active, order } = req.body;
+  const { name, slug, url, active, order, productId, bannerType } = req.body;
 
   if (!name || !slug || !url) {
     return res.status(400).json({ message: 'Fields "name", "slug", and "url" are required.' });
@@ -28,6 +28,8 @@ async function POST(req, res) {
         url,
         active: active ?? false,
         order: order ?? 1,
+        productId,
+        bannerType
       },
     });
 

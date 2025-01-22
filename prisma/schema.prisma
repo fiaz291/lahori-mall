@@ -175,6 +175,9 @@ model Banner {
   order     Int      @default(1)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  productId Int?     @unique
+  product Product? @relation(fields: [productId], references: [id])
+  bannerType: Int?
 }
 
 model Product {
@@ -216,6 +219,7 @@ model Product {
   storeId           Int?         // Store the product's associated store
   store             Store?       @relation(fields: [storeId], references: [id]) // One-to-many relation with store
   views View[]
+  banner  Banner?  @relation
 }
 
 model OrderItem {
