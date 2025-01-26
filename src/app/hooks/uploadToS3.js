@@ -52,7 +52,6 @@ const useS3Upload = () => {
 
         try {
             const uploadResponse = await s3.upload(params).promise();
-            console.log({ uploadResponse })
             return uploadResponse.Location; // Return the file URL
         } catch (err) {
             console.error("Upload failed:", err);
