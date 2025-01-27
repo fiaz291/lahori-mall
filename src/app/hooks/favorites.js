@@ -31,7 +31,7 @@ export default function useFavorites() {
       setFavoritesLoading(false);
     }
     if (user) {
-      // getFavoriteItems();
+      getFavoriteItems();
     }
   }, [user]);
 

@@ -40,6 +40,13 @@ const Routes = [
     breadcrumb: "Add Product",
   },
   {
+    label: "All Product",
+    //   icon: <HomeIcon width="2" />,
+    key: "/admin/products",
+    url: "/admin/products",
+    breadcrumb: "All Products",
+  },
+  {
     label: "Orders",
     //   icon: <HomeIcon width="2" />,
     key: "/admin/orders",

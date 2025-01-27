@@ -16,7 +16,7 @@ import slugify from "slugify";
 import { API_URLS } from "@/app/apiUrls";
 import useS3Upload from "@/app/hooks/uploadToS3";
 
-export default function AddProduct() {
+export default function EditProduct({ params }) {
   const [err, seErr] = useState(null);
   const [msg, setMsg] = useState(null);
   const [categories, setCatgories] = useState([]);
@@ -29,7 +29,25 @@ export default function AddProduct() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const { uploadToS3, uploading, error } = useS3Upload();
-
+  const [prodData, setProdData] = useState(null);
+  console.log({prodData})
+  useEffect(() => {
+    async function fetchProduct(slug) {
+      try {
+        const res = await axios.get(`${config.url}${API_URLS.PRODUCT}/${slug}`);
+        if (res) {
+          setProdData(res?.data?.data)
+          setCatId(res?.data?.data?.categoryId)
+          setUploadedFiles(res?.data?.data?.images)
+        }
+      } catch (error) {
+        console.log({ error })
+      }
+    }
+    if (params?.slugProduct) {
+      fetchProduct(params.slugProduct);
+    }
+  }, [params])
 
   const getAllCategories = async () => {
     setLoading(true);
@@ -59,8 +77,10 @@ export default function AddProduct() {
     }
   }, [catId])
   useEffect(() => {
-    getAllCategories();
-  }, []);
+    if (prodData) {
+      getAllCategories();
+    }
+  }, [prodData]);
   const checkAvailableSlug = async () => {
     seErr(null);
     setMsg(null);
@@ -68,7 +88,7 @@ export default function AddProduct() {
     if (val) {
       try {
         const response = await axios.post(
-          config.url + API_URLS.PRODUCT_SLUG_CHECKER,
+          config.url + PRODUCT_SLUG_CHECKER,
           {
             slug: val,
           }
@@ -86,23 +106,26 @@ export default function AddProduct() {
         if (error.response && error.response.data) {
           message.error(error.response.data.error);
         } else {
-          message.error("Something went wrong!");
+          message.error("Something went wroeeeeng!");
         }
       }
     }
   };
   const onFinish = async (values) => {
+    // console.log({values});
+    // return;
     const data = { ...values };
-    data.tags = selectedTags;
+    data.id = prodData.id;
+      // data.tags = selectedTags;
     data.price = parseFloat(data.price);
     data.discountPrice = parseFloat(data.discountPrice);
     data.inventory = parseInt(data.inventory, 10);
-    data.images = file;
+    data.images = uploadedFiles;
     seErr(null);
     setMsg(null);
 
     try {
-      const response = await axios.post(config.url + API_URLS.PRODUCT, data);
+      const response = await axios.patch(config.url + API_URLS.PRODUCT, data);
       if (response.status === 200 && response.data.error) {
         seErr(response.data.error);
         message.error(response.data.error);
@@ -156,13 +179,14 @@ export default function AddProduct() {
   if (loading) {
     return null;
   }
+
   return (
     <Form
       name="basic"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
-      initialValues={{}}
+      initialValues={{ ...prodData }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -179,17 +203,17 @@ export default function AddProduct() {
         <Input
           className="form-control bg-white"
           placeholder="Enter Product Name"
-          onBlur={() => {
-            const name = form.getFieldValue("name");
-            if (name) {
-              const slug = slugify(name, {
-                replacement: "-",
-                lower: true,
-                strict: true,
-              });
-              form.setFieldValue("slug", slug);
-            }
-          }}
+          // onBlur={() => {
+          //   const name = form.getFieldValue("name");
+          //   if (name) {
+          //     const slug = slugify(name, {
+          //       replacement: "-",
+          //       lower: true,
+          //       strict: true,
+          //     });
+          //     form.setFieldValue("slug", slug);
+          //   }
+          // }}
         />
       </Form.Item>
 
@@ -226,7 +250,7 @@ export default function AddProduct() {
         label="Slug"
         rules={[{ required: true, message: "Slug is Required" }]}
       >
-        <Input className="form-control bg-white" placeholder="Enter Slug" />
+        <Input className="form-control bg-white" placeholder="Enter Slug" disabled />
       </Form.Item>
       {err && <p style={{ color: "red", textAlign: "center" }}>{err}</p>}
       {msg && <p style={{ color: "black", textAlign: "center" }}>{msg}</p>}
@@ -346,10 +370,10 @@ export default function AddProduct() {
         />
       </Form.Item>
       <Form.Item name="isFeatured" valuePropName="checked" label="Is Featured">
-        <Checkbox>Featured Product</Checkbox>
+        <Checkbox checked={prodData?.isFeatured}>Featured Product</Checkbox>
       </Form.Item>
       <Form.Item name="isActive" valuePropName="checked" label="Is Active">
-        <Checkbox>Active Product</Checkbox>
+        <Checkbox checked={prodData?.isActive}>Active Product</Checkbox>
       </Form.Item>
 
       {/* Submit */}
