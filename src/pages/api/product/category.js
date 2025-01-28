@@ -17,12 +17,18 @@ export default async function handler(req, res) {
 
 export const GET = async (req, res) => {
   try {
-  const {query} = req.query;
+  const {categoryId,subCategoryId} = req.query;
+  let query = {}
+  if(categoryId){
+    query={categoryId}
+  }
+
+  if(subCategoryId){
+    query={...query,subCategoryId}
+  }
 
     let products = await prisma.product.findMany({
-      where: {
-       categoryId: query.categoryId
-      },
+      where: query,
       orderBy: {
         createdAt: "desc", // Order by createdAt in descending order
       },
