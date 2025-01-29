@@ -19,6 +19,7 @@ export const GET = async (req, res) => {
   try {
   const {categoryId, subCategoryId, page = 1, limit = 10} = req.query;
       // Convert query parameters to integers
+     
       const pageNum = parseInt(page, 10);
       const limitNum = parseInt(limit, 10);
     
@@ -26,13 +27,12 @@ export const GET = async (req, res) => {
       const skip = (pageNum - 1) * limitNum;
   let query = {}
   if(categoryId){
-    query={categoryId:Number(categoryId)}
+    query={...query,categoryId:Number(categoryId)}
   }
-
   if(subCategoryId){
     query={...query,subCategoryId:Number(subCategoryId)}
   }
-
+  
     let products = await prisma.product.findMany({
       where: query,
       orderBy: {
