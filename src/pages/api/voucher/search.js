@@ -5,11 +5,11 @@ import { createResponse } from "@/utilities";
 
 export default async function handler(req, res) {
   switch (req.method) {
-    case "POST":
+    case "GET":
       return searchVoucherByName(req, res);
 
     default:
-      res.setHeader("Allow", ["POST"]);
+      res.setHeader("Allow", ["GET"]);
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
