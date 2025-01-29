@@ -4,6 +4,8 @@ export const API_URLS ={
     GET_SUB_CATEGORIES: '/api/sub-categories',
     PRODUCT_SLUG_CHECKER: '/api/product/slug-checker',
     PRODUCT: '/api/product',
+    PRODUCT_SEARCH: '/api/product/search',
+    PRODUCT_CATEGORY: '/api/product/category',
     USER_LOGIN: '/api/user/login',
     USER_SIGNUP: '/api/user/signup',
     PRODUCT_BEST_SELLING: '/api/product/best-selling',
