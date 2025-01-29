@@ -3,8 +3,8 @@ import { API_URLS } from "@/app/apiUrls";
 import config from "@/app/config";
 import { Divider, Flex, List, Typography } from "antd";
 import axios from "axios";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
-
 
 // const menu = {
 //   fashion: {
@@ -211,11 +211,10 @@ import React, { useEffect, useState } from "react";
 //   },
 // };
 
-
 const inlineStyles = {
   zIndex: 1,
   maxHeight: 400,
-  overflow: 'scroll'
+  overflow: "scroll",
 };
 export default function MegaMenu({
   open,
@@ -227,19 +226,20 @@ export default function MegaMenu({
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [selectedLabel, setSelectedLabel] = useState(null);
   const [menu, setMenu] = useState(null);
-
+  console.log({ selectedMenu });
   useEffect(() => {
     async function getCategories() {
       try {
-        const response = await axios.get(`${config.url + API_URLS.GET_CATEGORIES}?menu=true`);
-        setMenu(response.data.data)
-      }
-      catch (err) {
-        console.log({ err })
+        const response = await axios.get(
+          `${config.url + API_URLS.GET_CATEGORIES}?menu=true`
+        );
+        setMenu(response.data.data);
+      } catch (err) {
+        console.log({ err });
       }
     }
     getCategories();
-  }, [])
+  }, []);
   // useEffect(() => {
   //   if (defaultSelected) {
   //     setSelectedMenu(Object.values(menu)?.[0]);
@@ -250,11 +250,13 @@ export default function MegaMenu({
     return <></>;
   }
   return (
-    <span onMouseLeave={() => {
-      if (defaultSelected) return;
-      setSelectedMenu(null);
-      setSelectedLabel(null);
-    }}>
+    <span
+      onMouseLeave={() => {
+        if (defaultSelected) return;
+        setSelectedMenu(null);
+        setSelectedLabel(null);
+      }}
+    >
       <div
         className="absolute"
         style={
@@ -268,7 +270,7 @@ export default function MegaMenu({
           // setSelectedLabel(null);
         }}
       >
-        {!!menu &&
+        {!!menu && (
           <List
             className="w-[185px]"
             style={{ borderRadius: "unset", background: "white" }}
@@ -283,28 +285,36 @@ export default function MegaMenu({
                   setSelectedLabel(item.name);
                 }}
               >
-                <Typography.Text>{item.name}</Typography.Text>
+                <Link href={`/category/${item.id}?title=${item.name}`}>
+                  <Typography.Text>{item.name}</Typography.Text>
+                </Link>
               </List.Item>
             )}
           />
-        }
+        )}
       </div>
       {!!selectedMenu && (
         <Flex
           className="absolute left-[215px] top-[60px] p-2 min-h-[367px] max-h-[367px] bg-white min-w-[300px]"
-          style={{ borderRight: "1px solid rgba(0,0,0,0.4)", borderLeft: "none", zIndex: 100 }}
+          style={{
+            borderRight: "1px solid rgba(0,0,0,0.4)",
+            borderLeft: "none",
+            zIndex: 100,
+          }}
           gap={4}
         >
           <div>
-
-            {(selectedMenu || [])
-              .map((item, index) => (
-                <React.Fragment key={index}>
-                  <div className="w-[300px]">
-                    <div className="text-[14px] mb-[10px]">{item?.name || ""}</div>
+            {(selectedMenu || []).map((item, index) => (
+              <React.Fragment key={index}>
+                <div className="w-[300px]">
+                  <div className="text-[14px] mb-[10px]">
+                    <Link href={`/sub-category/${item.id}?title=${item.name}&categoryId=${item.categoryId}`}>
+                      {item?.name || ""}
+                    </Link>
                   </div>
-                </React.Fragment>
-              ))}
+                </div>
+              </React.Fragment>
+            ))}
           </div>
         </Flex>
       )}

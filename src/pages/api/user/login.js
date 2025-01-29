@@ -37,6 +37,10 @@ const POST = async (req, res) => {
       return res.status(401).json(createResponse({ error: "Invalid email or password", status:false }));
     }
 
+    if (!user.isVerified) {
+      return res.status(401).json(createResponse({ error: "Email is not verified", status:false }));
+    }
+
      // Reconstruct the input string used during hashing
   const inputToHash = `${password}${email.length.toString()}`;
 

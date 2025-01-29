@@ -35,9 +35,13 @@ const loggedInButtons = ["PROFILE", "ORDERS"];
 export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
   const items = [
     {
-      key: '1',
+      key: "1",
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
           1st menu item
         </a>
       ),
@@ -51,12 +55,13 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
     { name: "My TKS", link: "/user-profile" },
   ];
 
-
   const [openModal, setOpenModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const { user, userLoading, logout } = useAuthUser();
   const { cartItems: ordersInCart, cartLoading } = useCartItems();
   const { recentViewedItems, recentItemsLoading } = useRecentViewedItems();
+  const [text, setText] = useState("");
+
   const [isOpen, setIsOpen] = useState(false);
   const { width, height } = useWindowSize();
   const isCollapsed = width < 900;
@@ -77,27 +82,42 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
   };
 
   const getItems = useCallback(() => {
-    if (recentItemsLoading || !recentViewedItems || recentViewedItems.length < 1) {
+    if (
+      recentItemsLoading ||
+      !recentViewedItems ||
+      recentViewedItems.length < 1
+    ) {
       return [];
     }
     const items = recentViewedItems.map((item, index) => {
       return {
         key: index + 1,
         label: (
-          <SmallProductCard title={item?.product.name || ""} product={item.product} tag={"Recent"} color={"blue"} isRecent />
+          <SmallProductCard
+            title={item?.product.name || ""}
+            product={item.product}
+            tag={"Recent"}
+            color={"blue"}
+            isRecent
+          />
         ),
-      }
-
-    })
-    return items
-  }, [recentViewedItems])
+      };
+    });
+    return items;
+  }, [recentViewedItems]);
 
   const getUserName = useCallback(() => {
     if (user) {
       return user.firstName;
     }
-    return "Sign In"
-  }, [user])
+    return "Sign In";
+  }, [user]);
+  const handleSearch = () => {
+    if (!text) {
+      return;
+    }
+    router.push(`/search?text=${text}&page=1`);
+  };
 
 
   if (topbar) {
@@ -129,24 +149,69 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
         <div className="inner">
           <div className="hidden md:flex justify-between">
             <div className="flex items-center gap-2">
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">English</div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Arabic</div>
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Korean</div>
+              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">
+                English
+              </div>
+              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">
+                Arabic
+              </div>
+              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">
+                Korean
+              </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="border-r-2 border-[#e3e3e3] pr-2"><Link href={!!user ? "/user-profile" : "/login"}><span className="text-[#005ed4] clickable">Hi! {getUserName()}</span></Link> {!user ? <span>or <Link href="/signup"><span className="text-[#005ed4] clickable">Register</span></Link></span> : <span>| <span className="text-[#CD2E3A] clickable" onClick={() => { logout() }}>Logout</span></span>}</div>
+              <div className="border-r-2 border-[#e3e3e3] pr-2">
+                <Link href={!!user ? "/user-profile" : "/login"}>
+                  <span className="text-[#005ed4] clickable">
+                    Hi! {getUserName()}
+                  </span>
+                </Link>{" "}
+                {!user ? (
+                  <span>
+                    or{" "}
+                    <Link href="/signup">
+                      <span className="text-[#005ed4] clickable">Register</span>
+                    </Link>
+                  </span>
+                ) : (
+                  <span>
+                    |{" "}
+                    <span
+                      className="text-[#CD2E3A] clickable"
+                      onClick={() => {
+                        logout();
+                      }}
+                    >
+                      Logout
+                    </span>
+                  </span>
+                )}
+              </div>
               {navItems.map((item) => (
-                <div key={item.link} className="border-r-2 border-[#e3e3e3] clickable pr-2"><Link href={item.link}>{item.name}</Link></div>
+                <div
+                  key={item.link}
+                  className="border-r-2 border-[#e3e3e3] clickable pr-2"
+                >
+                  <Link href={item.link}>{item.name}</Link>
+                </div>
               ))}
-              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Ship To</div>
+              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">
+                Ship To
+              </div>
               <div className="clickable">Currency</div>
+              {user && user.role === "admin" && (
+                <Link href="/admin/dashboard">
+                  <div className="clickable">Dashboard</div>
+                </Link>
+              )}
             </div>
           </div>
         </div>
       </div>
       <div
-        className={`flex flex-col justify-center items-center ${isCollapsed ? "gap-1" : "gap-4"
-          }`}
+        className={`flex flex-col justify-center items-center ${
+          isCollapsed ? "gap-1" : "gap-4"
+        }`}
       >
         {/* {!isCollapsed && (
         <div
@@ -163,8 +228,9 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
         </div>
       )} */}
         <div
-          className={`flex ${"justify-between"} pl-[30px] px-4 items-center w-full max-w-[1200px] ${!isCollapsed ? "pt-8" : "pt-2"
-            }`}
+          className={`flex ${"justify-between"} pl-[30px] px-4 items-center w-full max-w-[1200px] ${
+            !isCollapsed ? "pt-8" : "pt-2"
+          }`}
         >
           <img
             src="/logo-dark.png"
@@ -184,13 +250,18 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
                       handleRedirect("/cart");
                     }}
                   >
-                    <button style={{ color: COLORS.red }} className="text-[30px]">
+                    <button
+                      style={{ color: COLORS.red }}
+                      className="text-[30px]"
+                    >
                       <ShoppingCartOutlined />
                     </button>
                   </Badge>
                   <div
                     style={{ color: COLORS.gray }}
-                    className={"pl-[6px] pr-[6px] pt-[2px] pb-[2px] w-full h-[40px] rounded flex justify-center items-center"}
+                    className={
+                      "pl-[6px] pr-[6px] pt-[2px] pb-[2px] w-full h-[40px] rounded flex justify-center items-center"
+                    }
                   >
                     {user?.firstName}
                   </div>
@@ -226,7 +297,7 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
               <Link href={linkMap[btn]} key={index}>
                 <p
                   className="p-[10px] mt-[10px] text-white text-center"
-                  style={{ background: '#0047A0' }}
+                  style={{ background: "#0047A0" }}
                 >
                   {btn}
                 </p>
@@ -301,8 +372,14 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
                     type="text"
                     className="min-w-[554px] outline-none h-[45px] pl-6 pr-6 rounded-3xl"
                     style={{ border: "2px solid #067DFD" }}
+                    onChange={(e) => {
+                      setText(e.target.value);
+                    }}
                   />
-                  <div className="absolute right-4 top-2 text-[24px] cursor-pointer hover:opacity-60 text-[#067DFD]">
+                  <div
+                    className="absolute right-4 top-2 text-[24px] cursor-pointer hover:opacity-60 text-[#067DFD]"
+                    onClick={handleSearch}
+                  >
                     <SearchOutlined />
                   </div>
                 </div>
@@ -310,13 +387,19 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
               <Flex gap={30}>
                 <div>
                   <Link href="/user-profile">
-                    <img src="/icons/userIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                    <img
+                      src="/icons/userIcon.png"
+                      className="w-[40px] cursor-pointer hover:opacity-60"
+                    />
                   </Link>
                 </div>
                 <div>
                   <Dropdown menu={{ items: getItems() }}>
                     <a onClick={(e) => e.preventDefault()}>
-                      <img src="/icons/recentProductsIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                      <img
+                        src="/icons/recentProductsIcon.png"
+                        className="w-[40px] cursor-pointer hover:opacity-60"
+                      />
                     </a>
                   </Dropdown>
                 </div>
@@ -329,7 +412,10 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
                         handleRedirect("/cart");
                       }}
                     >
-                      <img src="/icons/cartIcon.png" className="w-[40px] cursor-pointer hover:opacity-60" />
+                      <img
+                        src="/icons/cartIcon.png"
+                        className="w-[40px] cursor-pointer hover:opacity-60"
+                      />
                     </Badge>
                   </Link>
                 </div>
@@ -381,7 +467,10 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
           )}
         </Modal>
       </div>
-      <HomePageSlider hideSlider={hideSlider} defaultOpenMegaMenu={defaultOpenMegaMenu} />
+      <HomePageSlider
+        hideSlider={hideSlider}
+        defaultOpenMegaMenu={defaultOpenMegaMenu}
+      />
     </>
   );
 }
