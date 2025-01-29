@@ -11,40 +11,59 @@ import ProductsPage from "./ProductsPage";
 
 export default function SearchPage() {
   const [pageCount, setPageCount] = useState(null);
+  const [loading, setloading] = useState(false);
+  const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
   const searchParams = useSearchParams();
   const router = useRouter();
   const page = searchParams.get("page");
   const text = searchParams.get("text");
   useEffect(() => {
     async function fetchData(text, page) {
-      const data = {
-        text: text,
-      };
-      const response = await axios.post(
-        `${config.url}${API_URLS.PRODUCT_SEARCH}`,
-        data
-      );
-      console.log({ response });
+      setloading(true);
+      try {
+        const response = await axios.get(
+          `${config.url}${API_URLS.PRODUCT_SEARCH}?text=${text}&page=${page}`
+        );
+        if (
+          response?.data?.data?.products &&
+          response?.data?.data?.products.length > 0
+        ) {
+          setData(response?.data?.data?.products);
+          setPageCount(response?.data?.data?.pagination?.totalPages);
+        } else {
+          setError("No Producs Found");
+        }
+      } catch (error) {
+        setError("No Producs Found");
+      } finally {
+        setloading(false);
+      }
     }
     if (text && page) {
-      fetchData(text);
+      fetchData(text, page);
     }
   }, [text, page]);
   const handlePageCount = (isNext) => {
     if (isNext) {
       if (!page) {
-        router.push(`/searc?page=2&text=${text}`);
+        router.push(`/search?page=2&text=${text}`);
       } else {
-        router.push(`/searc?page=${Number(page) + 1}&text=${text}`);
+        router.push(`/search?page=${Number(page) + 1}&text=${text}`);
       }
     } else {
-      router.push(`/searc?page=${Number(page) - 1}&text=${text}`);
+      router.push(`/search?page=${Number(page) - 1}&text=${text}`);
     }
   };
   return (
     <div>
       <Navbar hideSlider={true} />
-      <ProductsPage data={[]} title="Title" />
+      <ProductsPage
+        data={data || []}
+        title={`You searched: ${text}`}
+        isPending={loading}
+        error={error}
+      />
       <div className="flex gap-3 justify-center">
         {pageCount && (
           <>

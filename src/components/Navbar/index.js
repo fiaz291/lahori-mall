@@ -175,6 +175,11 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
                 Ship To
               </div>
               <div className="clickable">Currency</div>
+              {user && user.role === "admin" && (
+                <Link href="/admin/dashboard">
+                  <div className="clickable">Dashboard</div>
+                </Link>
+              )}
             </div>
           </div>
         </div>

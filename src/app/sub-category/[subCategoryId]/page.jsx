@@ -10,7 +10,7 @@ import config from "@/app/config";
 import { API_URLS } from "@/app/apiUrls";
 
 export default function SingleCategory({ params }) {
-  const { categoryId } = params;
+  const { subCategoryId } = params;
   const [pageCount, setPageCount] = useState(null);
   const [loading, setloading] = useState(false);
   const [error, setError] = useState(null);
@@ -18,13 +18,14 @@ export default function SingleCategory({ params }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const page = searchParams.get("page");
+  const categoryId = searchParams.get("categoryId");
   const title = searchParams.get("title");
   useEffect(() => {
     async function fetchData(page) {
       setloading(true);
       try {
         const response = await axios.get(
-          `${config.url}${API_URLS.PRODUCT_CATEGORY}?categoryId=${categoryId}${
+          `${config.url}${API_URLS.PRODUCT_CATEGORY}?subCategoryId=${subCategoryId}&categoryId=${categoryId}${
             page ? `&page=${page}` : ""
           }`
         );
@@ -43,20 +44,20 @@ export default function SingleCategory({ params }) {
         setloading(false);
       }
     }
-    if (categoryId) {
+    if (subCategoryId && categoryId) {
       fetchData(page);
     }
-  }, [page, categoryId]);
+  }, [page, subCategoryId, categoryId]);
 
   const handlePageCount = (isNext) => {
     if (isNext) {
         if (!page) {
-            router.push(`/category/${categoryId}?page=2`);
+            router.push(`/sub-category/${subCategoryId}?categoryId=${categoryId}&page=2`);
         } else {
-            router.push(`/category/${categoryId}?page=${Number(page) + 1}`);
+            router.push(`/sub-category/${subCategoryId}?categoryId=${categoryId}&page=${Number(page) + 1}`);
         }
     } else {
-        router.push(`/category/${categoryId}?page=${Number(page) - 1}`);
+        router.push(`/sub-category/${subCategoryId}?categoryId=${categoryId}&page=${Number(page) - 1}`);
     }
 }
   return (
