@@ -32,7 +32,7 @@ const linkMap = {
 };
 const loggedInButtons = ["PROFILE", "ORDERS"];
 
-export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
+export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
   const items = [
     {
       key: "1",
@@ -119,6 +119,30 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu }) {
     router.push(`/search?text=${text}&page=1`);
   };
 
+
+  if (topbar) {
+    return (
+      <div className="outer border-b-2 border-[#e3e3e3]">
+        <div className="inner">
+          <div className="hidden md:flex justify-between">
+            <div className="flex items-center gap-2">
+              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">English</div>
+              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Arabic</div>
+              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Korean</div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="border-r-2 border-[#e3e3e3] pr-2"><Link href={!!user ? "/user-profile" : "/login"}><span className="text-[#005ed4] clickable">Hi! {getUserName()}</span></Link> {!user ? <span>or <Link href="/signup"><span className="text-[#005ed4] clickable">Register</span></Link></span> : <span>| <span className="text-[#CD2E3A] clickable" onClick={() => { logout() }}>Logout</span></span>}</div>
+              {navItems.map((item) => (
+                <div key={item.link} className="border-r-2 border-[#e3e3e3] clickable pr-2"><Link href={item.link}>{item.name}</Link></div>
+              ))}
+              <div className="border-r-2 border-[#e3e3e3] clickable pr-2">Ship To</div>
+              <div className="clickable">Currency</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
   return (
     <>
       <div className="outer border-b-2 border-[#e3e3e3]">

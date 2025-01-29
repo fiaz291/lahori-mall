@@ -6,6 +6,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import React from "react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -38,7 +39,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-4 md:gap-6 text-[#1677ff] text-lg md:text-xl">
               <FaFacebookF className="cursor-pointer text-[#1877F2]" />
-              <img src="/x.jpg" className="w-[18px] h-[18px] cursor-pointer"/>
+              <img src="/x.jpg" className="w-[18px] h-[18px] cursor-pointer" />
               {/* <FaTwitter className="cursor-pointer text-[#1DA1F2]" /> */}
               <FaInstagram className="cursor-pointer text-[#CD2E3A]" />
               <FaWhatsapp className="cursor-pointer  text-[#075e54]" />
@@ -67,13 +68,22 @@ export default function Footer() {
               </div>
               <div className="flex flex-col gap-2 md:gap-3">
                 <p className="text-lg md:text-xl text-[#CD2E3A] mb-2 md:mb-4 font-normal">
-                  RETURNS
+                  Useful Links
                 </p>
                 <p className="cursor-pointer">FAQs</p>
-                <p className="cursor-pointer">Size Guide</p>
                 <p className="cursor-pointer">Contact Us</p>
-                <p className="cursor-pointer">Sell With Us</p>
-                <p className="cursor-pointer">Sitemap FAQs</p>
+                <Link href="/sell-with-us">
+                  <p className="cursor-pointer">Sell With Us</p>
+                </Link>
+                <Link href="/disclaimer">
+                  <p className="cursor-pointer">Disclaimer</p>
+                </Link>
+                <Link href="/privacy-policy">
+                  <p className="cursor-pointer">Privacy Policy</p>
+                </Link>
+                <Link href="/terms-and-conditions">
+                  <p className="cursor-pointer">Terms and Conditions</p>
+                </Link>
               </div>
             </div>
           </div>
