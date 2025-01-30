@@ -69,7 +69,7 @@ export default function Product_Details({ prod }) {
 
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   const { user } = useAuthUser();
   const { cartItems: ordersInCart } = useCartItems();
@@ -167,7 +167,7 @@ export default function Product_Details({ prod }) {
               alt="product"
             />
           </div>
-          <div className="flex overflow-scroll">
+          <div className="flex overflow-scroll scrollbar-none">
             {/* <Carousel responsive={responsive} showDots={true}> */}
             {[1, 2, 3, 4, 5, 6]?.map((img, index) => (
               <div

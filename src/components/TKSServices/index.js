@@ -19,7 +19,7 @@ export default function TKSServices() {
         >
           The Korean Stop Services
         </div>
-        <Flex gap={16} className="overflow-scroll">
+        <Flex gap={16} className="overflow-scroll scrollbar-none">
           {array.map((i) => (
             <Flex vertical align="center">
               <img

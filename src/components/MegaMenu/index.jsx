@@ -258,7 +258,7 @@ export default function MegaMenu({
       }}
     >
       <div
-        className="absolute"
+        className="absolute scrollbar-none"
         style={
           !!top && !!left
             ? { top: top, left: left, ...inlineStyles }
