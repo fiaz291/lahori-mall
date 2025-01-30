@@ -23,7 +23,7 @@ export default function SocialLogin() {
 
     const [provider, setProvider] = useState('');
     const [profile, setProfile] = useState();
-
+    console.log({provider, profile})
     const onLoginStart = useCallback(() => {
         alert('login start');
     }, []);
@@ -59,7 +59,7 @@ export default function SocialLogin() {
             </LoginSocialFacebook>
 
             <LoginSocialGoogle
-                client_id={process.env.REACT_APP_GG_APP_ID || ''}
+                client_id={process.env.REACT_APP_GG_APP_ID || '7641665807-ls8p6lvhopn0gdr5t235vki80gq1m5s6.apps.googleusercontent.com'}
                 onLoginStart={onLoginStart}
                 redirect_uri={REDIRECT_URI}
                 scope="openid profile email"

@@ -20,13 +20,13 @@ import HomePageSlider from "../HomePageSlider";
 import useRecentViewedItems from "@/app/hooks/recentViewedItems";
 import SmallProductCard from "../TKS/SmallProductCad";
 
-const navButtons = ["HOME", "CATEGORIES", "ABOUT US", "CONTACT"];
+const navButtons = ["HOME", "CATEGORIES", "PRIVACY POLICY", "DISCLAIMER"];
 
 const linkMap = {
   HOME: "/",
-  CATEGORIES: "/tags",
-  "ABOUT US": "#",
-  CONTACT: "#",
+  CATEGORIES: "/mobile-categories",
+  DISCLAIMER: "/disclaimer",
+  ["PRIVACY POLICY"]: "/privacy-policy",
   PROFILE: "/user-profile",
   ORDERS: "/orders",
 };
@@ -56,7 +56,7 @@ export default function Navbar({ hideSlider, defaultOpenMegaMenu, topbar }) {
   ];
 
   const [openModal, setOpenModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const { user, userLoading, logout } = useAuthUser();
   const { cartItems: ordersInCart, cartLoading } = useCartItems();
   const { recentViewedItems, recentItemsLoading } = useRecentViewedItems();

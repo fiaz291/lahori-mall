@@ -26,7 +26,7 @@ export default function HomePageSlider({ hideSlider, defaultOpenMegaMenu }) {
     <div className="flex flex-col w-full pt-8">
       <div className="outer">
         <div className="inner relative">
-          <Flex gap={8} className="overflow-x-scroll bg-[#005ed4]">
+          <Flex gap={8} className="overflow-x-scroll scrollbar-none bg-[#005ed4]">
             {!isMobile &&
               <Button icon={<MenuOutlined />} style={{ border: "none", padding: "0 30px", height: 60, background: "#0047A0", borderRadius: "unset", color: "white", fontSize: 16 }} onClick={() => setOpen(!open)}>All Categories</Button>
             }
