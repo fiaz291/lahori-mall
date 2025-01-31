@@ -86,7 +86,7 @@ model User {
   dateOfBirth    DateTime?
   isActive       Boolean   @default(true)
   socialToken    String?
-
+  socialId       String?
   orders                Order[]
   favorites             Favorite[]
   cartItems             CartItem[]

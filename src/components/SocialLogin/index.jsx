@@ -1,6 +1,6 @@
 'use client'
 import React, { useCallback, useState } from 'react';
-
+import config from "@/app/config";
 import {
     LoginSocialGoogle,
     LoginSocialTiktok,
@@ -15,12 +15,10 @@ import {
     TikTokLoginButton
 } from 'react-social-login-buttons';
 import './styles.css';
+import axios from 'axios';
 
 export default function SocialLogin() {
-    const REDIRECT_URI =
-        'https://localhost:3000/login';
-    // const REDIRECT_URI = 'http://localhost:3000/account/login'
-
+    const REDIRECT_URI = config.google_redirect_url
     const [provider, setProvider] = useState('');
     const [profile, setProfile] = useState();
     console.log({provider, profile})
@@ -35,6 +33,17 @@ export default function SocialLogin() {
     }, []);
 
     const onLogout = useCallback(() => { }, []);
+
+    const socialLoginApi = async (values) => {
+        try {
+            console.log("socialLoginApi",config.url + "/api/user/socialSignin", {provider:values.provider, accessToken:values.code},{client_id:config.google_client_id,redirect_uri:REDIRECT_URI})
+            
+          let result = await axios.post(config.url + "/api/user/socialSignin", {provider:values.provider, accessToken:values.code});
+          console.log("result",result)
+        } catch (error) {
+            console.log("error",error)
+        }
+      };
 
 
     return (
@@ -59,15 +68,17 @@ export default function SocialLogin() {
             </LoginSocialFacebook>
 
             <LoginSocialGoogle
-                client_id={process.env.REACT_APP_GG_APP_ID || '7641665807-ls8p6lvhopn0gdr5t235vki80gq1m5s6.apps.googleusercontent.com'}
+                client_id={config.google_client_id}
                 onLoginStart={onLoginStart}
-                redirect_uri={REDIRECT_URI}
+                redirect_uri="http://localhost:3000"
                 scope="openid profile email"
                 discoveryDocs="claims_supported"
                 access_type="offline"
                 onResolve={({ provider, data }) => {
-                    setProvider(provider);
-                    setProfile(data);
+                    console.log("Data set",data)
+                    socialLoginApi({provider,...data})
+                    /* setProvider(provider);
+                    setProfile(data); */
                 }}
                 onReject={err => {
                     console.log(err);

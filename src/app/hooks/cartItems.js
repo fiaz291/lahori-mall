@@ -38,7 +38,7 @@ export default function useCartItems() {
         store.setState((state) => {
           return {
             ...state,
-            cart: response.data,
+            cart: response.data.data,
           };
         });
       }

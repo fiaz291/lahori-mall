@@ -14,7 +14,7 @@ export default function useAuthUser() {
 
   useEffect(() => {
     const userCookie = getCookie("user");
-    if (userCookie) {
+    if (userCookie && userCookie !== "undefined") {
       store.setState((state) => {
         return {
           ...state,

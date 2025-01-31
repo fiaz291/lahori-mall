@@ -100,9 +100,9 @@ export default function Product_Details({ prod }) {
       const res = await axios.post(config.url + API_URLS.CART, data);
 
       if (ifAlreadyExist) {
-        cartData.splice(cartData.indexOf(ifAlreadyExist), 1, res.data);
+        cartData.splice(cartData.indexOf(ifAlreadyExist), 1, res.data.data);
       } else {
-        cartData.push(res.data);
+        cartData.push(res.data.data);
       }
 
       store.setState((state) => {
