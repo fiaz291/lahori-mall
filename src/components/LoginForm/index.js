@@ -11,11 +11,11 @@ export default function LoginForm({ setOpenModal, setIsLogin }) {
     const data = { ...values };
     try {
       const response = await axios.post(config.url + "/api/user/login", data);
-      setCookie("user", response.data.user);
-      setCookie("token", response.data.token);
+      setCookie("user", response.data.data);
+      setCookie("token", response.data.data.token);
       store.setState(() => {
         return {
-          user: response.data.user,
+          user: response.data.data,
         };
       });
       message.success("Welcome");

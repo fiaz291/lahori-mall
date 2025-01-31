@@ -16,6 +16,9 @@ import {
 } from 'react-social-login-buttons';
 import './styles.css';
 import axios from 'axios';
+import { store } from "@/app/store";
+import { message } from "antd";
+import { setCookie } from "cookies-next";
 
 export default function SocialLogin() {
     const REDIRECT_URI = config.google_redirect_url
@@ -23,7 +26,6 @@ export default function SocialLogin() {
     const [profile, setProfile] = useState();
     console.log({provider, profile})
     const onLoginStart = useCallback(() => {
-        alert('login start');
     }, []);
 
     const onLogoutSuccess = useCallback(() => {
@@ -37,9 +39,15 @@ export default function SocialLogin() {
     const socialLoginApi = async (values) => {
         try {
             console.log("socialLoginApi",config.url + "/api/user/socialSignin", {provider:values.provider, accessToken:values.code},{client_id:config.google_client_id,redirect_uri:REDIRECT_URI})
-            
-          let result = await axios.post(config.url + "/api/user/socialSignin", {provider:values.provider, accessToken:values.code});
-          console.log("result",result)
+          let response = await axios.post(config.url + "/api/user/socialSignin", {provider:values.provider, accessToken:values.code});
+          setCookie("user", response.data.data);
+            setCookie("token", response.data.data.token);
+      store.setState(() => {
+        return {
+          user: response.data.data,
+        };
+      });
+      message.success("Welcome");
         } catch (error) {
             console.log("error",error)
         }
