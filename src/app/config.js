@@ -4,8 +4,9 @@ const config = {
   s3KeySecret: process.env.NEXT_PUBLIC_S3_KEY_SECRET,
   s3Region: process.env.NEXT_PUBLIC_S3_REGION,
   s3Bucket: process.env.NEXT_PUBLIC_S3_BUCKET,
-  google_redirect_url: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI,
-  google_client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+  redirect_url: process.env.NEXT_PUBLIC_REDIRECT_URI,
+  google_client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+  facebook_id: process.env.NEXT_PUBLIC_FACEBOOKD_ID
 };
 
 module.exports = config;

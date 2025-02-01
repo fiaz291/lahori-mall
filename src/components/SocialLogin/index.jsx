@@ -21,7 +21,7 @@ import { message } from "antd";
 import { setCookie } from "cookies-next";
 
 export default function SocialLogin() {
-    const REDIRECT_URI = "http://localhost:3000"
+    const REDIRECT_URI = config.redirect_url || "http://localhost:3000"
     const [provider, setProvider] = useState('');
     const [profile, setProfile] = useState();
     console.log({provider, profile})
@@ -62,7 +62,7 @@ export default function SocialLogin() {
     return (
         <div className="social-container">
             <LoginSocialFacebook
-                appId={process.env.NEXT_PUBLIC_FACEBOOKD_ID || ''}
+                appId={config.facebook_id || ''}
                 fieldsProfile={
                     'id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender'
                 }
