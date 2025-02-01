@@ -14,19 +14,17 @@ export default async function handler(req, res) {
    }
 
  async function socialSignin(req, res) {
-  const { provider, accessToken } = req.body;
+  const { provider, dataSet } = req.body;
 
   try {
     let userObj;
     if (provider === "google") {
-      const { data } = await getGoogleToken(accessToken)
-      console.log("getGoogleToken",data)
+      const { data } = await getGoogleToken(dataSet.code)
       if(!data)
         return res.status(500).json({ error: "Error while getting google user data" });
       userObj = {socialId: data.sub ,firstName: data.given_name,lastName:data.family_name , email: data.email, profilePicture: {url:data.picture} };
     } else if (provider === "facebook") {
-      const { data } = await axios.get(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${accessToken}`);
-      userObj = { id: data.id, name: data.name, email: data.email, profilePicture: data.picture.data };
+      userObj = {socialId: dataSet.id ,firstName: dataSet.first_name,lastName:dataSet.last_name , email: dataSet.email, profilePicture: {url:dataSet?.picture?.data?.url} };
     }  else {
       return res.status(400).json({ error: "Invalid provider" });
     }
@@ -70,7 +68,7 @@ async function getGoogleToken (code){
         },
       });
        if(!data?.access_token)
-          return 0
+        throw ("Erorr while gettig google Token")
       // Fetch user details from Google API
       return await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
         headers: { Authorization: `Bearer ${data?.access_token}` },
@@ -78,7 +76,7 @@ async function getGoogleToken (code){
   
     } catch (error) {
       console.error("Google authentication error:", error);
-      throw ("Google authentication error:")
+      throw ("Google authentication error:",error)
     }
   }
   

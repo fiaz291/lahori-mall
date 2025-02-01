@@ -21,7 +21,7 @@ import { message } from "antd";
 import { setCookie } from "cookies-next";
 
 export default function SocialLogin() {
-    const REDIRECT_URI = config.google_redirect_url
+    const REDIRECT_URI = "http://localhost:3000"
     const [provider, setProvider] = useState('');
     const [profile, setProfile] = useState();
     console.log({provider, profile})
@@ -36,10 +36,15 @@ export default function SocialLogin() {
 
     const onLogout = useCallback(() => { }, []);
 
-    const socialLoginApi = async (values) => {
+    const socialLoginApi = async (data) => {
         try {
-            console.log("socialLoginApi",config.url + "/api/user/socialSignin", {provider:values.provider, accessToken:values.code},{client_id:config.google_client_id,redirect_uri:REDIRECT_URI})
-          let response = await axios.post(config.url + "/api/user/socialSignin", {provider:values.provider, accessToken:values.code});
+            console.log("socialLoginApi",data)
+            let obj = {}
+            if(data.provider == "google")
+                obj={provider:data.provider, dataSet:{code:data.code}}
+            if(data.provider == "facebook")
+                obj={provider:data.provider, dataSet:data}
+          let response = await axios.post(config.url + "/api/user/socialSignin", obj);
           setCookie("user", response.data.data);
             setCookie("token", response.data.data.token);
       store.setState(() => {
@@ -57,7 +62,7 @@ export default function SocialLogin() {
     return (
         <div className="social-container">
             <LoginSocialFacebook
-                appId={process.env.REACT_APP_FB_APP_ID || ''}
+                appId={process.env.NEXT_PUBLIC_FACEBOOKD_ID || ''}
                 fieldsProfile={
                     'id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender'
                 }
@@ -65,8 +70,8 @@ export default function SocialLogin() {
                 onLogoutSuccess={onLogoutSuccess}
                 redirect_uri={REDIRECT_URI}
                 onResolve={({ provider, data }) => {
-                    setProvider(provider);
-                    setProfile(data);
+                    console.log("Fascebook",provider, data)
+                    socialLoginApi({ provider, ...data })
                 }}
                 onReject={err => {
                     console.log(err);
@@ -78,15 +83,13 @@ export default function SocialLogin() {
             <LoginSocialGoogle
                 client_id={config.google_client_id}
                 onLoginStart={onLoginStart}
-                redirect_uri="http://localhost:3000"
+                redirect_uri={REDIRECT_URI}
                 scope="openid profile email"
                 discoveryDocs="claims_supported"
                 access_type="offline"
                 onResolve={({ provider, data }) => {
                     console.log("Data set",data)
                     socialLoginApi({provider,...data})
-                    /* setProvider(provider);
-                    setProfile(data); */
                 }}
                 onReject={err => {
                     console.log(err);
@@ -101,8 +104,9 @@ export default function SocialLogin() {
                 onLoginStart={onLoginStart}
                 onLogoutSuccess={onLogoutSuccess}
                 onResolve={({ provider, data }) => {
-                    setProvider(provider);
-                    setProfile(data);
+                    console.log("Data set",data)
+                    socialLoginApi({provider,...data})
+                   
                 }}
                 onReject={(err) => {
                     console.log(err);
