@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthUser from "../hooks/authUser";
 import jwt from "jsonwebtoken";

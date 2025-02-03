@@ -14,7 +14,7 @@ export default function useFavorites() {
   const { user } = useAuthUser();
 
   const [favLoading, setFavoritesLoading] = useState(true);
-
+  console.log('here');
   useEffect(() => {
     async function getFavoriteItems() {
       const response = await axios.get(
@@ -30,7 +30,7 @@ export default function useFavorites() {
       }
       setFavoritesLoading(false);
     }
-    if (user) {
+    if (user && !favorites) {
       getFavoriteItems();
     }
   }, [user]);

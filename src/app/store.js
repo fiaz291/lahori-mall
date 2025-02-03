@@ -5,6 +5,6 @@ export const store = new Store({
   user: null,
   cart: [],
   showLoginModal: false,
-  favorites: [],
+  favorites: null,
   recentViewedItems: [],
 });

@@ -17,4 +17,5 @@ export const API_URLS ={
     PRODUCT_VIEW: '/api/views',
     USER: '/api/user',
     USER_UPDATE_PASSWORD: '/api/user/update-password',
+    VOUCHERS: '/api/voucher',
 }

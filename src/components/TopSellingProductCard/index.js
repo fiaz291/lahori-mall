@@ -8,17 +8,17 @@ import useFavorites from "@/app/hooks/favorites";
 
 export default function TopSellingProductCard({ product, image }) {
   const { name, slug } = product;
-  const { favorites } = useFavorites();
+  // const { favorites } = useFavorites();
 
-  const isProductIsFavorite = useCallback(() => {
-    const isAlreadyThere = favorites?.find(
-      (item) => item.productId === product.id
-    );
-    if (isAlreadyThere) {
-      return true;
-    }
-    return false;
-  }, [favorites, favorites?.length]);
+  // const isProductIsFavorite = useCallback(() => {
+  //   const isAlreadyThere = favorites?.find(
+  //     (item) => item.productId === product.id
+  //   );
+  //   if (isAlreadyThere) {
+  //     return true;
+  //   }
+  //   return false;
+  // }, [favorites, favorites?.length]);
 
   return (
     <Tooltip title={name}>

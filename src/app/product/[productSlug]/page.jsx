@@ -22,11 +22,14 @@ export default function Page({ params }) {
         res.json()
       ),
   });
+
   const { recentViewedItems, recentItemsLoading } = useRecentViewedItems();
+  console.log(data?.data?.id, 111, recentViewedItems)
 
 
   useEffect(() => {
     async function productViewed() {
+      console.log(data?.data?.id, 111)
       axios.post(config.url + API_URLS.PRODUCT_VIEW, {
         userId: user.id,
         productId: data?.data?.id,
