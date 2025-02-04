@@ -1,9 +1,19 @@
 "use client";
 import { API_URLS } from "@/app/apiUrls";
 import config from "@/app/config";
+import useS3Upload from "@/app/hooks/uploadToS3";
 // import { storage } from "@/firebase";
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Flex, Form, Input, Progress, Upload, message } from "antd";
+import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Flex,
+  Form,
+  Input,
+  Progress,
+  Spin,
+  Upload,
+  message,
+} from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 // import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -12,8 +22,11 @@ export default function AddCategory() {
   const [err, seErr] = useState(null);
   const [msg, setMsg] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  const { uploadToS3, uploading, error } = useS3Upload();
 
   const [form] = Form.useForm();
 
@@ -56,7 +69,10 @@ export default function AddCategory() {
     seErr(null);
     setMsg(null);
     try {
-      const response = await axios.post(config.url + API_URLS.GET_CATEGORIES, data);
+      const response = await axios.post(
+        config.url + API_URLS.GET_CATEGORIES,
+        data
+      );
       if (response.status === 200 && response.data.error) {
         seErr(response.data.error);
         message.error(response.data.error);
@@ -104,6 +120,37 @@ export default function AddCategory() {
   //     }
   //   );
   // };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files);
+  };
+
+  const handleUpload = async () => {
+    if (!file || file.length === 0) {
+      alert("Please select files to upload!");
+      return;
+    }
+    setIsUploading(true);
+    try {
+      const uploadPromises = Array.from(file).map((item) => uploadToS3(item));
+      const fileUrls = await Promise.all(uploadPromises);
+      if (fileUrls.length > 0) {
+        setUploadedFiles([...uploadedFiles, ...fileUrls]);
+        setFile([]);
+      }
+    } catch (error) {
+      console.error({ error });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleRemoveImage = (file) => {
+    const tempUploaded = [...uploadedFiles];
+    tempUploaded.splice(tempUploaded.indexOf(file), 1);
+    setUploadedFiles(tempUploaded);
+  };
+
   const customRequest = ({ file, onSuccess }) => {
     // handleUpload({ file });
     onSuccess("ok");
@@ -154,7 +201,7 @@ export default function AddCategory() {
       {err && <p style={{ color: "red", textAlign: "center" }}>{err}</p>}
       {msg && <p style={{ color: "black", textAlign: "center" }}>{msg}</p>}
 
-      <Form.Item
+      {/* <Form.Item
         className="mb-0"
         name="image"
         label={<span className="">Image</span>}
@@ -173,6 +220,46 @@ export default function AddCategory() {
           {file && (
             <img src={file} className="w-full max-h-[300px] mt-[10px]" />
           )}
+        </div>
+      </Form.Item> */}
+      <Form.Item className="mb-0" name="image" label="Image">
+        <input type="file" onChange={handleFileChange} title="Select Images" />
+        <Button
+          onClick={handleUpload}
+          disabled={isUploading || file.length < 1}
+          className="mt-2"
+        >
+          {file.length < 1 ? "No Image Selected" : "Upload Images"}
+        </Button>
+        {isUploading && (
+          <Spin tip="Loading" size="large">
+            <div
+              style={{
+                padding: 50,
+                background: "rgba(0, 0, 0, 0.05)",
+                borderRadius: 4,
+              }}
+            />
+          </Spin>
+        )}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {uploadedFiles.map((file, index) => (
+            <div key={file}>
+              {file && (
+                <div className="relative h-[170px] w-[170px] bg-[rgba(0,0,0,0.2)] flex items-center justify-center">
+                  <img
+                    src={file}
+                    className="h-[150px] w-[150px]"
+                    alt="product"
+                  />
+                  <CloseCircleOutlined
+                    className="absolute top-2 right-2 text-red-500 text-xl cursor-pointer"
+                    onClick={() => handleRemoveImage(file)} // Define the removal logic
+                  />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </Form.Item>
       <Form.Item label="Check Slug" className="mb-0">

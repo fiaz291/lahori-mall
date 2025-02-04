@@ -7,7 +7,7 @@ import Link from "next/link";
 import React, { useCallback, useState } from "react";
 import DataTable from "react-data-table-component";
 
-export default function Users({ params }) {
+export default function Vouchers({ params }) {
   const [data, setData] = useState(null); // Store fetched data
   const [currentPage, setCurrentPage] = useState(null);
 
@@ -43,8 +43,16 @@ export default function Users({ params }) {
     // console.log({ value: e.target.checked })
   }
 
-  const handleDeleteVoucher = (row) => {
-    console.log({ row })
+  const handleDeleteVoucher = async(row) => {
+    try {
+      if (row?.id) {
+        await axios.delete(`${config.url}${API_URLS.VOUCHERS}?id=${id}`);
+        message.success('Voucher Deleted successfully!');
+      }
+    } catch (error) {
+      console.error('Error DEleting voucher:', error);
+      message.error(`Error DEleting voucher: ${error.response?.data?.error || error.message}`);
+    }
   }
 
   
@@ -83,7 +91,7 @@ export default function Users({ params }) {
             items: [
               {
                 key: "1",
-                label: <Button className="w-[80px]"><Link href={`/admin/edit-product/${row.slug}`}>Edit</Link></Button>,
+                label: <Button className="w-[80px]"><Link href={`/admin/edit-voucher/${row.id}`}>Edit</Link></Button>,
               },
               {
                 key: "3",

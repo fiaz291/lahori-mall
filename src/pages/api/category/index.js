@@ -13,8 +13,10 @@ export default async function handler(req, res) {
       return PATCH(req, res);
     case "GET":
       return GET(req, res);
+    case "DELETE":
+      return DELETE(req, res);
     default:
-      res.setHeader("Allow", ["POST", "GET", "PUT", "PATCH"]);
+      res.setHeader("Allow", ["POST", "GET", "PUT", "PATCH", "DELETE"]);
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
@@ -89,15 +91,15 @@ const PATCH = async (req, res) => {
   const { name, slug, url } = req.body;
 
   try {
-    const existingSlug = await prisma.category.findUnique({
-      where: { slug },
-    });
+    // const existingSlug = await prisma.category.findUnique({
+    //   where: { slug },
+    // });
 
-    if (existingSlug) {
-      return res
-        .status(200)
-        .json({ error: "Slug already in use", code: 2 });
-    }
+    // if (existingSlug) {
+    //   return res
+    //     .status(409)
+    //     .json({ error: "Slug already in use", code: 2 });
+    // }
 
     const newCategory = await prisma.category.update({
       where: { slug },
@@ -115,17 +117,75 @@ const PATCH = async (req, res) => {
 
 const GET = async (req, res) => {
   try {
-    const { menu } = req.query;
-    let categories = await prisma.category.findMany({
-      include: {
-      subCategories: true
-      
-    }});
-    if (!menu && categories.length) {
-      categories = categories.map((cat)=>({label:cat.name,value:cat.id}))
+    const { menu, id } = req.query;
+
+    let categories;
+
+    if (id) {
+      // Fetch a single category by ID
+      categories = await prisma.category.findUnique({
+        where: { id: parseInt(id) },
+        include: { subCategories: true },
+      });
+
+      if (!categories) {
+        return res.status(404).json({ error: "Category not found" });
+      }
+    } else {
+      // Fetch all categories
+      categories = await prisma.category.findMany({
+        include: { subCategories: true },
+      });
+
+      if (!menu && categories.length) {
+        categories = categories.map((cat) => ({
+          label: cat.name,
+          value: cat.id,
+        }));
+      }
     }
-    res.status(200).json(createResponse( { data:categories}));
+
+    res.status(200).json(createResponse({ data: categories }));
   } catch (error) {
+    console.error("Error fetching categories:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+const DELETE = async (req, res) => {
+  try {
+    const { id } = req.query; // Get category ID from query params
+
+    if (!id) {
+      return res.status(400).json({ error: "Category ID is required" });
+    }
+
+    // Check if the category exists
+    const category = await prisma.category.findUnique({
+      where: { id: parseInt(id) },
+      include: { subCategories: true }, // Check if it has related subcategories
+    });
+
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    // Delete category along with its related subcategories
+    await prisma.$transaction([
+      prisma.subCategory.deleteMany({
+        where: { categoryId: parseInt(id) },
+      }),
+      prisma.category.delete({
+        where: { id: parseInt(id) },
+      }),
+    ]);
+
+    res.status(200).json({ message: "Category and related subcategories deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
