@@ -19,7 +19,6 @@ export default async function handler(req, res) {
 
 const POST = async (req, res) => {
   const {
-    username,
     email,
     password,
     firstName,
@@ -31,7 +30,7 @@ const POST = async (req, res) => {
     zipCode,
     country = "PK",
     dateOfBirth,
-    vendorId
+    storeId
   } = req.body;
 
   // Required fields
@@ -63,7 +62,6 @@ const POST = async (req, res) => {
     );
     const newUser = await prisma.admin.create({
       data: {
-        username,
         email,
         password: hashedPassword,
         firstName,
@@ -75,11 +73,12 @@ const POST = async (req, res) => {
         zipCode,
         country,
         dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
-        vendorId
+        storeId,
+        isActive:true
       },
     });
     delete newUser.password
-    res.status(201).json(createResponse({ data: {...newUser,token}, status: true }));
+    res.status(201).json(createResponse({ data: {...newUser}, status: true }));
   } catch (error) {
     res.status(500).json(createResponse({ error: "Internal Server Error", status:false }));
   }
