@@ -122,7 +122,8 @@ const handleDelete = async (req, res) => {
       },
     });
 
-    return res.status(204).end();
+    return res.status(204).json(createResponse({ message: "Cart item delete" }));
+  
   } catch (error) {
     console.error(error);
     return res.status(500).json(createResponse({ error: "Internal Server Error" }));
