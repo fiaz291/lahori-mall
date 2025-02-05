@@ -97,7 +97,7 @@ export default function AddProduct() {
     data.price = parseFloat(data.price);
     data.discountPrice = parseFloat(data.discountPrice);
     data.inventory = parseInt(data.inventory, 10);
-    data.images = file;
+    data.images = uploadedFiles;
     seErr(null);
     setMsg(null);
 

@@ -10,8 +10,10 @@ export default async function handler(req, res) {
       return PUT(req, res);
     case "PATCH":
       return PATCH(req, res);
+    case "DELETE":
+      return DELETE(req, res);
     default:
-      res.setHeader("Allow", ["POST", "GET", "PUT", "PATCH"]);
+      res.setHeader("Allow", ["POST", "GET", "PUT", "PATCH", "DELETE"]);
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
@@ -161,3 +163,32 @@ async function GET(req, res) {
       .json({ message: "Internal server error", error: error.message });
   }
 }
+
+
+const DELETE = async (req, res) => {
+  try {
+    const { id } = req.query; // Get category ID from query params
+
+    if (!id) {
+      return res.status(400).json({ error: "Sub Category ID is required" });
+    }
+
+    const category = await prisma.subCategory.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!category) {
+      return res.status(404).json({ error: "Sub Category not found" });
+    }
+
+      prisma.subCategory.delete({
+        where: { id: parseInt(id) },
+      }),
+
+    res.status(200).json({ message: "Category and related subcategories deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+

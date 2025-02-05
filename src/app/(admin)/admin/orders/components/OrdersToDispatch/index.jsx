@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { getCookie } from "cookies-next";
 
 export default function OrdersToDispatch() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,9 +56,22 @@ export default function OrdersToDispatch() {
   };
 
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["oredersData"],
+    queryKey: ["ordersData"],
     queryFn: async () => {
-      const response = await fetch(config.url + "/api/admin/order");
+      const token = getCookie("token"); // Retrieve token from local storage (or context)
+      
+      const response = await fetch(config.url + "/api/admin/order", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+  
       return await response.json();
     },
   });

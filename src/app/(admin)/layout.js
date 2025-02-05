@@ -19,34 +19,6 @@ const Routes = [
     breadcrumb: "Overview",
   },
   {
-    label: "Add Category",
-    //   icon: <HomeIcon width="2" />,
-    key: "/admin/add-category",
-    url: "/admin/add-category",
-    breadcrumb: "Add Category",
-  },
-  {
-    label: "Add Sub Category",
-    //   icon: <HomeIcon width="2" />,
-    key: "/admin/add-subcategory",
-    url: "/admin/add-subcategory",
-    breadcrumb: "Add Category",
-  },
-  {
-    label: "Add Product",
-    //   icon: <HomeIcon width="2" />,
-    key: "/admin/add-product",
-    url: "/admin/add-product",
-    breadcrumb: "Add Product",
-  },
-  {
-    label: "All Product",
-    //   icon: <HomeIcon width="2" />,
-    key: "/admin/products",
-    url: "/admin/products",
-    breadcrumb: "All Products",
-  },
-  {
     label: "Orders",
     //   icon: <HomeIcon width="2" />,
     key: "/admin/orders",
@@ -54,18 +26,94 @@ const Routes = [
     breadcrumb: "Update Orders",
   },
   {
-    label: "Property",
+    label: "Products",
     //   icon: <BuildingOffice2Icon width={2} />,
-    key: "/board",
-    url: "/board",
-    breadcrumb: "Board",
+    key: "/products",
+    url: "/products",
+    breadcrumb: "products",
     children: [
       {
-        label: "Add Property By MLS #",
+        label: "All Products",
         //   icon: <DownloadOutlined width={2} />,
-        key: "/board/board-list/import",
-        url: "/board/board-list/import",
-        breadcrumb: "Add Property > Add Property By MLS #",
+        key: "/admin/products",
+        url: "/admin/products",
+        breadcrumb: "",
+      },
+      {
+        label: "Add New Product",
+        //   icon: <DownloadOutlined width={2} />,
+        key: "/admin/add-product",
+        url: "/admin/add-product",
+        breadcrumb: "",
+      },
+    ],
+  },
+  {
+    label: "Categories",
+    //   icon: <BuildingOffice2Icon width={2} />,
+    key: "/categories",
+    url: "/categories",
+    breadcrumb: "categories",
+    children: [
+      {
+        label: "All Categories",
+        //   icon: <DownloadOutlined width={2} />,
+        key: "/admin/categories",
+        url: "/admin/categories",
+        breadcrumb: "",
+      },
+      {
+        label: "Add New Categories",
+        //   icon: <DownloadOutlined width={2} />,
+        key: "/admin/add-category",
+        url: "/admin/add-category",
+        breadcrumb: "",
+      },
+    ],
+  },
+  {
+    label: "Sub Categories",
+    //   icon: <BuildingOffice2Icon width={2} />,
+    key: "/sub-categories",
+    url: "/sub-categories",
+    breadcrumb: "sub-categories",
+    children: [
+      {
+        label: "All Sub-Categories",
+        //   icon: <DownloadOutlined width={2} />,
+        key: "/admin/sub-categories",
+        url: "/admin/sub-categories",
+        breadcrumb: "",
+      },
+      {
+        label: "Add New Sub-Category",
+        //   icon: <DownloadOutlined width={2} />,
+        key: "/admin/add-sub-category",
+        url: "/admin/add-sub-category",
+        breadcrumb: "",
+      },
+    ],
+  },
+  {
+    label: "Vouchers",
+    //   icon: <BuildingOffice2Icon width={2} />,
+    key: "/vouchers",
+    url: "/vouchers",
+    breadcrumb: "vouchers",
+    children: [
+      {
+        label: "All Sub-Categories",
+        //   icon: <DownloadOutlined width={2} />,
+        key: "/admin/vouchers",
+        url: "/admin/vouchers",
+        breadcrumb: "",
+      },
+      {
+        label: "Add New Voucher",
+        //   icon: <DownloadOutlined width={2} />,
+        key: "/admin/add-voucher",
+        url: "/admin/add-voucher",
+        breadcrumb: "",
       },
     ],
   },
@@ -74,12 +122,21 @@ const AdminLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const path = usePathname();
   const [selectedKey, setSelectedKey] = useState(path);
+  const [selectedItem, setSelectedItem] = useState(Routes[0]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const setKeyClick = (key, pathCheck = true) => {
     setSelectedKey(key);
     router.push(key);
   };
+  useEffect(() => {
+    if (path) {
+      const result = findRouteByKey(Routes, path);
+      if (result) {
+        setSelectedItem(result);
+      }
+    }
+  }, [path]);
 
   useEffect(() => {
     async function checkAdmin() {
@@ -99,6 +156,19 @@ const AdminLayout = ({ children }) => {
     //checkAdmin();
   }, []);
 
+  const findRouteByKey = (routes, targetKey) => {
+    for (const route of routes) {
+      if (route.key === targetKey) {
+        return route;
+      }
+      if (route.children) {
+        const found = findRouteByKey(route.children, targetKey);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
   if (loading) {
     return (
       <div className="h-[100vh] width-[100vw] flex justify-center items-center">
@@ -117,6 +187,7 @@ const AdminLayout = ({ children }) => {
         width="300px"
         collapsedWidth="100px"
       >
+        <img src="/logo-dark.png" className="mb-4" />
         <Menu
           mode="inline"
           defaultSelectedKeys={[selectedKey]}
@@ -124,8 +195,11 @@ const AdminLayout = ({ children }) => {
           items={Routes}
           onClick={({ key }) => {
             setKeyClick(key);
-
-            // setSelectedItem(Routes?.filter(route=>(route.key === key)[0]))
+            const result = findRouteByKey(Routes, key);
+            if (result) {
+              setSelectedItem(result);
+            }
+            // setSelectedItem(Routes?.flatMap((route) => (route.key === key)));
           }}
         />
       </Sider>
@@ -133,7 +207,9 @@ const AdminLayout = ({ children }) => {
         <Header
           className="bg-white pb-[20px]"
           style={{ borderBottom: "1px solid black", marginBottom: 20 }}
-        ></Header>
+        >
+          <div className="text-white font-[600] text-[32px]">{selectedItem?.label}</div>
+        </Header>
         <Content>{children}</Content>
       </Layout>
     </Layout>

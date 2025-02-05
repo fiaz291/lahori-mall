@@ -18,4 +18,6 @@ export const API_URLS ={
     USER: '/api/user',
     USER_UPDATE_PASSWORD: '/api/user/update-password',
     VOUCHERS: '/api/voucher',
+    ALL_CATEGORIES: '/api/category/get-all',
+    ALL_SUB_CATEGORIES: '/api/sub-categories/get-all',
 }
