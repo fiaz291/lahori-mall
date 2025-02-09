@@ -105,7 +105,8 @@ model Order {
   updatedAt   DateTime @updatedAt
   totalAmount Float
   status      String
-
+  orderAddress String?
+  billingAddress String?
   user                  User                   @relation(fields: [userId], references: [id]) // Foreign key to User
   orderItems            OrderItem[] // Relation to order items
   vouchers              UserVoucher[] // Vouchers applied to this order
