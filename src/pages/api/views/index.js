@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
     try {
       // Add the new view
-      await prisma.view.create({
+      await prisma.views.create({
         data: {
           userId:Number(userId),
           productId:Number(productId),
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       });
 
       // Ensure only the last 10 views are kept for the user
-      const userViews = await prisma.view.findMany({
+      const userViews = await prisma.views.findMany({
         where: { userId:Number(userId) },
         orderBy: { viewedAt: 'desc' },
         skip: 10, // Skip the first 10 most recent views
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
   
     try {
       // Fetch the last 10 viewed products for the user
-      const views = await prisma.view.findMany({
+      const views = await prisma.views.findMany({
         where: { userId: parseInt(userId, 10) },
         orderBy: { viewedAt: 'desc' },
         take: 10,

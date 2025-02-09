@@ -93,7 +93,7 @@ model User {
   vouchers              UserVoucher[] // Relation to user-voucher linking table
   financialTransactions FinancialTransaction[] // One-to-many relation to financial transactions
   token       String?
-  views View[]
+  views Views[]
 }
 
 
@@ -218,7 +218,7 @@ model Product {
   cartItems  CartItem[]
   storeId           Int?         // Store the product's associated store
   store             Store?       @relation(fields: [storeId], references: [id]) // One-to-many relation with store
-  views View[]
+  views Views[]
   banner  Banner?  @relation
 }
 
@@ -283,7 +283,7 @@ model FinancialTransaction {
   store       Store?   @relation(fields: [storeId], references: [id])
 }
 
-model View {
+model Views {
   id        Int       @id @default(autoincrement())
   userId    Int
   productId Int
