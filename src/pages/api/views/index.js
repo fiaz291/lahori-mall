@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       res.status(201).json(createResponse({ message: 'View added successfully' }));
     } catch (error) {
       console.error('Error adding view:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json(createResponse({ error: 'Internal Server Error' }));
     }
 }
 
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
     const { userId } = req.query;
   
     if (!userId) {
-      return res.status(400).json({ error: 'userId is required' });
+      return res.status(400).json(createResponse({ error: 'userId is required' }));
     }
   
     try {
@@ -74,6 +74,6 @@ export default async function handler(req, res) {
       res.status(200).json(createResponse({ data:views }));
     } catch (error) {
       console.error('Error fetching views:', error);
-      res.status(500).json({ message: 'Internal Server Error',error });
+      res.status(500).json(createResponse({ message: 'Internal Server Error',error }));
     }
   }
