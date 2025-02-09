@@ -152,7 +152,7 @@ export default function Page() {
                   router.push(`/orders?page=${e.selected + 1}`);
                 }}
                 pageRangeDisplayed={1}
-                pageCount={ordersData?.totalPages}
+                pageCount={ordersData?.data?.totalPages}
                 // previousLabel="< previous"
                 renderOnZeroPageCount={null}
                 activeClassName="active-pagination"

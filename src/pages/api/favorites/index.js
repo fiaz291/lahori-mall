@@ -46,7 +46,7 @@ const handleGet = async (req, res) => {
   const { userId } = req.query;
 
   if (!userId) {
-    return res.status(400).json({ message: "User ID is required" });
+    return res.status(400).json(createResponse({ error: "User ID is required" }));
   }
 
   try {
@@ -61,7 +61,7 @@ const handleGet = async (req, res) => {
     return res.status(200).json(createResponse({data:favorites}));
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json(createResponse({ message: "Internal Server Error",error }));
   }
 };
 // Handle DELETE request to retrieve user favorites

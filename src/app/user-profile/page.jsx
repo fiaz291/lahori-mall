@@ -30,7 +30,7 @@ export default function UserProfile({ params }) {
       <div className="flex justify-center">
         <div className="flex flex-col w-full max-w-[1200px] mt-10 mx-14 gap-14 ">
           <AccountManage user={user} />
-          <RecentOrders orders={ordersData?.orders} loading={ordersLoading} />
+          <RecentOrders orders={ordersData?.data?.orders} loading={ordersLoading} />
           <WishList wishlist={Dummy_products} />
         </div>
       </div>

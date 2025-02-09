@@ -24,7 +24,7 @@ export default function useFavorites() {
         store.setState((state) => {
           return {
             ...state,
-            favorites: response.data,
+            favorites: response.data.data,
           };
         });
       }

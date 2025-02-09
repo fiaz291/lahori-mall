@@ -136,7 +136,7 @@ export default function Product_Details({ prod }) {
       };
       const res = await axios.post(config.url + "/api/favorites", data);
 
-      favData.push(res.data);
+      favData.push(res.data.data);
 
       store.setState((state) => {
         return {
