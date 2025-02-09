@@ -73,6 +73,6 @@ export default async function handler(req, res) {
       res.status(200).json(createResponse({ data:views }));
     } catch (error) {
       console.error('Error fetching views:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ message: 'Internal Server Error',error });
     }
   }
