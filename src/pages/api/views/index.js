@@ -16,7 +16,6 @@ export default async function handler(req, res) {
   }
 
  async function handlePost(req, res) {
-  console.log("handlePost",prisma)
     const { userId, productId } = req.body;
 
     if (!userId || !productId) {
