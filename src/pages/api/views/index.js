@@ -1,5 +1,6 @@
+import prisma from '@/app/prisma';
 import { createResponse } from '@/utilities';
-import prisma from "@/app/prisma";
+
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -15,7 +16,7 @@ export default async function handler(req, res) {
   }
 
  async function handlePost(req, res) {
-  console.log("handlePost",prisma.views)
+  console.log("handlePost",prisma)
     const { userId, productId } = req.body;
 
     if (!userId || !productId) {
