@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "prisma generate && prisma migrate deploy",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma-dev":"prisma generate && prisma migrate dev"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
