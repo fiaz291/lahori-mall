@@ -32,7 +32,7 @@ export async function verificationEmail(email) {
     });
 
     // Send email
-    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?code=${code}?email=${email}`;
+    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?code=${code}&email=${email}`;
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
