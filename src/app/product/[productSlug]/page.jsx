@@ -22,26 +22,28 @@ export default function Page({ params }) {
         res.json()
       ),
   });
-
   const { recentViewedItems, recentItemsLoading } = useRecentViewedItems();
-  console.log(data?.data?.id, 111, recentViewedItems)
-
 
   useEffect(() => {
     async function productViewed() {
-      console.log(data?.data?.id, 111)
-      axios.post(config.url + API_URLS.PRODUCT_VIEW, {
-        userId: user.id,
-        productId: data?.data?.id,
-      })
-    }
-    if (!recentItemsLoading && !userLoading && user && data?.data?.id) {
-      const isAlreadyThere = recentViewedItems.find((Item) => Item.product.id === data?.data?.id);
-      if (!isAlreadyThere) {
-        productViewed()
+      try {
+        axios.post(config.url + API_URLS.PRODUCT_VIEW, {
+          userId: user.id,
+          productId: data?.data?.id,
+        });
+      } catch (err) {
+        console.log({ err });
       }
     }
-  }, [userLoading, user, data])
+    if (!recentItemsLoading && !userLoading && user && data?.data?.id) {
+      const isAlreadyThere = recentViewedItems?.find(
+        (Item) => Item.product.id === data?.data?.id
+      );
+      if (!isAlreadyThere) {
+        productViewed();
+      }
+    }
+  }, [userLoading, user, data, recentItemsLoading, recentViewedItems]);
 
   if (isPending) {
     return (
@@ -57,7 +59,6 @@ export default function Page({ params }) {
   return (
     <div className="outer">
       <div className="inner">
-
         <Navbar hideSlider />
         <div className="flex justify-center">
           <div className="flex flex-col w-full max-w-[1200px] mt-10 mx-4 px-4 gap-8">
