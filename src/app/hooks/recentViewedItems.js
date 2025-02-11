@@ -29,6 +29,7 @@ export default function useRecentViewedItems() {
         setRecentItemsLoading(false);
       } catch (err) {
         console.log('err', err)
+      } finally {
       }
     }
     if (user) {

@@ -20,4 +20,5 @@ export const API_URLS ={
     VOUCHERS: '/api/voucher',
     ALL_CATEGORIES: '/api/category/get-all',
     ALL_SUB_CATEGORIES: '/api/sub-categories/get-all',
+    USER_VERIFY_EMAIL: '/api/user/verify-email',
 }

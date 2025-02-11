@@ -1,7 +1,7 @@
 "use client";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useAuthUser from "../hooks/authUser";
 import config from "../config";
 import { debounce, isArray } from "lodash";
@@ -10,7 +10,7 @@ import Loader from "@/components/Loader";
 import { store } from "../store";
 import axios from "axios";
 import IncDecCounter from "@/components/IncrementDecrementCounter";
-import { Col, Divider, Flex, Row, Tooltip, message } from "antd";
+import { Button, Col, Divider, Flex, Row, Tooltip, message } from "antd";
 import { COLORS } from "@/constants";
 import { DeleteOutlined, PushpinOutlined } from "@ant-design/icons";
 import EditProfileModal from "@/components/EditProdileModal";
@@ -21,6 +21,13 @@ export default function PlaceOrder() {
   const { cartItems, cartLoading, getCartPrice } = useCartItems();
   const [loading, setLoading] = useState(null);
   const [deleteLoader, setDeleteLoader] = useState(null);
+  const [orderAddress, setOrderAddress] = useState(null);
+  const [showOrderAddress, setShowOrderAddress] = useState(false);
+  useEffect(() => {
+    if (user?.address) {
+      setOrderAddress(user.address);
+    }
+  }, [user]);
   const [openModal, setOpenModal] = useState(false);
   const { width } = useWindowSize();
 
@@ -71,6 +78,8 @@ export default function PlaceOrder() {
       const data = {
         userId: user.id,
         orderItems: orderItems,
+        orderAddress: orderAddress ? orderAddress : user.address,
+        billingAddress: user.address,
       };
 
       const res = await axios.post(config.url + "/api/order", data);
@@ -325,6 +334,31 @@ export default function PlaceOrder() {
                     Enter Your Address in Profile
                   </button>
                 )}
+                {showOrderAddress && (
+                  <textarea
+                    value={orderAddress}
+                    rows={4}
+                    className="border border-[rgba(0,0,0,0.2)]  mt-2 rounded  outline-none p-2"
+                    onChange={(e) => {
+                      setOrderAddress(e.target.value);
+                    }}
+                  ></textarea>
+                )}
+                <Button
+                  onClick={() => {
+                    if (!showOrderAddress) {
+                      setShowOrderAddress(true);
+                    } else {
+                      setShowOrderAddress(false);
+                      setOrderAddress(null);
+                    }
+                  }}
+                  className="mt-2"
+                >
+                  {showOrderAddress
+                    ? "Use Default Address"
+                    : "User A different address"}
+                </Button>
                 <Divider style={{ background: "rgba(0,0,0,0.2)" }} />
                 <p className="font-bold text-xl">Order Summary</p>
                 <table>

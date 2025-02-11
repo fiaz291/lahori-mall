@@ -123,7 +123,8 @@ const PATCH = async (req, res) => {
     zipCode,
     role,
     country = "PK",
-    vendorId
+    vendorId,
+    isVerified,
   } = req.body;
 
   // Required fields
@@ -156,6 +157,7 @@ const PATCH = async (req, res) => {
     if (state) dataToUpdate.state = state;
     if (zipCode) dataToUpdate.zipCode = zipCode;
     if (country) dataToUpdate.country = country;
+    if (isVerified) dataToUpdate.isVerified = isVerified;
     if (phoneNumber) {
       dataToUpdate.phoneNumber = phoneNumber;
       dataToUpdate.isVerified = false;
