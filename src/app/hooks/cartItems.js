@@ -20,9 +20,9 @@ export default function useCartItems() {
     if (cartItems && cartItems.length > 0) {
       cartItems.forEach((cartProd) => {
         if (!cartProd?.product?.isDiscount) {
-          price = cartProd.quantity * cartProd.product.price + price;
+          price = cartProd?.quantity * cartProd?.product?.price + price;
         } else {
-          price = cartProd.quantity * cartProd.product.discountPrice + price;
+          price = cartProd?.quantity * cartProd?.product?.discountPrice + price;
         }
       });
     }
