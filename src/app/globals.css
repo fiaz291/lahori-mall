@@ -19,7 +19,6 @@
 body {
   color: #1d1d1d;
   /* background:  linear-gradient(to right, #ece6ff , #ffeded);; */
-  user-select: none;
 }
 
 @layer utilities {

@@ -2,7 +2,7 @@
 import { FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Flex, Form, Input, message, Row } from "antd";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import "./styles.css";
 import { API_URLS } from "../apiUrls";
 import axios from "axios";
@@ -11,6 +11,8 @@ import { setCookie } from "cookies-next";
 import { store } from "../store";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import Loader from "@/components/Loader";
+import ScreenLoader from "@/components/ScreenLoader";
 
 const SocialLogin = dynamic(() => import("@/components/SocialLogin"), {
   ssr: false,
@@ -18,17 +20,16 @@ const SocialLogin = dynamic(() => import("@/components/SocialLogin"), {
 
 export default function Login() {
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const onFinish = async (values) => {
     const data = { ...values };
+    setLoading(true);
     try {
       const response = await axios.post(config.url + API_URLS.USER_LOGIN, data);
       // return;
       const user = response.data.data;
-      console.log(user.token);
-      // return;
       setCookie("token", user.token);
-      // delete user.token;
       setCookie("user", user);
       store.setState(() => {
         return {
@@ -36,9 +37,7 @@ export default function Login() {
         };
       });
       message.success("Welcome");
-      router.push('/')
-      // form.resetFields();
-      // setOpenModal(false);
+      router.push("/");
     } catch (error) {
       console.log({ error });
       if (error.response && error.response.data) {
@@ -46,14 +45,25 @@ export default function Login() {
       } else {
         message.error("Something went wrong!");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   const onFinishFailed = () => {
     console.log("Failed");
   };
+
+  // if (loading) {
+  //   return (
+  //     <div className="w-[100vw] h-[100vh] flex justify-center items-center">
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
   return (
     <div>
+      {loading && <ScreenLoader />}
       <Flex vertical align="center" className="p-16">
         <Link href="/">
           <img src="/logo-dark.png" className="w-[270px] h-[120px] mb-4" />

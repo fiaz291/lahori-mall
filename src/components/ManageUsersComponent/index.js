@@ -20,23 +20,23 @@ export default function ManageUsersComponent({ users, setReload }) {
     }
   }
   return (
-    <table>
-      <thead>
+    <table className="w-full border-collapse border border-gray-200 shadow-lg rounded-lg overflow-hidden">
+      <thead className="bg-gray-100">
         <tr>
-          <th>Name</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Is Verified</th>
+          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">Name</th>
+          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">Username</th>
+          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">Email</th>
+          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">Role</th>
+          <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">Is Verified</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="divide-y divide-gray-200">
         {users.map((user) => (
-          <tr key={user.id}>
-            <td>{user.firstName}</td>
-            <td>{user.username}</td>
-            <td>{user.email}</td>
-            <td>
+          <tr key={user.id} className="hover:bg-gray-50">
+            <td className="px-4 py-3 text-gray-800 border-b">{user.firstName}</td>
+            <td className="px-4 py-3 text-gray-800 border-b">{user.username}</td>
+            <td className="px-4 py-3 text-gray-800 border-b">{user.email}</td>
+            <td className="px-4 py-3 text-gray-800 border-b">
               <select
                 value={user.role}
                 onChange={(e) => {
@@ -47,7 +47,7 @@ export default function ManageUsersComponent({ users, setReload }) {
                 <option value="customer">Customer</option>
               </select>
             </td>
-            <td>
+            <td className="px-4 py-3 text-gray-800 border-b">
               <input
                 type="checkbox"
                 checked={user.isVerified}

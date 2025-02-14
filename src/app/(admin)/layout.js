@@ -26,6 +26,13 @@ const Routes = [
     breadcrumb: "Update Orders",
   },
   {
+    label: "Manage Users",
+    //   icon: <HomeIcon width="2" />,
+    key: "/admin/manage-users",
+    url: "/admin/manage-users",
+    breadcrumb: "Manage Users",
+  },
+  {
     label: "Products",
     //   icon: <BuildingOffice2Icon width={2} />,
     key: "/products",

@@ -1,18 +1,15 @@
 "use client";
-import { FacebookOutlined, GoogleOutlined } from "@ant-design/icons";
-import { Button, Col, Divider, Flex, Form, Input, message, Row } from "antd";
+import { Flex, Form, Input, message } from "antd";
 import Link from "next/link";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import "./styles.css";
 import { API_URLS } from "../apiUrls";
 import axios from "axios";
 import config from "../config";
-import { setCookie } from "cookies-next";
-import { store } from "../store";
 import { useRouter } from "next/navigation";
 
-
 import dynamic from "next/dynamic";
+import ScreenLoader from "@/components/ScreenLoader";
 
 const SocialLogin = dynamic(() => import("@/components/SocialLogin"), {
   ssr: false,
@@ -21,21 +18,29 @@ const SocialLogin = dynamic(() => import("@/components/SocialLogin"), {
 export default function Signup() {
   const [form] = Form.useForm();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const onFinish = async (values) => {
     const data = { ...values };
     delete data.confirmPassword;
+    setLoading(true);
     try {
-      const response = await axios.post(config.url + API_URLS.USER_SIGNUP, data);
-      message.success("Account created successfuly. Now you can login to continue");
-      router.push('/login');
+      const response = await axios.post(
+        config.url + API_URLS.USER_SIGNUP,
+        data
+      );
+      message.success(
+        "Account created successfuly. Now you can login to continue"
+      );
+      router.push("/login");
     } catch (error) {
-      console.log({ error });
       if (error.response && error.response.data) {
         message.error(error.response.data.error);
       } else {
         message.error("Something went wrong!");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,6 +49,7 @@ export default function Signup() {
   };
   return (
     <Flex vertical align="center" className="p-16">
+      {loading && <ScreenLoader />}
       <Link href="/">
         <img src="/logo-dark.png" className="w-[270px] h-[120px] mb-4" />
       </Link>
