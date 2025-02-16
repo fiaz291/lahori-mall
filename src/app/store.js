@@ -7,4 +7,5 @@ export const store = new Store({
   showLoginModal: false,
   favorites: null,
   recentViewedItems: [],
+  coupon:null
 });

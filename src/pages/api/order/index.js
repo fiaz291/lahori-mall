@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 }
 
 const handlePost = async (req, res) => {
-  const { userId, orderItems, orderAddress, billingAddress } = req.body;
+  const { userId, orderItems, orderAddress, billingAddress, vouchers } = req.body;
 
   if (!userId || !Array.isArray(orderItems) || orderItems.length === 0 || !orderAddress) {
     return res.status(400).json(createResponse({ error: "Invalid input" }));
@@ -32,6 +32,7 @@ const handlePost = async (req, res) => {
         data: {
           userId,
           totalAmount,
+          discount: (vouchers?vouchers.amount:0),
           orderAddress,
           billingAddress,
           status: orderStatuses.pending.key,

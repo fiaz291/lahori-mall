@@ -17,13 +17,13 @@ export default async function handler(req, res) {
 async function searchVoucherByName(req, res) {
   try {
     let {text} = req.query
-    const user = await prisma.user.findMany({
+    const voucher = await prisma.voucher.findUnique({
       where: {
         code:text
     }});
-    return res.status(200).json(createResponse({data:user}));
+    return res.status(200).json(createResponse({data:voucher}));
   } catch (error) {
-    console.error('Error searching for product:', error);
+    console.error('voucher not found:', error);
     return res.status(500).json(createResponse({error}));
   }
 }

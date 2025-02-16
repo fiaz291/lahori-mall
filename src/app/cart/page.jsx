@@ -1,7 +1,7 @@
 "use client";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useAuthUser from "../hooks/authUser";
 import config from "../config";
 import { isArray } from "lodash";
@@ -16,8 +16,10 @@ import { DeleteOutlined, PushpinOutlined } from "@ant-design/icons";
 import EditProfileModal from "@/components/EditProdileModal";
 import useWindowSize from "../hooks/windowSize";
 import { useRouter } from "next/navigation";
+import { useStore } from "@tanstack/react-store";
 
 export default function Cart() {
+  const couponData = useStore(store, (state) => state.coupon);
   const { user } = useAuthUser();
   const { cartItems, cartLoading, getCartPrice } = useCartItems();
   const [loading, setLoading] = useState(null);
@@ -25,7 +27,16 @@ export default function Cart() {
   const [openModal, setOpenModal] = useState(false);
   const { width, height } = useWindowSize();
   const router = useRouter();
+  const [coupon, setCoupon] = useState(null)
 
+  const setCouponData = (data) => {
+    store.setState((state) => {
+      return {
+        ...state,
+        coupon: data,
+      };
+    });
+  }
   const handleAddToCart = async (cartItem, quantity) => {
     const prod = cartItem.product;
     setLoading(cartItem.id);
@@ -94,6 +105,17 @@ export default function Cart() {
     }
     return quantity;
   }, [cartItems]);
+
+  const handleCoupon = async () => {
+    try {
+      const res = await axios.get(config.url + "/api/voucher/search?text=" + coupon);
+      if (res.status) {
+        setCouponData(res.data.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   // if (cartLoading) {
   //   return (
@@ -168,21 +190,21 @@ export default function Cart() {
                           <tr className="gap-4 flex justify-between">
                             <td className="">
                               <div>
-                                {!item.product?.isDiscount && (
+                                {!item?.product?.isDiscount && (
                                   <p
                                     className="text-[14px]  font-semibold"
                                     style={{ color: COLORS.red }}
                                   >
-                                    {item.product?.price} AED
+                                    {item?.product?.price} AED
                                   </p>
                                 )}
-                                {item.product?.isDiscount && (
+                                {item?.product?.isDiscount && (
                                   <div>
                                     <p
                                       className="text-[14px]  font-semibold"
                                       style={{ color: COLORS.red }}
                                     >
-                                      {item.product?.discountPrice} AED
+                                      {item?.product?.discountPrice} AED
                                     </p>
                                     <p
                                       className="text-[12px] font-semibold line-through"
@@ -359,9 +381,9 @@ export default function Cart() {
                       <td>Add Coupon</td>
                     </tr>
                     <tr className="mt-[10px]">
-                      <td><input className="w-full p-2" style={{ border: '1px solid rgba(0,0,0,0.8)', outline: 'none' }} /></td>
+                      <td><input className="w-full p-2" style={{ border: '1px solid rgba(0,0,0,0.8)', outline: 'none' }} onChange={(e) => setCoupon(e.target.value)} /></td>
                       <td><button className="w-full text-white h-[40px] font-semibold disabled:opacity-50"
-                        style={{ background: '#0047A0' }}>Apply</button></td>
+                        style={{ background: '#0047A0' }} onClick={handleCoupon} >Apply</button></td>
 
                     </tr>
                   </tbody>
@@ -370,12 +392,18 @@ export default function Cart() {
                 <table>
                   <thead></thead>
                   <tbody>
+                    {couponData?.amount && <tr className="mt-[10px]">
+                      <td>Voucher Amount</td>
+                      <td>
+                        {couponData?.amount}
+                      </td>
+                    </tr>}
                     <tr className="mt-[10px]">
                       <td>Total Amount</td>
                       <td>
                         {getCartPrice() > 4999
                           ? getCartPrice()
-                          : getCartPrice() + 400}
+                          : getCartPrice() + 400 - (couponData?.amount ? couponData?.amount : 0)}
                       </td>
                     </tr>
                   </tbody>

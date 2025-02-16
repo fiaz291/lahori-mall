@@ -15,8 +15,11 @@ import { COLORS } from "@/constants";
 import { DeleteOutlined, PushpinOutlined } from "@ant-design/icons";
 import EditProfileModal from "@/components/EditProdileModal";
 import useWindowSize from "../hooks/windowSize";
+import Vouchers from "../(admin)/admin/users/page";
+import { useStore } from "@tanstack/react-store";
 
 export default function PlaceOrder() {
+  const couponData = useStore(store, (state) => state.coupon);
   const { user } = useAuthUser();
   const { cartItems, cartLoading, getCartPrice } = useCartItems();
   const [loading, setLoading] = useState(null);
@@ -80,8 +83,10 @@ export default function PlaceOrder() {
         orderItems: orderItems,
         orderAddress: orderAddress ? orderAddress : user.address,
         billingAddress: user.address,
+        vouchers: couponData
       };
-
+      console.log("data",data)
+      return
       const res = await axios.post(config.url + "/api/order", data);
 
       if (!res.error) {
@@ -378,12 +383,18 @@ export default function PlaceOrder() {
                 <table>
                   <thead></thead>
                   <tbody>
+                  {couponData?.amount && <tr className="mt-[10px]">
+                      <td>Voucher Amount</td>
+                      <td>
+                        {couponData?.amount}
+                      </td>
+                    </tr>}
                     <tr className="mt-[10px]">
                       <td>Total Amount</td>
                       <td>
                         {getCartPrice() > 4999
                           ? getCartPrice()
-                          : getCartPrice() + 400}
+                          : getCartPrice() + 400 - (couponData?.amount ? couponData?.amount : 0)}
                       </td>
                     </tr>
                   </tbody>
